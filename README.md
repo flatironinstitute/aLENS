@@ -1,4 +1,9 @@
+# aLENS (active Living ENsemble Simulator)
+The motivation, algorithm and examples are discussed in this paper: 
+[aLENS: towards the cellular-scale simulation of motor-driven cytoskeletal assemblies](https://arxiv.org/abs/2109.08206)
+
 # Introduction
+
 This file will guide you through the preparation, compilation, running, and postprocessing of using aLENS. 
 
 To use this software, the minimum requirement is a mpi c++ compiler fully supporting `c++14` and `openmp-4.0`, for example, `mpicxx` that calls `gcc>=7`.
@@ -18,16 +23,15 @@ git submodule update
 
 # Install dependencies
 ## Step 1. dependencies of SimToolbox
-Go to the folder SimToolbox and install all denpendency software mentioned in `StepByStep.md`.
 An easier way is to use the automated compilation and installation scripts hosted at `https://github.com/wenyan4work/Environment`.
 
 ## Step 2. dependencies of KMC 
-KMC relies on the Gauss-Kronrod quadrature integrator in Boost.math. Make sure you have `boost>=1.66` installed.
-Only the boost header is necessary. Those compiled boost binary libraries are unnecessary.
+KMC relies on the Gauss-Kronrod quadrature integrator in Boost.math. Make sure you have `boost>=1.70` installed.
+Only the boost header is necessary. 
 
 
 # Compiling
-Use 'cmake' to compile things.
+Use 'cmake' to compile things. 
 If `make` finishes successfully, now you have a usable executable called `aLENS.X`. 
 
 
@@ -57,22 +61,9 @@ In the minimu case, you need only three files and a folder to run the executable
 # Your first run
 Use the provided example to run your first simulation:
 ```bash
-wyan$ cp ./InitialConfigExample/SimplePair/* ./
+wyan$ cp ./InitialConfigExample/PairBinding/* ./
 wyan$ ./aLENS.X > ./outrun.log
 ```
-
-Then, you can run 3 example post processing files to analyze the result:
-```bash
-wyan$ python3 ./PostProcess/RecordXF.py outrun.log
-wyan$ python3 ./PostProcess/AsciiOrientOrder.py 
-wyan$ python3 ./PostProcess/PrintVTKData.py
-```
-
-The example postprocessing does the following:
-- `RecordXF.py` reads `outrun.log` and prints collision and protein stress
-- `AsciiOrientOrder.py` reads saved snapshot data files and calcualtes polar and nematic order parameters
-- `PrintVTKData.py` parse saved vtk data files and print all saved data
-
 
 # Data organization
 The program `aLENS.X` outputs to the folder `result`. `result` is at the same folder as `aLENS.X` itself.
