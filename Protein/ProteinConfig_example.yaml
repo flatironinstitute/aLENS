@@ -1,0 +1,77 @@
+KBT: 0.00411 # pN.um, at 300K
+proteins:
+  - tag: 0 # Type 0, Kinesin-5, Blackwell SA2017
+    walkOff: true
+    PtoAPratio: 1.
+    fixedEnd0: false
+    #properties:
+    freeLength: 0.053 # um
+    rc: 0.039 # um, (D/2 + \ell_0)/2
+    kappa: 300.0 # pN/um
+    fstall: 5.0 # pN
+    lambda: 0.25822 # dimensionless
+    diffUnbound: 4.5 # um^2/s
+    vmax: [-0.1, -0.1] # um/s, positive towards plus end
+    vmaxAP: [-0.08, -0.08] # um/s, positive towards plus end
+    diffBoundS: [0, 0] # um^2/s
+    diffBoundD: [0, 0] # um^2/s
+    # KMC parameters
+    useBindVol: true
+    eps: 400 # or 1625, um^{-1} 13 protofilaments at 8nm per block
+    Ka: [90.9, 90.9] # (uM)^{-1}, used in U<->S
+    ko_s: [0.11, 0.11] # 1/s, off-rate
+    Ke: [90.9, 90.9] # (uM)^{-1}, used in S<->D
+    ko_d: [0.11, 0.11] # 1/s, off-rate
+    # numbers:
+    freeNumber: 0
+    fixedLocationPerMT: [-1, 0, 2] # given in [-1,1]. otherwise random
+  - tag: 1 # Type 1, Kinesin-14 XCTK2 with some ncd reference data
+    #properties:
+    walkOff: true
+    PtoAPratio: 1.0
+    fixedEnd0: false
+    freeLength: 0.025 # um
+    rc: 0.025 # um ( freeLength/2 + D/2 )
+    kappa: 250 # pN/um
+    fstall: 0.2 # pN
+    lambda: 0.5 # dimensionless, energy dependent unbinding
+    vmax: [0, -0.046] # um/s
+    vmaxAP: [0, -0.046] # um/s
+    diffUnbound: 0.436 # um^2/s when viscosity=0.02
+    diffBoundS: [0.1, 0.01] # um^2/s
+    diffBoundD: [0.1, 0.01] # um^2/s
+    # KMC parameters
+    useBindVol: 1
+    eps: 400 # um^{-1}
+    Ka: [5.0, 5.0] # (uM)^{-1}
+    ko_s: [0.3, 0.1] # 1/s or [0.3, 10.0]
+    Ke: [5.0, 5.0] # (uM)^{-1}
+    ko_d: [0.3, 0.1] # 1/s or [0.3, 10.0]
+    #numbers:
+    freeNumber: 0
+    fixedLocationPerMT: [] # given in [-1,1]. otherwise randomm
+  - tag: 2 # Type 2, Passive crosslinker PRC1, SubrahmanianCELL2013 and LamsonBJ2019
+    #properties:
+    walkOff: true
+    PtoAPratio: 0.1
+    fixedEnd0: false
+    freeLength: 0.032 # um
+    rc: 0.032 # um ( freeLength/2 + D/2 )
+    kappa: 204 # pN/um
+    fstall: 0.0 # pN
+    lambda: 0.014 # dimensionless, energy dependent unbinding
+    vmax: [0, -0.046] # um/s
+    vmaxAP: [0, -0.046] # um/s
+    diffUnbound: 0.436 # um^2/s when viscosity=0.02
+    diffBoundS: [0.1, 0.1] # um^2/s
+    diffBoundD: [0.0067, 0.0067] # um^2/s
+    # KMC parameters
+    useBindVol: 1
+    eps: 400 # um^{-1}
+    Ka: [90.9, 90.9] # (uM)^{-1}
+    ko_s: [0.1, 0.1] # 1/s or [0.3, 10.0]
+    Ke: [90.9, 90.9] # (uM)^{-1}
+    ko_d: [0.1, 0.1] # 1/s or [0.3, 10.0]
+    #numbers:
+    freeNumber: 0
+    fixedLocationPerMT: [] # given in [-1,1]. otherwise randomm

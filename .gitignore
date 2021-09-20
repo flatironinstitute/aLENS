@@ -1,0 +1,55 @@
+# temp and compilation files
+**.d
+**.X
+**.o
+**.o-*
+**.o.*
+**.X.dSYM/
+**.X
+**.o
+**.o.*
+**.swp
+log*
+.ipynb_*/
+.ipynb*/
+**/.idea/
+**.vscode/
+build**/
+**.d
+**.btr
+Treedump*
+
+# postprocessing files
+**.mtx
+**.png
+**.log
+**.mp4
+**.pvsm
+**.csv
+**temp**.txt
+**record**.txt
+**TimeStepInfo.txt
+
+# other files
+doc/
+**.pdf
+/MakefileInc.mk
+
+# data files
+**.xyz
+**.**vtp
+**.**vtu
+**.**vtk
+**.**vtr
+**.**vd
+**.xyz
+**.dat
+
+# ignore input files in base folder
+/RunConfig.yaml
+/ProteinConfig.yaml
+/TubuleInitial.dat
+/ProteinInitial.dat
+
+# result directories not in base folder
+InitialConfigExample/**/result/

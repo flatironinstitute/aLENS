@@ -1,0 +1,29 @@
+KBT: 0.00411
+proteins:
+  - tag: 0 # Type 0, Kinesin-5, Blackwell SA2017
+    walkOff: true
+    PtoAPratio: 1.
+    fixedEnd0: false
+    #properties:
+    freeLength: 0.053 # um
+    rc: 0.039 # um, (D/2 + \ell_0)/2
+    kappa: 300.0 # pN/um
+    fstall: 5.0 # pN
+    #lambda: 0.25822 # dimensionless
+    lambda: 0.0 # dimensionless
+    diffUnbound: 1.0 # um^2/s
+    vmax: [-1.0, -1.0] # um/s, positive towards plus end
+    vdrag: [false, false]
+    diffBoundS: [0.0, 0.0] # um^2/s
+    diffBoundD: [0.0, 0.0] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    eps: 250. # or 400, um^{-1} 13 protofilaments at 8nm per block
+    Ka: [90.9, 90.9] # (uM)^{-1}, used in U<->S
+    ko_s: [0.11, 0.11] # 1/s, off-rate
+    Ke: [90.9, 90.9] # (uM)^{-1}, used in S<->D
+    ko_d: [0.11, 0.11] # 1/s, off-rate
+    # numbers:
+    freeNumber: 0
+    fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # given in [-1,1]. otherwise random
+    lookupType: 1

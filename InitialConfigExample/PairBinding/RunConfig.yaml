@@ -1,0 +1,36 @@
+# program settings
+rngSeed: 1234
+# simulation box
+simBoxLow: [0.0, 0.0, 0.0]
+simBoxHigh: [5.0, 5.0, 5.0]
+simBoxPBC: [true, true, true]
+monolayer: false
+# initialization box
+initBoxLow: [0.0, 0.0, 0.0]
+initBoxHigh: [5.0, 5.0, 5.0]
+# initialization inside a circle along X direction
+initCircularX: true
+# components < -1  or > 1 will be randomly set
+initOrient: [2, 0, 0]
+# physical settings
+viscosity: 0.01 # pN/(um^2.s)
+KBT: -0.00411 # controls Brownian motion of MT
+linkKappa: 1000.0 # pN/um
+linkGap: .0002 # um .01 diameter
+# tubule
+sylinderNumber: 1000
+sylinderLength: 0.5 # um
+sylinderLengthColRatio: 1.0
+sylinderLengthSigma: 0 # logNormal distribution
+sylinderDiameter: 0.025 # um
+sylinderDiameterColRatio: 1.0
+sylinderColBuf: 1.0 #
+sylinderFixed: false
+# timestepping
+dt: 0.00001 # s
+timeTotal: 0.1 # s
+timeSnap: 0.0001 # s
+# Constraint Solver
+conResTol: 1e-5
+conMaxIte: 1000000
+conSolverChoice: 0
