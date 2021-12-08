@@ -210,6 +210,7 @@ void TubuleSystem::step() {
 
         // step 4 calculate bilateral constraints with protein binding information
         {
+            TimeMonitor mon(*setProteinConstraintTimer);
             setProteinConstraints();
             spdlog::debug("setProteinConstraints");
         }
