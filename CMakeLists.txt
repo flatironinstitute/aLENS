@@ -30,9 +30,8 @@ message(STATUS "SFTPATH: ${SFTPATH}")
 option(ENABLE_TEST "enable tests")
 
 # external libraries, static link
-find_package(TRNG REQUIRED)
-find_package(yaml-cpp REQUIRED PATHS ${SFTPATH} NO_DEFAULT_PATH)
-find_package(VTK REQUIRED PATHS ${SFTPATH} NO_DEFAULT_PATH)
+find_package(yaml-cpp REQUIRED HINTS${SFTPATH}/share/cmake/yaml-cpp/)
+find_package(VTK REQUIRED HINTS ${SFTPATH}/)
 # external libraries, header only
 find_package(Eigen3 REQUIRED HINTS ${SFTPATH}/share/eigen3/cmake)
 find_package(Boost REQUIRED)
@@ -48,6 +47,7 @@ list(REVERSE Trilinos_LIBRARIES)
 list(REVERSE Trilinos_TPL_LIBRARIES)
 list(REMOVE_DUPLICATES Trilinos_TPL_LIBRARIES)
 list(REVERSE Trilinos_TPL_LIBRARIES)
+
 # Echo trilinos build info just for fun
 message("\nFound Trilinos!  Here are the details: ")
 message("   Trilinos_DIR = ${Trilinos_DIR}")
@@ -62,6 +62,17 @@ message("   Trilinos_TPL_LIBRARIES = ${Trilinos_TPL_LIBRARIES}")
 message("   Trilinos_TPL_LIBRARY_DIRS = ${Trilinos_TPL_LIBRARY_DIRS}")
 message("   Trilinos_BUILD_SHARED_LIBS = ${Trilinos_BUILD_SHARED_LIBS}")
 message("End of Trilinos details\n")
+
+include(FetchContent)
+FetchContent_Declare(
+  trng4
+  GIT_REPOSITORY https://github.com/rabauke/trng4.git
+  GIT_SHALLOW ON
+  GIT_TAG master)
+FetchContent_Populate(trng4)
+
+message(${trng4_SOURCE_DIR}/trng ${trng4_BINARY_DIR})
+add_subdirectory(${trng4_SOURCE_DIR}/trng ${trng4_BINARY_DIR} EXCLUDE_FROM_ALL)
 
 # internal submodules
 set(KMC ${CMAKE_SOURCE_DIR}/KMC)
@@ -97,17 +108,18 @@ target_compile_definitions(
           PARTICLE_SIMULATOR_THREAD_PARALLEL)
 
 target_include_directories(
-  aLENS.X PRIVATE ${CMAKE_SOURCE_DIR} ${KMC} ${SIMTOOLBOX} ${TRNG_INCLUDE_DIR}
-                  ${EIGEN3_INCLUDE_DIR} ${Trilinos_INCLUDE_DIRS})
+  aLENS.X PRIVATE ${CMAKE_SOURCE_DIR} ${KMC} ${SIMTOOLBOX}
+                  ${Trilinos_INCLUDE_DIRS} ${Trilinos_TPL_INCLUDE_DIRS})
 
 target_link_libraries(
   aLENS.X
-  PRIVATE ${TRNG_LIBRARY}
+  PRIVATE trng4
           ${Trilinos_LIBRARIES}
           ${Trilinos_TPL_LIBRARIES}
           yaml-cpp
           VTK::IOXML
           Boost::boost
+          Eigen3::Eigen
           OpenMP::OpenMP_CXX
           MPI::MPI_CXX)
 
