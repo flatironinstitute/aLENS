@@ -22,12 +22,7 @@ cmake \
   -D SFTPATH="/your/dependency/library/location" \
   -D BOOST_ROOT="/path/to/boost"
   -D Eigen3_DIR="/path/to/Eigen3*.cmake" \
-  -D yaml-cpp_DIR="/path/to/yaml-cpp*.cmake" \
   -D VTK_DIR="/path/to/vtk*.cmake" \
   -D Trilinos_DIR="/path/to/Trilinos*.cmake" \
   ../
 
-# these should be automatically found
-# if not, manually set the paths
-# -D TRNG_INCLUDE_DIR="${SFTPATH}/include/" \
-# -D TRNG_LIBRARY="${SFTPATH}/lib/libtrng4.a" \

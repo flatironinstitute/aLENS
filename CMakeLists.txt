@@ -29,8 +29,8 @@ message(STATUS "SFTPATH: ${SFTPATH}")
 
 option(ENABLE_TEST "enable tests")
 
-# external libraries, static link
-find_package(yaml-cpp REQUIRED HINTS${SFTPATH}/share/cmake/yaml-cpp/)
+# external libraries, static link find_package(yaml-cpp REQUIRED
+# HINTS${SFTPATH}/share/cmake/yaml-cpp/)
 find_package(VTK REQUIRED HINTS ${SFTPATH}/)
 # external libraries, header only
 find_package(Eigen3 REQUIRED HINTS ${SFTPATH}/share/eigen3/cmake)
@@ -73,6 +73,16 @@ FetchContent_Populate(trng4)
 
 message(${trng4_SOURCE_DIR}/trng ${trng4_BINARY_DIR})
 add_subdirectory(${trng4_SOURCE_DIR}/trng ${trng4_BINARY_DIR} EXCLUDE_FROM_ALL)
+
+FetchContent_Declare(
+  yamlcpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp
+  GIT_SHALLOW ON
+  GIT_TAG yaml-cpp-0.7.0)
+FetchContent_Populate(yamlcpp)
+
+message(${yamlcpp_SOURCE_DIR} ${yamlcpp_BINARY_DIR})
+add_subdirectory(${yamlcpp_SOURCE_DIR} ${yamlcpp_BINARY_DIR} EXCLUDE_FROM_ALL)
 
 # internal submodules
 set(KMC ${CMAKE_SOURCE_DIR}/KMC)
