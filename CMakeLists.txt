@@ -36,8 +36,8 @@ find_package(Boost REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{BOOST_BASE}
              $ENV{BOOST_ROOT})
 
 # external libraries, static link
-find_package(VTK REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{VTK_BASE}
-             $ENV{VTK_ROOT})
+find_package(VTK REQUIRED COMPONENTS IOXML HINTS ${SFTPATH}/lib/cmake
+                                     $ENV{VTK_BASE} $ENV{VTK_ROOT})
 
 # Get Trilinos as one entity
 find_package(Trilinos REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{TRILINOS_BASE}
