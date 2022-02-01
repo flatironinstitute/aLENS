@@ -1,18 +1,24 @@
 import os
 import multiprocessing
 
+##################################
+#######   USER SWITCHES ##########
+##################################
 
-install = False  # compile only or compile + install
-use_openblas = True   # use OpenBLAS by default
-# enable_packages = ['boost', 'eigen', 'trilinos', 'vtk']
-enable_packages = ['trilinos']
-
+install = True  # compile only or compile + install
+use_openblas = True   # use OpenBLAS by default, set to False if you use MKL
+enable_packages = ['boost', 'eigen', 'trilinos', 'vtk']
 
 # sets environment variables
 os.environ["SFTPATH"] = '~/envs/alens_dep/'  # your installation destination
 
 os.environ["CXXFLAGS"] = '-march=native -O3 -DNDEBUG'
 os.environ["OPENMP_CXX_FLAGS"] = '-fopenmp'  # -qopenmp for intel compiler
+
+
+##################################
+####### END USER SWITCHES ########
+##################################
 
 os.environ["CFLAGS"] = os.environ["CXXFLAGS"]
 os.environ["OPENMP_C_FLAGS"] = os.environ["OPENMP_CXX_FLAGS"]
