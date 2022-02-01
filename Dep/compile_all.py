@@ -6,11 +6,12 @@ import multiprocessing
 ##################################
 
 install = True  # compile only or compile + install
-use_openblas = True   # use OpenBLAS by default, set to False if you use MKL
+use_openblas = False   # use OpenBLAS by default, set to False if you use MKL
 enable_packages = ['boost', 'eigen', 'trilinos', 'vtk']
 
-# sets environment variables
-os.environ["SFTPATH"] = '~/envs/alens_dep/'  # your installation destination
+# your installation destination, use ABSOLUTE PATH
+os.environ["SFTPATH"] = os.environ['HOME'] + \
+    '/envs/alens_intel/'
 
 os.environ["CXXFLAGS"] = '-march=native -O3 -DNDEBUG'
 os.environ["OPENMP_CXX_FLAGS"] = '-fopenmp'  # -qopenmp for intel compiler
@@ -59,6 +60,12 @@ if k != 'y' and k != 'Y':
     exit()
 
 
+def run(cmd):
+    print(cmd)
+    os.system(cmd)
+    return
+
+
 depwd = os.getcwd()
 log = depwd+'/compile.log'
 err = depwd+'/compile.err'
@@ -68,55 +75,54 @@ os.system('date >'+err)
 if 'boost' in enable_packages:
     boost = 'boost_1_78_0'
     os.chdir(depwd)
-    os.system('tar xf {}.tar.bz2'.format(boost))
+    run('tar xf {}.tar.bz2'.format(boost))
     os.chdir('{}'.format(boost))
-    # os.system('ls')
-    os.system('./bootstrap.sh --prefix=' +
-              os.environ["SFTPATH"]+' >> '+log+'  2>>'+err)
+    run('./bootstrap.sh --prefix=' +
+        os.environ["SFTPATH"]+' >> '+log+'  2>>'+err)
     if install:
-        os.system('./b2 install'+' >> '+log+'  2>>'+err)
+        run('./b2 install'+' >> '+log+'  2>>'+err)
 
 if 'eigen' in enable_packages:
     eigen = 'eigen-3.4.0'
     os.chdir(depwd)
-    os.system('rm -rf ./build_eigen && mkdir ./build_eigen')
-    os.system('tar xf {}.tar.bz2'.format(eigen))
+    run('rm -rf ./build_eigen && mkdir ./build_eigen')
+    run('tar xf {}.tar.bz2'.format(eigen))
     os.chdir('build_eigen')
-    os.system('bash ../cmake-Eigen.sh && make -j' +
-              str(make_jobs)+'  >> '+log+'  2>>'+err)
+    run('bash ../cmake-Eigen.sh && make -j' +
+        str(make_jobs)+'  >> '+log+'  2>>'+err)
     if install:
-        os.system('make install'+' >> '+log+'  2>>'+err)
+        run('make install'+' >> '+log+'  2>>'+err)
 
 if 'vtk' in enable_packages:
     vtk = 'VTK-9.1.0'
     os.chdir(depwd)
-    os.system('rm -rf ./build_vtk && mkdir ./build_vtk')
-    os.system('tar xf {}.tar.gz'.format(vtk))
+    run('rm -rf ./build_vtk && mkdir ./build_vtk')
+    run('tar xf {}.tar.gz'.format(vtk))
     os.chdir('build_vtk')
-    os.system('bash ../cmake-vtk.sh && make -j' +
-              str(make_jobs)+'  >> '+log+'  2>>'+err)
+    run('bash ../cmake-vtk.sh && make -j' +
+        str(make_jobs)+'  >> '+log+'  2>>'+err)
     if install:
-        os.system('make install'+' >> '+log+'  2>>'+err)
+        run('make install'+' >> '+log+'  2>>'+err)
 
 
 # Trilinos
 if 'trilinos' in enable_packages:
     trilinos = 'trilinos-release-12-18-1'
     os.chdir(depwd)
-    os.system('tar xf {}.tar.gz'.format(trilinos))
+    run('tar xf {}.tar.gz'.format(trilinos))
     if use_openblas:
         folder = 'build_trilinos_openblas'
-        os.system('rm -rf ./{} && mkdir ./{}'.format(folder, folder))
+        run('rm -rf ./{} && mkdir ./{}'.format(folder, folder))
         os.chdir(folder)
-        os.system('bash ../cmake-Trilinos-OpenBLAS.sh && make -j' +
-                  str(make_jobs)+'  >> '+log+'  2>>'+err)
+        run('bash ../cmake-Trilinos-OpenBLAS.sh && make -j' +
+            str(make_jobs)+'  >> '+log+'  2>>'+err)
         if install:
-            os.system('make install'+' >> '+log+'  2>>'+err)
+            run('make install'+' >> '+log+'  2>>'+err)
     else:
         folder = 'build_trilinos_MKL'
-        os.system('rm -rf ./{} && mkdir ./{}'.format(folder, folder))
+        run('rm -rf ./{} && mkdir ./{}'.format(folder, folder))
         os.chdir(folder)
-        os.system('bash ../cmake-Trilinos-MKL.sh && make -j' +
-                  str(make_jobs)+'  >> '+log+'  2>>'+err)
+        run('bash ../cmake-Trilinos-MKL.sh && make -j' +
+            str(make_jobs)+'  >> '+log+'  2>>'+err)
         if install:
-            os.system('make install'+' >> '+log+'  2>>'+err)
+            run('make install'+' >> '+log+'  2>>'+err)
