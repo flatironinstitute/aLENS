@@ -18,6 +18,8 @@ build**/
 **.d
 **.btr
 Treedump*
+**.tar.gz
+**.tar.bz2
 
 # postprocessing files
 **.mtx
