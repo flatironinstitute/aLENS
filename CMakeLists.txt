@@ -29,15 +29,20 @@ message(STATUS "SFTPATH: ${SFTPATH}")
 
 option(ENABLE_TEST "enable tests")
 
-# external libraries, static link find_package(yaml-cpp REQUIRED
-# HINTS${SFTPATH}/share/cmake/yaml-cpp/)
-find_package(VTK REQUIRED HINTS ${SFTPATH}/)
 # external libraries, header only
-find_package(Eigen3 REQUIRED HINTS ${SFTPATH}/share/eigen3/cmake)
-find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED HINTS ${SFTPATH}/share/eigen3/cmake
+             $ENV{EIGEN_BASE} $ENV{EIGEN_ROOT})
+find_package(Boost REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{BOOST_BASE}
+             $ENV{BOOST_ROOT})
+
+# external libraries, static link
+find_package(VTK REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{VTK_BASE}
+             $ENV{VTK_ROOT})
 
 # Get Trilinos as one entity
-find_package(Trilinos REQUIRED HINTS ${SFTPATH}/lib/cmake)
+find_package(Trilinos REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{TRILINOS_BASE}
+             $ENV{TRILINOS_ROOT})
+
 # clean up the too-long list
 list(REMOVE_DUPLICATES Trilinos_INCLUDE_DIRS)
 list(REMOVE_DUPLICATES Trilinos_TPL_INCLUDE_DIRS)

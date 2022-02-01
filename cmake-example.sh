@@ -18,11 +18,6 @@ cmake \
   -D CMAKE_BUILD_TYPE=Release \
   -D ENABLE_TEST=ON \
   -D CMAKE_CXX_FLAGS="-O3 -march=native -DNDEBUG" \
-  -D CMAKE_INSTALL_PREFIX="${HOME}/your/installation/location" \
+  -D CMAKE_INSTALL_PREFIX="/your/installation/location" \
   -D SFTPATH="/your/dependency/library/location" \
-  -D BOOST_ROOT="/path/to/boost"
-  -D Eigen3_DIR="/path/to/Eigen3*.cmake" \
-  -D VTK_DIR="/path/to/vtk*.cmake" \
-  -D Trilinos_DIR="/path/to/Trilinos*.cmake" \
   ../
-
