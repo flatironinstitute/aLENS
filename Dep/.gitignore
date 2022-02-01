@@ -1,0 +1,7 @@
+build_**/
+eigen**/
+boost**/
+VTK**/
+Trilinos**/
+compile.log
+compile.err
