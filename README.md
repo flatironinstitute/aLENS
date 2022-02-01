@@ -174,9 +174,20 @@ For the performance of `Trilinos`, you should choose a proper linear algebra pac
 Example cmake scripts have been provided for each case.
 If you are using some other linear algebra libraries, modify the cmake script for `Trilinos` accordingly.
 
+For convenience we provide two scripts under the folder `Dep` to automate this process.
+
+```bash
+$ cd Dep # go to Dep folder
+$ python3 download_all.py # download source code of all dependence libraries
+$ python3 compile_all.py # compile and install all dependence libraries
+```
+
+Before running `compile_all.py`, modify the `user switches` section of `compile_all.py` to set switches that match your toolchain.
+
 ## Step 2, compile and install `aLENS`
 
 Once those dependence libraries have been installed, compile and install `aLENS` use the provided `cmake-example.sh` script.
+Remember to set `SFTPATH` to the location where you installed those dependence libraries.
 
 # `MPI+OpenMP` run
 
