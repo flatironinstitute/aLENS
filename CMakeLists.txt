@@ -5,6 +5,7 @@ project(aLENS)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 
 find_package(OpenMP REQUIRED)
 find_package(MPI REQUIRED)
@@ -53,7 +54,6 @@ list(REVERSE Trilinos_TPL_LIBRARIES)
 list(REMOVE_DUPLICATES Trilinos_TPL_LIBRARIES)
 list(REVERSE Trilinos_TPL_LIBRARIES)
 
-# Echo trilinos build info just for fun
 message("\nFound Trilinos!  Here are the details: ")
 message("   Trilinos_DIR = ${Trilinos_DIR}")
 message("   Trilinos_VERSION = ${Trilinos_VERSION}")
