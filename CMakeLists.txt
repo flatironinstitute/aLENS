@@ -73,11 +73,11 @@ FetchContent_Declare(
   trng4
   GIT_REPOSITORY https://github.com/rabauke/trng4.git
   GIT_SHALLOW ON
-  GIT_TAG master)
+  GIT_TAG 1ef58a7)
 FetchContent_Populate(trng4)
 
-message(${trng4_SOURCE_DIR}/trng ${trng4_BINARY_DIR})
-add_subdirectory(${trng4_SOURCE_DIR}/trng ${trng4_BINARY_DIR} EXCLUDE_FROM_ALL)
+message(${trng4_SOURCE_DIR} ${trng4_BINARY_DIR})
+add_subdirectory(${trng4_SOURCE_DIR} ${trng4_BINARY_DIR} EXCLUDE_FROM_ALL)
 
 FetchContent_Declare(
   yamlcpp
