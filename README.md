@@ -39,37 +39,68 @@ The executable `aLENS.X` reads expects 4 input files:
 - `TubuleInitial.dat` specifies initial configuration of MTs.
 - `ProteinInitial.dat` specifies initial configuration of proteins.
 
-You can go to the folder `InitialConfigExample/SimplePair` to see examples of these files.
+You can go to the folder `Examples/MixMotorSliding` to see examples of these files.
 
 The two `Config.yaml` files are necessary, but the two `Initial.dat` files are optional.  
 There are three cases:
 
 - Case 1. No `dat` file exists. In this case MTs and proteins will be generated according to the settings in `RunConfig.yaml` and `ProteinConfig.yaml`
-- Case 2. `TubuleInitial.dat` file exists, but `ProteinInitial.dat` does not. In this case MTs will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored. Proteins will be generated according to the settings in `ProteinConfig.yaml`.
-- Case 3. Both `TubuleInitial.dat` and `ProteinInitial.dat` files exits. In this case MTs will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored. Proteins will be read from the file `ProteinInitial.dat`. `aLENS` will try to reconstruct the initial binding status according to `ProteinInitial.dat`. If reconstruction fails for a certain protein, for example, if a protein is specified to bind some MT but the MT does not appear at the correct location, an error message will be printed out and this end (that an error appears) of this protein will be set to unbound and the program continues.
+- Case 2. `TubuleInitial.dat` file exists, but `ProteinInitial.dat` does not. 
+  In this case MTs will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored.
+  Proteins will be generated according to the settings in `ProteinConfig.yaml`.
+- Case 3. Both `TubuleInitial.dat` and `ProteinInitial.dat` files exits. 
+  In this case MTs will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored. 
+  Proteins will be read from the file `ProteinInitial.dat`. `aLENS` will try to reconstruct the initial binding status according to `ProteinInitial.dat`. 
+  If reconstruction fails for a certain protein, for example, if a protein is specified to bind some MT but the MT does not appear at the correct location, an error message will be printed out and this end (that an error appears) of this protein will be set to unbound and the program **continues**.
 
 In general, Case 1 is good for initiating a simulation and Case 3 is good for continuing a simulation with saved data files. Case 2 is useful for some cases where the effect of protein on a given MT configuration is of interest.
 
-# The minimum set of necessary files
+# The installation folder structure
 
-In the minimu case, you need only three files and a folder to run the executable:
+Once 'make install' finishes, you will get a folder structure like the following. 
+Assume that your installation folder is located at ~/Run
+```bash
+~/Run/
+├── aLENS.X              # the executable
+├── gitversion.txt       # the git hashtag for the executable
+├── result               # the folder where data is saved
+│   ├── Clean.sh         # the script to remove all data
+│   ├── PNG              
+│   │   ├── MovieGen.sh  # the script to generate movie using png sequences
+│   │   └── cleanpng.sh
+│   ├── Result2PVD.py    # create meta-file for Paraview to load data
+│   ├── compress.sh      # compress data file into 7z for archiving
+│   └── uncompress.sh    # uncompress 7z files
+└── scripts
+    ├── DensityMT.py     # simple microtubule density calculator
+    ├── jobsub_slurm.sh  # example of slurm job submission script
+    └── run_ompi.sh      # example of mpi run on a single multi-core machine
 
+3 directories, 11 files
+```
+
+
+# The minimal set of necessary files
+
+In the minimal case, you need only three files and a folder to run the executable:
 - one executable `aLENS.X`.
 - two input configuration files `RunConfig.yaml` and `ProteinConfig.yaml`.
 - one folder `result` for saved data files.
 
 # Your first run
 
-Use the provided example to run your first simulation:
+Use the provided configuration and initial to run your first simulation.
 
 ```bash
-$ cp ./InitialConfigExample/PairBinding/* ./
-$ ./aLENS.X > ./outrun.log
+$ cp ./Examples/MixMotorSliding/* ~/Run/
+$ cd ~/Run/
+$ ./aLENS.X > ./log.txt
 ```
 
 # Data organization
 
-The program `aLENS.X` outputs to the folder `result`. `result` is at the same folder as `aLENS.X` itself.
+The program `aLENS.X` outputs to the folder `result`. 
+`result` is at the same folder as `aLENS.X` itself.
 
 It first writes a file `simBox.vtk`, which shows the simulation box as a simple rectangular box. For example:
 
@@ -81,16 +112,16 @@ ASCII
 DATASET RECTILINEAR_GRID
 DIMENSIONS 2 2 2
 X_COORDINATES 2 float
-0 10
+0 20
 Y_COORDINATES 2 float
-0 10
+0 1
 Z_COORDINATES 2 float
-0 10
+0 1
 CELL_DATA 1
 POINT_DATA 8
 ```
 
-Then the executable writes 6 different sequences of data files.
+Then the executable writes several different sequences of data files.
 
 Two of them are human readable ascii files:
 
@@ -103,13 +134,13 @@ Four of them are XML vtk format in base64 binary encoding. These are not human r
 - `Protein_*.pvtp` save data for proteins.
 - `ConBlock_*.pvtp` save data for collision and protein constraint blocks.
 
-For explanation of these `pvtp` files, read the official guide of vtk file format: `https://lorensen.github.io/VTKExamples/site/VTKFileFormats/#parallel-file-formats`.
+For explanation of these `pvtp` files, read the official guide of vtk file format: `https://kitware.github.io/vtk-examples/site/VTKFileFormats/#parallel-file-formats`.
 In short, each `pvtp` file (parallel vtp) is a tiny index to a set of `vtp` files (serial vtp), which holds the actual data.
 `aLENS.X` is written such that each MPI rank writes its own set of data to a unique `vtp` file.
 Therefore the number of `vtp` files in each `pvtp` file index is equal to the number of MPI ranks.
 The restriction is that the index `pvtp` file must appear in the same location as those `vtp` data files.
 
-These sequeces of files are divided into different subfolders so each subfolder contains no more than roughly 3000 files.
+These sequeces of files are divided into different subfolders so each subfolder contains no more than a few thousand files.
 This is due to the limitations of parallel file systems on some mpi clusters where saving a large number of files in a single directory destroys IO performance or even crashes the executable.
 
 The data files are saved in different folders, but for postprocessing & visualization, in some cases there are some restrictions that all files of the same sequence must appear in the same folder otherwise the postprocessing or visualization program may fail to load the entire sequence.

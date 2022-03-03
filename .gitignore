@@ -5,15 +5,12 @@
 **.o-*
 **.o.*
 **.X.dSYM/
-**.X
-**.o
-**.o.*
 **.swp
 log*
 .ipynb_*/
 .ipynb*/
 **/.idea/
-**.vscode/
+**/.vscode/
 build**/
 **.d
 **.btr
@@ -30,12 +27,11 @@ Treedump*
 **.csv
 **temp**.txt
 **record**.txt
-**TimeStepInfo.txt
+**TimeStepInfo**.txt
 
 # other files
 doc/
 **.pdf
-/MakefileInc.mk
 
 # data files
 **.xyz
@@ -44,14 +40,4 @@ doc/
 **.**vtk
 **.**vtr
 **.**vd
-**.xyz
-**.dat
 
-# ignore input files in base folder
-/RunConfig.yaml
-/ProteinConfig.yaml
-/TubuleInitial.dat
-/ProteinInitial.dat
-
-# result directories not in base folder
-InitialConfigExample/**/result/

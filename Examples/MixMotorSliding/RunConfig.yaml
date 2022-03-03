@@ -1,0 +1,32 @@
+KBT: -0.00411
+conMaxIte: 10000
+conResTol: 1e-5
+conSolverChoice: 0
+logLevel: 3
+monolayer: false
+rngSeed: 1234
+simBoxHigh:
+- 20.0
+- 1.0
+- 1.0
+simBoxLow:
+- 0.0
+- 0.0
+- 0.0
+simBoxPBC:
+- false
+- false
+- false
+sylinderColBuf: 1.0
+sylinderDiameter: 0.025
+sylinderDiameterColRatio: 1.0
+sylinderFixed: false
+sylinderLength: 0.5
+sylinderLengthColRatio: 1.0
+sylinderLengthSigma: 0
+sylinderNumber: 4000
+dt: 1.0e-05
+timeSnap: 0.01
+timeTotal: 10.0
+timerLevel: 3
+viscosity: 1.0

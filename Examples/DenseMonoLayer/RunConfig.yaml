@@ -1,0 +1,36 @@
+# program settings
+rngSeed: 1234
+initPreSteps: 0
+# simulation box
+simBoxLow: [0.0, 0.0, 0.0]
+simBoxHigh: [11.0, 11.0, 11.0]
+simBoxPBC: [true, true, False]
+monolayer: true
+# initialization box
+initBoxLow: [0.0, 0.0, 0.0]
+initBoxHigh: [11.0, 11.0, 11.0]
+# initialization inside a circle along X direction
+initCircularX: false
+# components < -1  or > 1 will be randomly set
+initOrient: [2, 0, 0]
+# physical settings
+viscosity: 1.0 #pN/(um^2.s)
+KBT: 0.00411 #pN.um, 300K
+linkKappa: 1000.0
+# sylinder
+sylinderFixed: false
+sylinderNumber: 9700
+sylinderLength: 0.25 # um
+sylinderLengthSigma: 0 # logNormal distribution
+sylinderDiameter: 0.025 # um
+sylinderColBuf: 1.0 #
+sylinderDiameterColRatio: 1.0
+sylinderLengthColRatio: 1.0
+# timestepping
+dt: 0.00001 # s
+timeTotal: 50.0 # s
+timeSnap: 0.01 # s
+# LCP Solver
+conResTol: 1e-6
+conMaxIte: 100000
+conSolverChoice: 0

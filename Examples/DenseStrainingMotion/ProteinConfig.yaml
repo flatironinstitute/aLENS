@@ -1,0 +1,28 @@
+KBT: 0.00411 # pN.um, at 300K
+proteins:
+  - tag: 1 # Type 1, Kinesin-14 XCTK2 with some ncd reference data
+    #properties:
+    walkOff: true
+    PtoAPratio: 1.0
+    fixedEnd0: false
+    freeLength: 0.025 # um
+    rc: 0.025 # um ( freeLength/2 + D/2 )
+    kappa: 100 # pN/um
+    fstall: 0.2 # pN
+    lambda: 0.5 # dimensionless, energy dependent unbinding
+    vmax: [0, -0.046] # um/s
+    diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
+    diffBoundS: [0.0, 1e-3] # um^2/s
+    diffBoundD: [0.0, 1e-3] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    lookupType: 1
+    lookupGrid: 2048
+    eps: 400 # um^{-1}
+    Ka: [5.0, 5.0] # (uM)^{-1}
+    ko_s: [0.3, 0.1] # 1/s or [0.3, 10.0]
+    Ke: [5.0, 5.0] # dimensionless
+    ko_d: [0.3, 0.1] # 1/s or [0.3, 10.0]
+    #numbers:
+    freeNumber: 90000
+    fixedLocationPerMT:  []
