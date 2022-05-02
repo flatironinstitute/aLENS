@@ -30,6 +30,7 @@ message(STATUS "SFTPATH: ${SFTPATH}")
 
 option(ENABLE_TEST "enable tests")
 
+
 # external libraries, header only
 find_package(Eigen3 REQUIRED HINTS ${SFTPATH}/share/eigen3/cmake
              $ENV{EIGEN_BASE} $ENV{EIGEN_ROOT})
@@ -69,10 +70,11 @@ message("   Trilinos_BUILD_SHARED_LIBS = ${Trilinos_BUILD_SHARED_LIBS}")
 message("End of Trilinos details\n")
 
 include(FetchContent)
+
 FetchContent_Declare(
   trng4
   GIT_REPOSITORY https://github.com/rabauke/trng4.git
-  GIT_SHALLOW ON
+  #GIT_SHALLOW ON
   GIT_TAG 1ef58a7)
 FetchContent_Populate(trng4)
 
