@@ -18,6 +18,7 @@ Treedump*
 **.tar.gz
 **.tar.bz2
 
+
 # postprocessing files
 **.mtx
 **.png
@@ -29,7 +30,12 @@ Treedump*
 **record**.txt
 **TimeStepInfo**.txt
 
+# Personal cmake scripts
+cmake-release.sh
+cmake-debug.sh
+
 # other files
+**core.*
 doc/
 **.pdf
 

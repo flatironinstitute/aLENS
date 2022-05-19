@@ -20,7 +20,7 @@ proteins:
     useBindVol: false
     eps: 27 # um^{-1} 13 protofilaments at 8nm per block
     Ka: [90.9, 90.9] # (uM/L)^{-1}, used in U<->S
-    ko_s: [.0, .00000000001] # 1/s, off-rate
+    ko_s: [.0, .0] # 1/s, off-rate
     Ke: [90.9, 90.9] # dimensionless, used in S<->D
     #  ko_d: [.00000000000001, .0000000000000001] # 1/s, off-rate
     ko_d: [.0, 3.] # 1/s, off-rate
