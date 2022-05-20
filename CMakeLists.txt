@@ -84,8 +84,7 @@ add_subdirectory(${trng4_SOURCE_DIR} ${trng4_BINARY_DIR} EXCLUDE_FROM_ALL)
 FetchContent_Declare(
   yamlcpp
   GIT_REPOSITORY https://github.com/jbeder/yaml-cpp
-  # GIT_SHALLOW ON
-  GIT_TAG yaml-cpp-0.7.0)
+  #GIT_SHALLOW ON
 FetchContent_Populate(yamlcpp)
 
 message(${yamlcpp_SOURCE_DIR} ${yamlcpp_BINARY_DIR})
