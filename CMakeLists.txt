@@ -74,7 +74,6 @@ include(FetchContent)
 FetchContent_Declare(
   trng4
   GIT_REPOSITORY https://github.com/rabauke/trng4.git
-  #GIT_SHALLOW ON
   GIT_TAG 1ef58a7)
 FetchContent_Populate(trng4)
 
@@ -84,7 +83,6 @@ add_subdirectory(${trng4_SOURCE_DIR} ${trng4_BINARY_DIR} EXCLUDE_FROM_ALL)
 FetchContent_Declare(
   yamlcpp
   GIT_REPOSITORY https://github.com/jbeder/yaml-cpp
-  #GIT_SHALLOW ON
   GIT_TAG yaml-cpp-0.7.0)
 FetchContent_Populate(yamlcpp)
 

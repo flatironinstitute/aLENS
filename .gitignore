@@ -11,12 +11,13 @@ log*
 .ipynb*/
 **/.idea/
 **/.vscode/
-build**/
+*build*/
 **.d
 **.btr
 Treedump*
 **.tar.gz
 **.tar.bz2
+
 
 # postprocessing files
 **.mtx
@@ -29,7 +30,12 @@ Treedump*
 **record**.txt
 **TimeStepInfo**.txt
 
+# Personal cmake scripts
+cmake-release.sh
+cmake-debug.sh
+
 # other files
+**core.*
 doc/
 **.pdf
 

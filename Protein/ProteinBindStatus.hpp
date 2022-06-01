@@ -146,9 +146,11 @@ struct ProteinBindStatus {
      */
     void updatePosEndBind(const int end) {
         if (idBind[end] == ID_UB) {
+            // End has just come unbound
             setUnBind(end);
         } else if (lenBind[end] == 0) {
-            std::copy(posEndBind[end], posEndBind[end] + 3, centerBind[end]);
+            // Bound to zero length obj so set position of end to center of obj.
+            std::copy(centerBind[end], centerBind[end] + 3, posEndBind[end]);
         } else {
             for (int i = 0; i < 3; i++) { // posEnd = direction * dist + center
                 posEndBind[end][i] =
