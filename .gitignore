@@ -11,7 +11,7 @@ log*
 .ipynb*/
 **/.idea/
 **/.vscode/
-build**/
+*build*/
 **.d
 **.btr
 Treedump*
