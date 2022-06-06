@@ -1,7 +1,7 @@
 # aLENS (a Living ENsemble Simulator)
 
 The motivation, algorithm and examples are discussed in this paper:
-[aLENS: towards the cellular-scale simulation of motor-driven cytoskeletal assemblies](https://arxiv.org/abs/2109.08206)
+[Towards the cellular-scale simulation of motor-driven cytoskeletal assemblies](https://elifesciences.org/articles/74160)
 
 # Normal users (on a laptop or a single desktop)
 
