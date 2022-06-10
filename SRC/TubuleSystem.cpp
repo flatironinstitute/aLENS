@@ -141,6 +141,103 @@ void TubuleSystem::prepareStep() {
     setLookupTablePtr();
 }
 
+void TubuleSystem::thermEquil() {
+    const double dt = rodSystem.runConfig.dt;
+    const double tot_equil_time = rodSystem.runConfig.thermEquilTime;
+    spdlog::warn("Thermally equilibrating system for {:8g}", tot_equil_time);
+    for (double t = 0; t < tot_equil_time; t += dt) {
+        thermEquilStep(t);
+    }
+}
+
+void TubuleSystem::thermEquilStep(double t) {
+    const double dt = rodSystem.runConfig.dt;
+    spdlog::warn("Thermal equilibration time {:8g}", t);
+
+    using Teuchos::Time;
+    using Teuchos::TimeMonitor;
+    TimeMonitor::zeroOutTimers();
+
+    // Global Timers across all MPI ranks
+    // Timers do not accumulate over timesteps
+    Teuchos::RCP<Teuchos::Time> therm_loop_timer =
+        Teuchos::TimeMonitor::getNewCounter("aLENS thermal equil loop");
+    Teuchos::RCP<Time> prepare_step_timer =
+        TimeMonitor::getNewCounter("1 prepareStep Time");
+    Teuchos::RCP<Time> updateProteinMotionTimer =
+        TimeMonitor::getNewCounter("2 updateProteinMotion Time");
+    // Teuchos::RCP<Time> calcBindInteractionTimer =
+    // TimeMonitor::getNewCounter("3 calcBindInteraction Time");
+    // Teuchos::RCP<Time> outputProteinDataTimer =
+    //     TimeMonitor::getNewCounter("4 outputProteinData Time");
+    Teuchos::RCP<Time> setProteinConstraintTimer =
+        TimeMonitor::getNewCounter("3 setProteinConstraint Time");
+    Teuchos::RCP<Time> rodSystemTimer =
+        TimeMonitor::getNewCounter("4 rodSystem Time");
+
+    {
+        TimeMonitor mon(*therm_loop_timer);
+        // step 1 prepare.
+        // nothing moves
+        {
+            TimeMonitor mon(*prepare_step_timer);
+            prepareStep();
+            // rodSystem.calcOrderParameter();
+            spdlog::debug("prepareStep");
+        }
+
+        // step 2
+        // MTs have moved at the end of the last timestep
+        // MT info should be updated and protein move according to this updated MT
+        // configuration this move includes diffusion and walking
+        {
+            TimeMonitor mon(*updateProteinMotionTimer);
+            updateBindWithGid(true);
+            // updateProteinMotion();
+            proteinContainer.adjustPositionIntoRootDomain(
+                rodSystem.getDomainInfo());
+            spdlog::debug("updateProteins");
+        }
+
+        // step 3 compute bind interaction.
+        // protein ends have moved inside this function
+        // this move includes only KMC binding/unbinding kinetics
+        // {
+        //     TimeMonitor mon(*calcBindInteractionTimer);
+        //     calcBindInteraction();
+        //     proteinContainer.adjustPositionIntoRootDomain(
+        //         rodSystem.getDomainInfo());
+        //     spdlog::debug("calcBindInteraction");
+        // }
+
+        // write protein data
+        // {
+        //     TimeMonitor mon(*outputProteinDataTimer);
+        //     outputProteinData();
+        //     spdlog::debug("outputProteinData");
+        // }
+
+        // step 4 calculate bilateral constraints with protein binding information
+        {
+            TimeMonitor mon(*setProteinConstraintTimer);
+            setProteinConstraints();
+            spdlog::debug("setProteinConstraints");
+        }
+
+        // MAJOR STEP:
+        // move tubules with binding force and Brownian & collision & bilateral
+        // tubule data and protein data written in this step before moving.
+        {
+            TimeMonitor mon(*rodSystemTimer);
+            rodSystem.runStep(false);
+            rodSystem.calcConStress();
+            spdlog::debug("rodSystemStep");
+        }
+    }
+
+    rodSystem.printTimingSummary();
+}
+
 void TubuleSystem::step() {
     const double dt = rodSystem.runConfig.dt;
     spdlog::warn("CurrentTime {:8g}", rodSystem.getStepCount() * dt);

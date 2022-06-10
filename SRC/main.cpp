@@ -40,6 +40,12 @@ int main(int argc, char **argv) {
         std::string posFileProtein = "ProteinInitial.dat";
         TubuleSystem mySystem(configFile, posFileTubule, configFileProtein,
                               posFileProtein, argc, argv);
+        //Run thermal equilibration loop (no crosslinking kinetics)
+        //   Allows for systems to find start in different  initial configurations
+        //   before full simulation begins. Does not count towards total number of steps
+        mySystem.thermEquil();
+
+        // main simulation loop
         while (!mySystem.end()) {
             mySystem.step();
         }

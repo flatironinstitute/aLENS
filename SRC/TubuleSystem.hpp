@@ -79,6 +79,12 @@ class TubuleSystem {
     TubuleSystem &operator=(const TubuleSystem &) = delete;
 
     /**
+     * @brief Loop to thermal equilibrate system
+     *
+     */
+    void thermEquil();
+
+    /**
      * @brief one time step forward
      *
      */
@@ -109,6 +115,12 @@ class TubuleSystem {
         bindInteraction;                          ///< mixed interaction
 
     std::vector<double> proteinForceTorqueOnTubule; ///< bind force and torque
+
+    /**
+     * @brief Thermally equilibrate system for a single time step(no crosslinker kinetics)
+     *
+     */
+    void thermEquilStep(double t);
 
     /**
      * @brief prepare necessary data structures for a step
