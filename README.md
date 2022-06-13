@@ -1,3 +1,4 @@
+![](Docs/source/images/aLENS_Logo_RGB.jpg)
 # aLENS (a Living ENsemble Simulator)
 
 The motivation, algorithm and examples are discussed in this paper:
