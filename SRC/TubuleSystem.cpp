@@ -55,7 +55,11 @@ TubuleSystem::TubuleSystem(const std::string &configFileSystem,
     rodSystem.stepEuler();
 
     // step 5 setup MixPairInteraction object
-    bindInteraction.initialize();
+    skipBindKinetics_ = proteinConfig.checkSkipBindKinetics();
+    if (!skipBindKinetics_)
+        bindInteraction.initialize();
+    else
+        spdlog::warn("All binding kinetics have been turned off.");
 
     Teuchos::TimeMonitor::zeroOutTimers();
 
@@ -100,7 +104,11 @@ TubuleSystem::TubuleSystem(const std::string &configFileSystem,
     rodSystem.writeResult();
 
     // step 5 setup MixPairInteraction object
-    bindInteraction.initialize();
+    skipBindKinetics_ = proteinConfig.checkSkipBindKinetics();
+    if (!skipBindKinetics_)
+        bindInteraction.initialize();
+    else
+        spdlog::warn("All binding kinetics have been turned off.");
 
     rodSystem.setTimer(true);
     Teuchos::TimeMonitor::zeroOutTimers();
@@ -145,9 +153,12 @@ void TubuleSystem::thermEquil() {
     const double dt = rodSystem.runConfig.dt;
     const double tot_equil_time = rodSystem.runConfig.thermEquilTime;
     spdlog::warn("Thermally equilibrating system for {:8g}", tot_equil_time);
+    //Turn off calcBindInteractions when using this loop
+    skipBindKinetics_ = true;
     for (double t = 0; t < tot_equil_time; t += dt) {
         thermEquilStep(t);
     }
+    skipBindKinetics_ = proteinConfig.checkSkipBindKinetics();
 }
 
 void TubuleSystem::thermEquilStep(double t) {
@@ -166,10 +177,6 @@ void TubuleSystem::thermEquilStep(double t) {
         TimeMonitor::getNewCounter("1 prepareStep Time");
     Teuchos::RCP<Time> updateProteinMotionTimer =
         TimeMonitor::getNewCounter("2 updateProteinMotion Time");
-    // Teuchos::RCP<Time> calcBindInteractionTimer =
-    // TimeMonitor::getNewCounter("3 calcBindInteraction Time");
-    // Teuchos::RCP<Time> outputProteinDataTimer =
-    //     TimeMonitor::getNewCounter("4 outputProteinData Time");
     Teuchos::RCP<Time> setProteinConstraintTimer =
         TimeMonitor::getNewCounter("3 setProteinConstraint Time");
     Teuchos::RCP<Time> rodSystemTimer =
@@ -189,35 +196,17 @@ void TubuleSystem::thermEquilStep(double t) {
         // step 2
         // MTs have moved at the end of the last timestep
         // MT info should be updated and protein move according to this updated MT
-        // configuration this move includes diffusion and walking
+        // configuration
         {
             TimeMonitor mon(*updateProteinMotionTimer);
-            updateBindWithGid(true);
+            updateBindWithGid();
             // updateProteinMotion();
             proteinContainer.adjustPositionIntoRootDomain(
                 rodSystem.getDomainInfo());
             spdlog::debug("updateProteins");
         }
 
-        // step 3 compute bind interaction.
-        // protein ends have moved inside this function
-        // this move includes only KMC binding/unbinding kinetics
-        // {
-        //     TimeMonitor mon(*calcBindInteractionTimer);
-        //     calcBindInteraction();
-        //     proteinContainer.adjustPositionIntoRootDomain(
-        //         rodSystem.getDomainInfo());
-        //     spdlog::debug("calcBindInteraction");
-        // }
-
-        // write protein data
-        // {
-        //     TimeMonitor mon(*outputProteinDataTimer);
-        //     outputProteinData();
-        //     spdlog::debug("outputProteinData");
-        // }
-
-        // step 4 calculate bilateral constraints with protein binding information
+        // step 3 calculate bilateral constraints with protein binding information
         {
             TimeMonitor mon(*setProteinConstraintTimer);
             setProteinConstraints();
@@ -290,7 +279,7 @@ void TubuleSystem::step() {
         // step 3 compute bind interaction.
         // protein ends have moved inside this function
         // this move includes only KMC binding/unbinding kinetics
-        {
+        if (!skipBindKinetics_) {
             TimeMonitor mon(*calcBindInteractionTimer);
             calcBindInteraction();
             proteinContainer.adjustPositionIntoRootDomain(
@@ -629,7 +618,7 @@ void TubuleSystem::updateBindWithGid(bool reconstruct) {
                             tubuleBind.direction[dim];
                         protein.bind.centerBind[e][dim] = tubuleBind.pos[dim];
                     }
-                    if (reconstruct) {
+                    if (reconstruct || skipBindKinetics_) {
                         // update distBind rebuild with posEndBind
                         Evec3 bindFoot = Emap3(protein.bind.posEndBind[e]);
                         double distBind = (bindFoot - Emap3(tubuleBind.pos))
@@ -658,7 +647,7 @@ void TubuleSystem::updateBindWithGid(bool reconstruct) {
                     }
                 }
             }
-            if (reconstruct)
+            if (reconstruct || skipBindKinetics_)
                 protein.updateGeometryWithBind();
         }
     }

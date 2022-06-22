@@ -31,6 +31,7 @@
 class ProteinConfig {
   public:
     double KBT;
+    bool skipBindKinetics = false;
     std::vector<ProteinType> types; ///< settings for different types
 
     std::vector<int> freeNumber; ///< free number for each type
@@ -58,6 +59,12 @@ class ProteinConfig {
      *
      */
     void echo() const;
+
+    /**
+     * @brief Return whether or not all kinetics are set to zero
+     *
+     */
+    bool checkSkipBindKinetics() const;
 };
 
 #endif

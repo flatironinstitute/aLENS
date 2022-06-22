@@ -79,7 +79,7 @@ class TubuleSystem {
     TubuleSystem &operator=(const TubuleSystem &) = delete;
 
     /**
-     * @brief Loop to thermal equilibrate system
+     * @brief Loop to thermally equilibrate system
      *
      */
     void thermEquil();
@@ -103,6 +103,8 @@ class TubuleSystem {
     int nProcs;                           ///< mpi size
     std::shared_ptr<TRngPool> rngPoolPtr; ///< point to rodSystem.rngPoolPtr
     std::vector<LookupTable> LUTArr;      ///< protein LookupTable Holder
+
+    bool skipBindKinetics_ = false; ///< Skip binding code if kinetics are zero
 
     SylinderSystem rodSystem; ///< each tubule modeled as a sylinder
 

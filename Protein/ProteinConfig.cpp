@@ -7,6 +7,7 @@ ProteinConfig::ProteinConfig(std::string proteinConfigFile) {
     YAML::Node node = YAML::LoadFile(proteinConfigFile);
 
     readConfig(node, VARNAME(KBT), KBT, "");
+    readConfig(node, VARNAME(skipBindKinetics), skipBindKinetics, "", true);
 
     const int nTypes = node["proteins"].size();
     types.resize(nTypes);
@@ -56,6 +57,7 @@ ProteinConfig::~ProteinConfig() {
 
 void ProteinConfig::echo() const {
     printf("KBT = %g\n", KBT);
+    printf("skipBindKinetics = %d\n", skipBindKinetics);
     const int nTypes = types.size();
     printf("%d Types of proteins\n", nTypes);
 
@@ -68,4 +70,21 @@ void ProteinConfig::echo() const {
         }
         printf("\n");
     }
+}
+
+bool ProteinConfig::checkSkipBindKinetics() const {
+    if (skipBindKinetics)
+        return true;
+
+    for (const auto &protT : types) {
+        for (size_t i = 0; i < 2; i++) {
+            if (protT.ko_s[i] * protT.Ka[i] * protT.eps > 0. ||
+                protT.ko_s[i] > 0. ||
+                protT.ko_d[i] * protT.Ke[i] * protT.eps > 0. ||
+                protT.ko_d[i] > 0.)
+                return false;
+        }
+    }
+
+    return true;
 }
