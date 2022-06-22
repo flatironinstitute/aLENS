@@ -78,10 +78,7 @@ bool ProteinConfig::checkSkipBindKinetics() const {
 
     for (const auto &protT : types) {
         for (size_t i = 0; i < 2; i++) {
-            if (protT.ko_s[i] * protT.Ka[i] * protT.eps > 0. ||
-                protT.ko_s[i] > 0. ||
-                protT.ko_d[i] * protT.Ke[i] * protT.eps > 0. ||
-                protT.ko_d[i] > 0.)
+            if (protT.ko_s[i] > 0. || protT.ko_d[i] > 0.)
                 return false;
         }
     }
