@@ -1,11 +1,5 @@
-# aLENS tutorial workshop
-
-## Table of contents
-- Installing necessary software
-- Running simple simulations with docker
-- Explanation of parameters and config files
-- Visualizing runs with paraview
-- Analyzing data with alens_analysis
+# aLENS docker walk through
+This a *gentle* introduction to running aLENS on a local computer using docker.
 
 ## Pre-software installation
 
@@ -20,43 +14,47 @@
     - Sign up for service [https://www.hdfgroup.org/register/](https://www.hdfgroup.org/register/)
     - Download at [https://www.hdfgroup.org/downloads/hdfview/#download](https://www.hdfgroup.org/downloads/hdfview/#download)
 
-## Docker image runs
+## Creating an aLENS docker image
 
-- Start docker desktop
-- Pull latest docker image
+1. Start docker desktop
+2. Pull latest docker image
     
     ```bash
     docker pull lamsoa729/alens:latest
     ```
     
-- Make a folder to put your simulation data in on your local
+3. Make a folder to put your simulation data in on your local
     
     ```bash
     mkdir my_alens_data; cd my_alens_data
     ```
     
-- Create a new container and link it to the recently created data folder
+4. Create a new container and link it to the recently created data folder
     - Container name: alens
     - Host path: `<path/to/my_alens_data>`
     - Container path: `/root/Run`
 
+You now have access to an environment that can run aLENS but will create data
+files on your local computer.
+
 ## Running aLENS inside docker
 
-- Open a CLI to your docker image and go to `Run` directory
+1. Open a command line interface (CLI) to your docker image using docker desktop 
+and go to `Run` directory
     
     ```bash
     bash
     cd /root/Run
     ```
     
-- While in the docker instance, copy example to data folder
+1. While in the CLI, copy example to data folder
     
     ```bash
     cp -r ../aLENS/Examples/MixMotorSliding .
     cd MixMotorSliding
     ```
     
-- Copy of the contents of Run directory
+1. Copy of the contents of Run directory
     
     ```bash
     cp -r ~/aLENS/Run/* .
@@ -64,7 +62,7 @@
     
     You should now see an `aLENS.X` executable in this directory along with `result` and `script` directories
     
-- Execute run
+1. Execute run
     
     ```bash
     ./aLENS.X
@@ -72,14 +70,15 @@
     OMP_NUM_THREADS=<number_of_cores> ./aLENS.
     ```
     
-- Stop run press `[ctrl+c]`
-- Execute run again. Notice that aLENS picks back up from where you left off. This is a very nice restart feature for longer runs
+1. Stop run by pressing `[ctrl+c]`
+1. Execute run again. Notice that aLENS picks back up from where you left off. This is a very nice restart feature for longer runs
 
 ## Parameter files
 
 - SylinderConfig.hpp
     
-    This is the code of all the parameters for the simulation and sylinder objects. This shows the default values 
+    This is the code of all the parameters for the simulation and sylinder objects. 
+    This shows the default values.
     
     ```cpp
     unsigned int rngSeed; ///< random number seed
@@ -129,101 +128,43 @@
     
     - RunConfig.yaml
     
-    ```yaml
-    conMaxIte: 10000
-    conResTol: 1e-5
-    conSolverChoice: 0
-    logLevel: 3
-    monolayer: false
-    rngSeed: 1234
-    simBoxHigh:
-    - 20.0
-    - 1.0
-    - 1.0
-    simBoxLow:
-    - 0.0
-    - 0.0
-    - 0.0
-    simBoxPBC:
-    - false
-    - false
-    - false
-    sylinderColBuf: 1.0
-    sylinderDiameter: 0.025
-    sylinderDiameterColRatio: 1.0
-    sylinderFixed: false
-    sylinderLength: 0.5
-    sylinderLengthColRatio: 1.0
-    sylinderLengthSigma: 0
-    sylinderNumber: 4000
-    dt: 1.0e-05
-    timeSnap: 0.01
-    timeTotal: 10.0
-    timerLevel: 3
-    viscosity: 1.0
-    ```
+        This is an example of the configuration file that you can modify to 
+        control the simulations you wish to run.
     
-- ProteinConfig.yaml
-    - Screen shot of parameters with explanations
-    
-    ```yaml
-    KBT: 0.00411 # pN.um, at 300K
-    proteins:
-      - tag: 0 # Type 0, active Kinesin-1
-        #properties:
-        walkOff: true
-        PtoAPratio: 1.0
-        fixedEnd0: true
-        freeLength: 0.05 # um
-        rc: 0.038 # um ( freeLength/2 + D/2 )
-        kappa: 100 # pN/um
-        fstall: 7.0 # pN
-        lambda: 0.5 # dimensionless, energy dependent unbinding
-        vmax: [0, 1.0] # um/s
-        diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
-        diffBoundS: [0.0, 1.0e-2] # um^2/s
-        diffBoundD: [0.0, 1.0e-2] # um^2/s
-        # KMC parameters
-        useBindVol: false
-        lookupType: 1
-        lookupGrid: 2048
-        eps: 400 # um^{-1}
-        Ka: [0, 10.0] # (uM)^{-1}
-        ko_s: [0, 1.0] # 1/s or [0.3, 10.0]
-        Ke: [0, 10.0] # (uM)^{-1}
-        ko_d: [0, 1.0] # 1/s or [0.3, 10.0]
-        #numbers:
-        freeNumber: 0
-        fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 80
-      - tag: 1 # Type 0, passive Kinesin-1
-        #properties:
-        walkOff: true
-        PtoAPratio: 1.0
-        fixedEnd0: true
-        freeLength: 0.05 # um
-        rc: 0.038 # um ( freeLength/2 + D/2 )
-        kappa: 100 # pN/um
-        fstall: 7.0 # pN
-        lambda: 0.5 # dimensionless, energy dependent unbinding
-        vmax: [0, 0.0] # um/s
-        diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
-        diffBoundS: [0.0, 0.0] # um^2/s
-        diffBoundD: [0.0, 0.0] # um^2/s
-        # KMC parameters
-        useBindVol: false
-        lookupType: 1
-        lookupGrid: 2048
-        eps: 400 # um^{-1}
-        Ka: [0, 10.0] # (uM)^{-1}
-        ko_s: [0, 0.1] # 1/s or [0.3, 10.0]
-        Ke: [0, 10.0] # (uM)^{-1}
-        ko_d: [0, 0.1] # 1/s or [0.3, 10.0]
-        #numbers:
-        freeNumber: 0
-        fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 20
-    ```
-    
-    - ProteinConfig.cpp
+        ```yaml
+        conMaxIte: 10000
+        conResTol: 1e-5
+        conSolverChoice: 0
+        logLevel: 3
+        monolayer: false
+        rngSeed: 1234
+        simBoxHigh:
+        - 20.0
+        - 1.0
+        - 1.0
+        simBoxLow:
+        - 0.0
+        - 0.0
+        - 0.0
+        simBoxPBC:
+        - false
+        - false
+        - false
+        sylinderColBuf: 1.0
+        sylinderDiameter: 0.025
+        sylinderDiameterColRatio: 1.0
+        sylinderFixed: false
+        sylinderLength: 0.5
+        sylinderLengthColRatio: 1.0
+        sylinderLengthSigma: 0
+        sylinderNumber: 4000
+        dt: 1.0e-05
+        timeSnap: 0.01
+        timeTotal: 10.0
+        timerLevel: 3
+        viscosity: 1.0
+        ```
+- ProteinConfig.cpp
     
     ```cpp
     // per protein properties
@@ -273,6 +214,66 @@
     int lookupGrid = 256;
     ```
     
+    - ProteinConfig.yaml
+        
+        ```yaml
+        KBT: 0.00411 # pN.um, at 300K
+        proteins:
+          - tag: 0 # Type 0, active Kinesin-1
+            #properties:
+            walkOff: true
+            PtoAPratio: 1.0
+            fixedEnd0: true
+            freeLength: 0.05 # um
+            rc: 0.038 # um ( freeLength/2 + D/2 )
+            kappa: 100 # pN/um
+            fstall: 7.0 # pN
+            lambda: 0.5 # dimensionless, energy dependent unbinding
+            vmax: [0, 1.0] # um/s
+            diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
+            diffBoundS: [0.0, 1.0e-2] # um^2/s
+            diffBoundD: [0.0, 1.0e-2] # um^2/s
+            # KMC parameters
+            useBindVol: false
+            lookupType: 1
+            lookupGrid: 2048
+            eps: 400 # um^{-1}
+            Ka: [0, 10.0] # (uM)^{-1}
+            ko_s: [0, 1.0] # 1/s or [0.3, 10.0]
+            Ke: [0, 10.0] # (uM)^{-1}
+            ko_d: [0, 1.0] # 1/s or [0.3, 10.0]
+            #numbers:
+            freeNumber: 0
+            fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 80
+          - tag: 1 # Type 0, passive Kinesin-1
+            #properties:
+            walkOff: true
+            PtoAPratio: 1.0
+            fixedEnd0: true
+            freeLength: 0.05 # um
+            rc: 0.038 # um ( freeLength/2 + D/2 )
+            kappa: 100 # pN/um
+            fstall: 7.0 # pN
+            lambda: 0.5 # dimensionless, energy dependent unbinding
+            vmax: [0, 0.0] # um/s
+            diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
+            diffBoundS: [0.0, 0.0] # um^2/s
+            diffBoundD: [0.0, 0.0] # um^2/s
+            # KMC parameters
+            useBindVol: false
+            lookupType: 1
+            lookupGrid: 2048
+            eps: 400 # um^{-1}
+            Ka: [0, 10.0] # (uM)^{-1}
+            ko_s: [0, 0.1] # 1/s or [0.3, 10.0]
+            Ke: [0, 10.0] # (uM)^{-1}
+            ko_d: [0, 0.1] # 1/s or [0.3, 10.0]
+            #numbers:
+            freeNumber: 0
+            fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 20
+        ```
+        
+    
 
 ## Initial configuration files (optional)
 
@@ -293,74 +294,74 @@
 
 ## Visualizing
 
-- Collect metadata using the given python script
-- Start paraview
-- Load state file
-- Point paraview to the correct files
-- Visualize
-- Change color of crosslinkers
+1. Collect metadata using the given python script
+1. Start paraview
+1. Load state file
+1. Point paraview to the correct files
+1. Visualize
+1. Change color of crosslinkers
 
 ## Create images for animation
 
-- Create PNG folder
-- Start from beginning and save animation pointing to the PNG folder
-- Run the creation of the data
+1. Create PNG folder
+1. Start from beginning and save animation pointing to the PNG folder
+1. Run the creation of the data
 
-## Post-processing with alens_analysis
+<!--## Post-processing with alens_analysis-->
 
-- Clone alens_analysis on local machine
+<!--- Clone alens_analysis on local machine-->
     
-    ```bash
-    git clone --recursive https://github.com/flatironinstitute/aLENS_analysis.git
-    ccd aLENS_analysis
-    ```
+<!--    ```bash-->
+<!--    git clone --recursive https://github.com/flatironinstitute/aLENS_analysis.git-->
+<!--    ccd aLENS_analysis-->
+<!--    ```-->
     
-- Create a virtual environment
-    - Install `conda install numpy h5py scipy matplotlib vtk pyyaml numba`
+<!--- Create a virtual environment-->
+<!--    - Install `conda install numpy h5py scipy matplotlib vtk pyyaml numba`-->
 
-```bash
-conda create env -f environment.yml
-#or
-python3 -m venv /path/to/new/virtual/environment
-source my_venv/bin/activate
-pip install numpy h5py scipy matplotlib vtk pyyaml numba
-# Then
-pip install -e . 
-```
+<!--```bash-->
+<!--conda create env -f environment.yml-->
+<!--#or-->
+<!--python3 -m venv /path/to/new/virtual/environment-->
+<!--source my_venv/bin/activate-->
+<!--pip install numpy h5py scipy matplotlib vtk pyyaml numba-->
+<!--# Then-->
+<!--pip install -e . -->
+<!--```-->
 
 - Install all the requirements for alens_analysis
 - Run collection code
 - Look at data using hdf5 view
 
-## Installing on workstation
+<!--## Installing on workstation-->
 
-- Cloning the repository
+<!--- Cloning the repository-->
     
-    [Installing aLENS from scratch](https://www.notion.so/Installing-aLENS-from-scratch-d2b0e413543b4c3e89ed7a2e7fac37b7)
+    <!--[Installing aLENS from scratch](https://www.notion.so/Installing-aLENS-from-scratch-d2b0e413543b4c3e89ed7a2e7fac37b7)-->
     
-    - Full compiling on workstation
-- Setting up environment
-- Make a `setEnvironment.sh` file
+    <!--- Full compiling on workstation-->
+<!--- Setting up environment-->
+<!--- Make a `setEnvironment.sh` file-->
 
-## Future topics
+<!--## Future topics-->
 
-- General structure of aLENS framework
-    - [ ]  What are the basics steps of the code
-- Mounting your data on your home computer
-    - [ ]  How to set up fuse and quick commands
-- Generating movies
-    - [ ]  How to use the script I’ve made for this
-- How to manage data
-    - [ ]  Go over the ceph file system and why keeping the file number small is a necessary
-    - [ ]  Zipping files
-    - [ ]  Accessing them through an archive
-- Generating files with my current python scripts
-    - [ ]  Move those scripts to either aLENS or aLENS_analysis
-    - [ ]  Maybe introduce people to chi-pet?
-- Using slurm submit files
-    - [ ]  Try one of these out myself
-    - [ ]  Create a heuristic  for choosing the right number of cores and other system parameters
-    - [ ]  Go over other things that slow down your simulations. (I/O processes)
-- Tuning parameters properly for best results
-    - [ ]  Check to make sure that you are not missing any that are currently in the code
+<!--- General structure of aLENS framework-->
+    <!--- [ ]  What are the basics steps of the code-->
+<!--- Mounting your data on your home computer-->
+    <!--- [ ]  How to set up fuse and quick commands-->
+<!--- Generating movies-->
+    <!--- [ ]  How to use the script I’ve made for this-->
+<!--- How to manage data-->
+    <!--- [ ]  Go over the ceph file system and why keeping the file number small is a necessary-->
+    <!--- [ ]  Zipping files-->
+    <!--- [ ]  Accessing them through an archive-->
+<!--- Generating files with my current python scripts-->
+    <!--- [ ]  Move those scripts to either aLENS or aLENS_analysis-->
+    <!--- [ ]  Maybe introduce people to chi-pet?-->
+<!--- Using slurm submit files-->
+    <!--- [ ]  Try one of these out myself-->
+    <!--- [ ]  Create a heuristic  for choosing the right number of cores and other system parameters-->
+    <!--- [ ]  Go over other things that slow down your simulations. (I/O processes)-->
+<!--- Tuning parameters properly for best results-->
+    <!--- [ ]  Check to make sure that you are not missing any that are currently in the code-->
 
