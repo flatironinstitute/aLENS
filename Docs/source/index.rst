@@ -11,5 +11,7 @@ Contents
 
 .. toctree::
 
+   docker
+   installation
    usage
    api
