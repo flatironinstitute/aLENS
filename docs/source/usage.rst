@@ -1,13 +1,9 @@
 Usage
 =====
 
-.. _installation:
+.. note::
+   
+   Working on this.
 
-Installation
-------------
 
-
-.. code-block:: console
-
-   working on this
 

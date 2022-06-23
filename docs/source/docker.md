@@ -1,4 +1,4 @@
-# aLENS docker walk through
+# aLENS docker walkthrough
 This a *gentle* introduction to running aLENS on a local computer using docker.
 
 ## Pre-software installation

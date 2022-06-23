@@ -13,5 +13,6 @@ Contents
 
    docker
    installation
+   analysis
    usage
    api
