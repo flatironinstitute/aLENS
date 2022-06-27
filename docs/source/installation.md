@@ -161,7 +161,7 @@ This is much easier but only because of all dependencies are installed on our mo
     
     ```bash
     module purge
-    module load modules gcc cmake gsl boost lib/fftw3 intel-mkl openmpi4 trilinos/12.18.1-mpi eigen vtk1
+    module load modules gcc cmake gsl boost lib/fftw3 intel-mkl openmpi4 trilinos/12.18.1-mpi eigen vtk
     ```
     
 - Export environment variables
