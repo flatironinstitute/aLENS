@@ -1,0 +1,17 @@
+global_parameters: # All filaments will use these unless specified in filament list
+    radius: .01 # 10 nm radius for filament
+    sys_dim: [5,5,5] # Dimensions of systemk
+
+
+filaments:
+    - type: line
+      nsegs: 100
+      seg_length: .001
+      start_pos: [1,0,0]
+      director: [1,0,0]
+    - type: line
+      nsegs: 100
+      seg_length: .001
+      start_pos: [1,2,0]
+      director: [1,0,0]
+    
