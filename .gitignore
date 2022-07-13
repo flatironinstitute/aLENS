@@ -17,6 +17,7 @@ log*
 Treedump*
 **.tar.gz
 **.tar.bz2
+**__pycache__/
 
 
 # postprocessing files
@@ -38,6 +39,9 @@ cmake-debug.sh
 **core.*
 doc/
 **.pdf
+**.out
+**.err
+**gitversion.txt
 
 # data files
 **.xyz
@@ -46,4 +50,6 @@ doc/
 **.**vtk
 **.**vtr
 **.**vd
+**SylinderAscii*
+**ProteinAscii*
 

@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 from copy import deepcopy
 from read_write_utils import gen_id
+from typing import Sequence, Any, Optional
 
 
 GLOBAL_PARAM_KEYS = {
@@ -123,6 +124,40 @@ def hilbert_3d(s, i, pos_arr, cur_pos, dr1, dr2, dr3):
     i = hilbert_3d(s, i, pos_arr, cur_pos_ + s * dr3_,
                    dr2_, -dr3_, -dr1_)
     return i
+
+
+def saw_initial(start_pos: Sequence[float], end_pos: Sequence[float], length: float,
+                bead_diam: float, n_periods: Optional[int] = None,
+                max_curve: Optional[int] = None) -> Sequence[Any]:
+    """ Generate a flexible filament starting and ending at two points of a
+     certain length.
+
+
+    Parameters
+    ----------
+    start_pos : Sequence[float]
+        _description_
+    end_pos : Sequence[float]
+        _description_
+    length : float
+        _description_
+    bead_diam : float
+        _description_
+    n_periods : Optional[int], optional
+        _description_, by default None
+    max_curve : Optional[int], optional
+        _description_, by default None
+
+    Returns
+    -------
+    Sequence[Any]
+        _description_
+    """
+    pass
+    # Get length between points
+    # What is going on
+
+    # return end_pos
 
 
 class FilSegment():

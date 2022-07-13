@@ -17,7 +17,8 @@ def get_file_number(path):
 def gen_id(i=0):
     """Generates sequence of ids that are only used once
     @param i Starting id to use
-    @return: TODO
+    @return: Generator for ids that always increase by one
+
 
     """
     while True:
