@@ -2,7 +2,7 @@
 File: gen_particle_cube.py
 Author: Adam Lamson
 Email: alamson@flatironinstitute.org
-Description: Generates 26 particles in a cube formation as an 
+Description: Generates 27 particles in a cube formation as an 
 initial conditiion for testing 
 """
 
