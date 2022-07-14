@@ -25,8 +25,9 @@
 struct ProteinType {
   public:
     // per protein properties
-    int tag = 0;              ///< user-assigned integer tag for different types
-    bool walkOff = true;      ///< walf off the end, i.e., no 'end-dewelling'
+    int tag = 0;         ///< user-assigned integer tag for different types
+    int group_bind = -1; ///< Specify one target group to bind. (-1 binds all)
+    bool walkOff = true; ///< walf off the end, i.e., no 'end-dewelling'
     double fixedLocation = 0; ///< in [-1,1]
     double freeLength = 0.05; ///< the free length. unit um
     double kappa = 204.7; ///< Spring constant when attached to MT. unit pN/um
@@ -81,6 +82,7 @@ struct ProteinType {
     void readFromYaml(const YAML::Node &p) {
         // int
         readConfig(p, VARNAME(tag), tag, "");
+        readConfig(p, VARNAME(group_bind), group_bind, "", true); //optional
         // bool
         readConfig(p, VARNAME(walkOff), walkOff, "");
         readConfig(p, VARNAME(PtoAPratio), PtoAPratio, "");

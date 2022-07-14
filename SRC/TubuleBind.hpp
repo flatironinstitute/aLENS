@@ -25,8 +25,10 @@ struct TubuleBindEP {
     int gid;         ///< global unique id
     int globalIndex; ///< sequentially ordered unique index in sylinder map
     int rank;        ///< mpi rank of owning rank
-    double radius;   ///< radius
-    double length;   ///< length
+    int group;       ///< Group tubule belongs to. Used for binding.
+
+    double radius; ///< radius
+    double length; ///< length
 
     double pos[3];       ///< position
     double direction[3]; ///< direction (unit norm vector)
@@ -58,6 +60,7 @@ struct TubuleBindEP {
 
         radius = fp.radius;
         length = fp.length;
+        group = fp.group;
 
         std::copy(fp.pos, fp.pos + 3, pos);
         Evec3 q = ECmapq(fp.orientation) * Evec3(0, 0, 1);

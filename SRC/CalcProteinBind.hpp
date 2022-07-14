@@ -35,9 +35,9 @@ class CalcProteinBind {
     /**
      * @brief Construct a new CalcProteinBind object
      *
-     * @param dt_
-     * @param KBT_ 
-     * @param rngPoolPtr_
+     * @param dt_ Time step
+     * @param KBT_ Temperature used in binding kinetics
+     * @param rngPoolPtr_ Random number generator
      */
     CalcProteinBind(double dt_, double KBT_,
                     std::shared_ptr<TRngPool> &rngPoolPtr_) {
@@ -49,11 +49,11 @@ class CalcProteinBind {
     /**
      * @brief Functor interface required by MixPairInteraction
      *
-     * @param trgPtr
-     * @param nTrg
-     * @param srcPtr
-     * @param nSrc
-     * @param mixForcePtr
+     * @param trgPtr Array of objects that will bind to srcs (i.e. Proteins)
+     * @param nTrg Number of binding objects
+     * @param srcPtr Array of objects that will be bound by trgs (i.e. Spheres and Sylinders)
+     * @param nSrc Number of to-be-bound objects
+     * @param mixForcePtr Array of current bind states of srcs
      */
     template <class Tubule>
     void operator()(const MixEPI<ProteinData> *const trgPtr, const PS::S32 nTrg,
@@ -89,7 +89,6 @@ class CalcProteinBind {
                         bindStatus.rankBind[end] = ptr->rank;
                         bindStatus.indexBind[end] = ptr->globalIndex;
                         bindFound[end] = true;
-                        /* TODO: Set link <05-03-21, ARL> */
                     }
                 }
             }

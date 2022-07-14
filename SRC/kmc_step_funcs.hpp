@@ -43,8 +43,20 @@ void KMC_U(const ProteinData &pData, const std::vector<const Tubule *> &ep_j,
     sphPtrArr.reserve(ep_j.size());        //Set memory for speed
     syPtrArr.reserve(ep_j.size());
 
-    for (const auto &src : ep_j) {
-        src->isSphere() ? sphPtrArr.push_back(src) : syPtrArr.push_back(src);
+    int group_bind = pData.property.group_bind;
+    // Split up for loops for performance even if it is ugly
+    if (group_bind < 0) { // Don't check tubule group type
+        for (const auto &src : ep_j) {
+            src->isSphere() ? sphPtrArr.push_back(src)
+                            : syPtrArr.push_back(src);
+        }
+    } else {
+        for (const auto &src : ep_j) {
+            if (src->group == group_bind) {
+                src->isSphere() ? sphPtrArr.push_back(src)
+                                : syPtrArr.push_back(src);
+            }
+        }
     }
     int Nsy = syPtrArr.size();
     int Nsph = sphPtrArr.size();
@@ -130,18 +142,30 @@ void KMC_S(const ProteinData &pData, const std::vector<const Tubule *> &ep_j,
     sphPtrArr.reserve(ep_j.size());        //Set memory for speed
     syPtrArr.reserve(ep_j.size());
 
-    for (int i = 0; i < Npj; ++i) {
-        ep_j[i]->isSphere() ? sphPtrArr.push_back(ep_j[i])
-                            : syPtrArr.push_back(ep_j[i]);
-
-        bindFactors[i] =
-            pData.getBindingFactorSD(1 - bound_end, ep_j[i]->direction);
+    int group_bind = pData.property.group_bind;
+    // Split up for loops for performance even if it is ugly
+    if (group_bind < 0) { // Don't check tubule group type
+        for (int i = 0; i < Npj; ++i) {
+            ep_j[i]->isSphere() ? sphPtrArr.push_back(ep_j[i])
+                                : syPtrArr.push_back(ep_j[i]);
+            bindFactors[i] =
+                pData.getBindingFactorSD(1 - bound_end, ep_j[i]->direction);
+        }
+    } else {
+        for (int i = 0; i < Npj; ++i) {
+            if (ep_j[i]->group == group_bind) {
+                ep_j[i]->isSphere() ? sphPtrArr.push_back(ep_j[i])
+                                    : syPtrArr.push_back(ep_j[i]);
+                bindFactors[i] =
+                    pData.getBindingFactorSD(1 - bound_end, ep_j[i]->direction);
+            }
+        }
     }
 
     unsigned int Nsy = syPtrArr.size();
     unsigned int Nsph = sphPtrArr.size();
 
-    // Set up KMC objects and calculate probabilities
+    // Set up KMC objects, then calculate and store probabilities
     KMC<Tubule, Tubule> kmc_unbind(pData.bind.posEndBind[bound_end], dt);
     KMC<Tubule, Tubule> kmc_bind(pData.bind.posEndBind[bound_end], Nsy, Nsph,
                                  dt, pType->LUTablePtr);
