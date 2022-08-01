@@ -27,13 +27,14 @@ from typing import Sequence, Any, Optional
 #                      Parameters to be changed                       #
 #######################################################################
 
-STICKY_RANGE = (7000, 9000)
+STICKY_RANGE = (300, 500)
 
-CENTER_SHIFT = np.array([50., 0., 0.])
+CENTER_SHIFT = np.array([0., 0., 0.])
 SEG_LENGTH = .00001
 SEG_RADIUS = .01
-HP1_NUM = 2000
+HP1_NUM = 4000
 STICKY_PER_HP1 = 2
+HP1_type = 2
 RNG = np.random.default_rng()
 
 
@@ -66,9 +67,10 @@ def make_sticky_particles(fil_id_gen, sys_rad):
 
         sphrs += [FilSegment(end_pos, director,
                              SEG_LENGTH, SEG_RADIUS,
-                             1, gid)]
+                             HP1_type, gid)]
         for j in range(STICKY_PER_HP1):
-            prots += [Protein(next(prot_id_gen), 0, end_pos, end_pos, gid, -1)]
+            prots += [Protein(next(prot_id_gen), 0,
+                              end_pos, end_pos, gid, -1)]
     return sphrs, prots
 
 
@@ -88,14 +90,14 @@ def main():
         seg_str += fil.get_str_to_write()
 
     # Create crowding molecules
-    gen_gid = gen_id(filaments[-1].gid + 1)
+    gen_gid = gen_id(int(filaments[-1].gid) + 1)
     sphrs, prots = make_sticky_particles(gen_gid, 10)
     for sphr in sphrs:
         seg_str += sphr.get_str_to_write()
     for prot in prots:
         prot_str += prot.get_str_to_write()
     # Connect all the filament segments together
-    links = [Links(i, i + 1) for i in range(0, filaments[-1].gid)]
+    links = [Links(i, i + 1) for i in range(0, int(filaments[-1].gid))]
     for link in links:
         link_str += link.get_str_to_write()
 
