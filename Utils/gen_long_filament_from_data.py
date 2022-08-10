@@ -32,8 +32,14 @@ def parse_args():
                         help="Result directory to take data files from.")
     parser.add_argument("-N", "--number", default=1, type=int,
                         help="Number of snapshots to use.")
+    parser.add_argument("-n", "--nbeads", default=-1, type=int,
+                        help="Number beads to use.")
     parser.add_argument("-s", "--start_xpos", default=0.,
                         help="Where on the x-axis to start.")
+    parser.add_argument("-P", "--pinned", action='store_true',
+                        help="Is this filament pinned at the ends.")
+    parser.add_argument("-o", "--output_dir", default=Path.cwd(),
+                        help="Where to put the InitialTubule.dat")
     opts = parser.parse_args()
 
     opts.input = Path(opts.input)
@@ -49,7 +55,7 @@ def shift_filament(filaments, shift_vec):
         fil.end_pos += shift_vec
 
 
-def main(opts):
+def gen_long_filament_from_data(opts):
     gen_gid = gen_id()
 
     # Make a list of all the sylinder ascii files
@@ -62,20 +68,33 @@ def main(opts):
 
     # Loop over files chosen at random
     final_filament = []
-    for i in range(opts.number):
-        filaments = read_sylinder_ascii_file(random.choice(syl_files))
-        shift_filament(filaments, shift_vec)
-        shift_vec += (fil_vec) + (filaments[0].radius*2.)*shift_direct
-        final_filament += filaments
+    if opts.nbeads > 0:
+        nbeads = opts.nbeads
+        while nbeads > 0:
+            filaments = read_sylinder_ascii_file(random.choice(syl_files))
+            shift_filament(filaments, shift_vec)
+            shift_vec += (fil_vec) + (filaments[0].radius*2.)*shift_direct
+            for fil in filaments:
+                final_filament += [fil]
+                nbeads -= 1
+                if nbeads <= 0:
+                    break
+    else:
+        for i in range(opts.number):
+            filaments = read_sylinder_ascii_file(random.choice(syl_files))
+            shift_filament(filaments, shift_vec)
+            shift_vec += (fil_vec) + (filaments[0].radius*2.)*shift_direct
+            final_filament += filaments
 
     final_gid = len(final_filament)-1
-    with open("TubuleInitial.dat", 'w') as f:
+    with open(opts.output_dir / "TubuleInitial.dat", 'w') as f:
         f.write('# Initial configuration of rods\n#\n')
         seg_str = ""
         link_str = ""
         for fil in final_filament:
             fil.gid = next(gen_gid)
-            fil.type = 'S' if fil.gid == 0 or fil.gid == final_gid else 'C'
+            fil.type = 'S' if (
+                (fil.gid == 0 or fil.gid == final_gid) and opts.pinned) else 'C'
 
             seg_str += fil.get_str_to_write()
         # Connect all the filament segments together
@@ -89,4 +108,4 @@ def main(opts):
 ##########################################
 if __name__ == "__main__":
     opts = parse_args()
-    main(opts)
+    gen_long_filament_from_data(opts)
