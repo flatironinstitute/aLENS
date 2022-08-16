@@ -13,6 +13,6 @@ Contents
 
    docker
    installation
-   analysis
-   usage
-   api
+   ..analysis
+   ..usage
+   ..api
