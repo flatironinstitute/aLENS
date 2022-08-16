@@ -1,38 +1,39 @@
 # aLENS quickstart
-This a *gentle* introduction to running aLENS on a local computer using docker.
+
+This a _gentle_ introduction to running aLENS on a local computer using docker.
 
 ## Pre-software installation
 
 - Docker desktop
-    - Sign up at docker hub [https://hub.docker.com/](https://hub.docker.com/)
-    - Download docker desktop [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
-    - (Optional) Docker engine
-        - Linux [https://www.linux.com/topic/desktop/how-install-and-use-docker-linux/](https://www.linux.com/topic/desktop/how-install-and-use-docker-linux/)
-        - Mac [https://medium.com/crowdbotics/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3](https://medium.com/crowdbotics/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3)
+  - Sign up at docker hub [https://hub.docker.com/](https://hub.docker.com/)
+  - Download docker desktop [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
+  - (Optional) Docker engine
+    - Linux [https://www.linux.com/topic/desktop/how-install-and-use-docker-linux/](https://www.linux.com/topic/desktop/how-install-and-use-docker-linux/)
+    - Mac [https://medium.com/crowdbotics/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3](https://medium.com/crowdbotics/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3)
 - paraview [https://www.paraview.org/download/](https://www.paraview.org/download/)
 - hdf5 view
-    - Sign up for service [https://www.hdfgroup.org/register/](https://www.hdfgroup.org/register/)
-    - Download at [https://www.hdfgroup.org/downloads/hdfview/#download](https://www.hdfgroup.org/downloads/hdfview/#download)
+  - Sign up for service [https://www.hdfgroup.org/register/](https://www.hdfgroup.org/register/)
+  - Download at [https://www.hdfgroup.org/downloads/hdfview/#download](https://www.hdfgroup.org/downloads/hdfview/#download)
 
 ## Creating an aLENS docker image
 
 1. Open [docker desktop](https://www.docker.com/blog/getting-started-with-docker-desktop/)
 2. Pull latest docker image
-    
-    ```bash
-    docker pull lamsoa729/alens:latest
-    ```
-    
+
+   ```bash
+   docker pull lamsoa729/alens:latest
+   ```
+
 3. Make a folder to put your simulation data in on your local
-    
-    ```bash
-    mkdir my_alens_data; cd my_alens_data
-    ```
-    
-4. In docker desktop, create a new container and link it to the recently created data folder
-    - Container name: alens
-    - Host path: `<path/to/my_alens_data>`
-    - Container path: `/root/Run`
+
+   ```bash
+   mkdir my_alens_data; cd my_alens_data
+   ```
+
+4. In docker desktop, create a new container and link the containter to the recently created data folder
+   - Container name: alens
+   - Host path: `<path/to/my_alens_data>`
+   - Container path: `/root/Run`
 
 <!--TODO Get screenshot of doing this -->
 
@@ -41,167 +42,177 @@ files on your local computer.
 
 ## Running aLENS inside docker
 
-1. Open a command line interface (CLI) to your docker image using docker desktop 
-and go to the `Run` directory
-    
-    ```bash
-    bash
-    cd /root/Run
-    ```
-<!--TODO Get screenshot of doing this -->
-    
-1. While in the CLI, copy example to data folder
-    
+1.  Open a command line interface (CLI) to your docker image using docker desktop
+    and go to the `Run` directory
+    `bash bash cd /root/Run `
+    <!--TODO Get screenshot of doing this -->
+1.  While in the CLI, copy example to data folder
+
     ```bash
     cp -r ../aLENS/Examples/MixMotorSliding .
     cd MixMotorSliding
     ```
-    
-1. Copy of the contents of `Run` directory
-    
+
+1.  Copy of the contents of `Run` directory
+
     ```bash
     cp -r ~/aLENS/Run/* .
     ```
-    
+
     You should now see an `aLENS.X` executable in this directory along with `result` and `script` directories
-    
-1. Execute run
-    
+
+1.  Execute run
+
     ```bash
     ./aLENS.X
     # or to control the number of cores used
     OMP_NUM_THREADS=<number_of_cores> ./aLENS.
     ```
-    
-1. Stop run by pressing `[ctrl+c]`
-1. Execute run again. Notice that aLENS picks back up from where you left off. This is a very nice restart feature for longer runs.
+
+1.  Stop run by pressing `[ctrl+c]`
+1.  Execute run again as we did in step 4. Notice that the aLENS simulation continues from the last snapshot. This is a very useful restart feature for longer runs.
 
 ## Parameter and initial configuration files
+
 The executable aLENS.X reads 2 input files (4 if specifying starting object configurations):
 
 - `RunConfig.yaml` specifies simulation parameters for the system and rod-like objects (sylinders).
 - `ProteinConfig.yaml` specifies types and parameter of crosslinking and motor objects (proteins).
-- `TubuleInitial.dat` specifies initial configuration of sylinders.
-- `ProteinInitial.dat` specifies initial configuration of proteins.
- 
+- `TubuleInitial.dat` specifies initial configuration of sylinders (optional).
+- `ProteinInitial.dat` specifies initial configuration of proteins (optional).
 
-- `RunConfig.yaml`
-    Example of system and sylinder configuration yaml file 
+### Example parameter config files
 
-    ```yaml
-    conMaxIte: 10000
-    conResTol: 1e-5
-    conSolverChoice: 0
-    logLevel: 3
-    monolayer: false
-    rngSeed: 1234
-    simBoxHigh:
-    - 20.0
-    - 1.0
-    - 1.0
-    simBoxLow:
-    - 0.0
-    - 0.0
-    - 0.0
-    simBoxPBC:
-    - false
-    - false
-    - false
-    sylinderColBuf: 1.0
-    sylinderDiameter: 0.025
-    sylinderDiameterColRatio: 1.0
-    sylinderFixed: false
-    sylinderLength: 0.5
-    sylinderLengthColRatio: 1.0
-    sylinderLengthSigma: 0
-    sylinderNumber: 4000
-    dt: 1.0e-05
-    timeSnap: 0.01
-    timeTotal: 10.0
-    timerLevel: 3
-    viscosity: 1.0
-    ```
+`RunConfig.yaml`:
 
-- `ProteinConfig.yaml`
-    
-    ```yaml
-    KBT: 0.00411 # pN.um, at 300K
-    proteins:
-      - tag: 0 # Type 0, active Kinesin-1
-        #properties:
-        walkOff: true
-        PtoAPratio: 1.0
-        fixedEnd0: true
-        freeLength: 0.05 # um
-        rc: 0.038 # um ( freeLength/2 + D/2 )
-        kappa: 100 # pN/um
-        fstall: 7.0 # pN
-        lambda: 0.5 # dimensionless, energy dependent unbinding
-        vmax: [0, 1.0] # um/s
-        diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
-        diffBoundS: [0.0, 1.0e-2] # um^2/s
-        diffBoundD: [0.0, 1.0e-2] # um^2/s
-        # KMC parameters
-        useBindVol: false
-        lookupType: 1
-        lookupGrid: 2048
-        eps: 400 # um^{-1}
-        Ka: [0, 10.0] # (uM)^{-1}
-        ko_s: [0, 1.0] # 1/s or [0.3, 10.0]
-        Ke: [0, 10.0] # (uM)^{-1}
-        ko_d: [0, 1.0] # 1/s or [0.3, 10.0]
-        #numbers:
-        freeNumber: 0
-        fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 80
-      - tag: 1 # Type 0, passive Kinesin-1
-        #properties:
-        walkOff: true
-        PtoAPratio: 1.0
-        fixedEnd0: true
-        freeLength: 0.05 # um
-        rc: 0.038 # um ( freeLength/2 + D/2 )
-        kappa: 100 # pN/um
-        fstall: 7.0 # pN
-        lambda: 0.5 # dimensionless, energy dependent unbinding
-        vmax: [0, 0.0] # um/s
-        diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
-        diffBoundS: [0.0, 0.0] # um^2/s
-        diffBoundD: [0.0, 0.0] # um^2/s
-        # KMC parameters
-        useBindVol: false
-        lookupType: 1
-        lookupGrid: 2048
-        eps: 400 # um^{-1}
-        Ka: [0, 10.0] # (uM)^{-1}
-        ko_s: [0, 0.1] # 1/s or [0.3, 10.0]
-        Ke: [0, 10.0] # (uM)^{-1}
-        ko_d: [0, 0.1] # 1/s or [0.3, 10.0]
-        #numbers:
-        freeNumber: 0
-        fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 20
-    ```
+```yaml
+#Example of system and sylinder configuration file
+conMaxIte: 10000
+conResTol: 1e-5
+conSolverChoice: 0
+logLevel: 3
+monolayer: false
+rngSeed: 1234
+simBoxHigh:
+  - 20.0
+  - 1.0
+  - 1.0
+simBoxLow:
+  - 0.0
+  - 0.0
+  - 0.0
+simBoxPBC:
+  - false
+  - false
+  - false
+sylinderColBuf: 1.0
+sylinderDiameter: 0.025
+sylinderDiameterColRatio: 1.0
+sylinderFixed: false
+sylinderLength: 0.5
+sylinderLengthColRatio: 1.0
+sylinderLengthSigma: 0
+sylinderNumber: 4000
+dt: 1.0e-05
+timeSnap: 0.01
+timeTotal: 10.0
+timerLevel: 3
+viscosity: 1.0
+```
 
+`ProteinConfig.yaml`:
+
+```yaml
+#Example of crosslinker and motor configuration file
+KBT: 0.00411 # pN.um, at 300K
+proteins:
+    - tag: 0 # Type 0, active Kinesin-1
+    #properties:
+    walkOff: true
+    PtoAPratio: 1.0
+    fixedEnd0: true
+    freeLength: 0.05 # um
+    rc: 0.038 # um ( freeLength/2 + D/2 )
+    kappa: 100 # pN/um
+    fstall: 7.0 # pN
+    lambda: 0.5 # dimensionless, energy dependent unbinding
+    vmax: [0, 1.0] # um/s
+    diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
+    diffBoundS: [0.0, 1.0e-2] # um^2/s
+    diffBoundD: [0.0, 1.0e-2] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    lookupType: 1
+    lookupGrid: 2048
+    eps: 400 # um^{-1}
+    Ka: [0, 10.0] # (uM)^{-1}
+    ko_s: [0, 1.0] # 1/s or [0.3, 10.0]
+    Ke: [0, 10.0] # (uM)^{-1}
+    ko_d: [0, 1.0] # 1/s or [0.3, 10.0]
+    #numbers:
+    freeNumber: 0
+    fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 80
+    - tag: 1 # Type 0, passive Kinesin-1
+    #properties:
+    walkOff: true
+    PtoAPratio: 1.0
+    fixedEnd0: true
+    freeLength: 0.05 # um
+    rc: 0.038 # um ( freeLength/2 + D/2 )
+    kappa: 100 # pN/um
+    fstall: 7.0 # pN
+    lambda: 0.5 # dimensionless, energy dependent unbinding
+    vmax: [0, 0.0] # um/s
+    diffUnbound: 1.0 # 0.436 um^2/s when viscosity=0.02
+    diffBoundS: [0.0, 0.0] # um^2/s
+    diffBoundD: [0.0, 0.0] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    lookupType: 1
+    lookupGrid: 2048
+    eps: 400 # um^{-1}
+    Ka: [0, 10.0] # (uM)^{-1}
+    ko_s: [0, 0.1] # 1/s or [0.3, 10.0]
+    Ke: [0, 10.0] # (uM)^{-1}
+    ko_d: [0, 0.1] # 1/s or [0.3, 10.0]
+    #numbers:
+    freeNumber: 0
+    fixedLocationPerMT: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] # 20
+```
+
+---
+
+**NOTE:**
 All default values and further explanation of parameters can be found in
 `SimToolbox/Sylinder/SylinderConfig.hpp` and `Protein/ProteinConfig.hpp` files
 in the `aLENS` gitrepo.
-    
 
-## Initial configuration files (optional)
+---
 
-- `TubuleInitial.dat`
-    - First two lines: Number of sylinders, time step. (These do not get read for initial condition setting)
-    
-    | Name | Sylinder type | Global ID | Radius | Minus end x-pos | Minus end y-pos | Minus end z-pos | Plus end x-pos | Plus end y-pos | Plus end z-pos | Group |
-    | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-    | Input option | ‘C’ for regular cylinder or ‘S’ stationary | int | float | float | float | float | float | float | float | int |
-    | example | C | 0 | .0125 | 0 | 0.5 | 0.57 | 20 | 0.5 | 0.57 | -1 |
-- `ProteinInitial.dat`
-    - First two lines: Number of proteins, time step. (These do not get read for initial condition setting)
-    
-    | Name | Protein character | Global ID | Protein tag | End 0 x-pos | End 0 y-pos | End 0 z-pos | End 1 x-pos | End 1 y-pos | End 1 z-pos | End 0 bind ID | End 1 bind ID |
-    | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-    | Input option | ‘P’ | int | int | float | float | float | float | float | float | int (-1 if not bound) | int (-1 if not bound) |
-    | example | P | 41 | 0 | 8.85976  | 0.5  | 0.5 |  8.85976  | 0.5  | 0.5   | -1 | 2 |
+### Initial configuration file lines (optional)
+
+`TubuleInitial.dat`
+
+First two lines: Number of sylinders, time step. (These do not get read for initial conditions.)
+| | Sylinder type | Global ID | Radius | Minus end x-pos | Minus end y-pos | Minus end z-pos | Plus end x-pos | Plus end y-pos | Plus end z-pos | Group |
+| ------------ | ------------------------------------------ | --------- | ------ | --------------- | --------------- | --------------- | -------------- | -------------- | -------------- | ----- |
+| **Option/parameter type** | ‘C’ for regular cylinder or ‘S’ stationary | int | float | float | float | float | float | float | float | int |
+| **Example line** | C | 0 | .0125 | 0 | 0.5 | 0.57 | 20 | 0.5 | 0.57 | -1 |
+
+`ProteinInitial.dat`
+
+First two lines: Number of proteins, time step. (These do not get read for initial condition.)
+| Name | Protein character | Global ID | Protein tag | End 0 x-pos | End 0 y-pos | End 0 z-pos | End 1 x-pos | End 1 y-pos | End 1 z-pos | End 0 bind ID | End 1 bind ID |
+| ------------ | ----------------- | --------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | --------------------- | --------------------- |
+| **Option/parameter type** | ‘P’ | int | int | float | float | float | float | float | float | int (-1 if not bound) | int (-1 if not bound) |
+| **Example line** | P | 41 | 0 | 8.85976 | 0.5 | 0.5 | 8.85976 | 0.5 | 0.5 | -1 | 2 |
+
+---
+
+**NOTE:**
+For example initial configuration files, navigate to `Examples/MixMotorSliding/TubuleInitial.dat` and `Examples/MixMotorSliding/ProteinInitial.dat`. If no configuration files are present in the directory `aLENS.X` is run, objects will be generated according to the parameters in `RunConfig.yaml` and `ProteinConfig.yaml`.
+
+---
 
 <!--## Visualizing-->
 
@@ -221,12 +232,12 @@ in the `aLENS` gitrepo.
 <!--## Post-processing with alens_analysis-->
 
 <!--- Clone alens_analysis on local machine-->
-    
+
 <!--    ```bash-->
 <!--    git clone --recursive https://github.com/flatironinstitute/aLENS_analysis.git-->
 <!--    ccd aLENS_analysis-->
 <!--    ```-->
-    
+
 <!--- Create a virtual environment-->
 <!--    - Install `conda install numpy h5py scipy matplotlib vtk pyyaml numba`-->
 
@@ -376,5 +387,3 @@ in the `aLENS` gitrepo.
 <!--int lookupType = 0;-->
 <!--int lookupGrid = 256;-->
 <!--```-->
-
-
