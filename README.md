@@ -1,43 +1,49 @@
-![](Docs/source/images/aLENS_Logo_RGB.jpg)
+![](docs/source/images/aLENS_Logo_RGB.jpg)
+
 # aLENS (a Living ENsemble Simulator)
 
 The motivation, algorithm and examples are discussed in this paper:
 [Towards the cellular-scale simulation of motor-driven cytoskeletal assemblies](https://elifesciences.org/articles/74160)
 
-# Normal users (on a laptop or a single desktop)
+Further code documentation can be found [here](https://lamsoa729-alens.readthedocs.io/en/latest/index.html).
 
-Please use the precompiled docker image distributed through [DockerHub](https://hub.docker.com/r/wenyan4work/alens).
+# Running aLENS on a single laptop or desktop
+
+A full quickstart tutorial is available at https://lamsoa729-alens.readthedocs.io/en/latest/quickstart.html.
+
+## Setting up an aLENS docker container
+
+Please use the precompiled docker image distributed through [DockerHub](https://hub.docker.com/r/lamsoa729/alens).
 First install docker on you computer (windows users need to install WSL2 first).
 Then:
 
 ```bash
-docker pull wenyan4work/alens
+docker pull lamsoa729/alens
 ```
 
-This command pulls everything you need into your local computer.
-Then follow the `README` file in the docker image to run `aLENS`.
-
-This docker image also contains the full set of development environment (compiler and dependence libraries).
+This command pulls everything you need into your local computer including the `aLENS.X` executable and example simulation directories. The docker image also contains the full development environment (compiler and dependence libraries).
 You can edit the code as you wish.
 
-**Note 1**: this development toolchain in this docker image is based on [spack](https://github.com/spack/spack) virtual environment.
+---
 
-**Note 2**: Using docker images is convenient but has its limitations:
+**NOTE**: Using docker images is convenient but has its limitations:
 
 1. You can only use multi-thread parallelization on a single computer. MPI is not supported.
 2. You should not generated data files within the docker image. Use the filesystem mapping feature of docker to write the generated files to the host filesystem outside the docker image.
 
-**Note 3**: Theoretically it is possible to run the docker image using singularity and parallel it with mpi, controlled by slurm.
-However it highly depends on your local toolchain and cluster set up.
-Maybe it will work well for you but we are not able to provide general support for this use case.
+Theoretically it is possible to run the docker image with MPI using singularity and slurm.
+However, this greatly depends on your local toolchain and cluster set up.
+While it could work well, we are not able to provide general support for this use case.
 
-# Executable input: `Config.yaml` and `Initial.dat`
+---
+
+## Configuring aLENS: `...Config.yaml` and `...Initial.dat` files
 
 The executable `aLENS.X` reads expects 4 input files:
 
-- `RunConfig.yaml` specifies configuration for system and MTs.
+- `RunConfig.yaml` specifies configuration for system and rods.
 - `ProteinConfig.yaml` specifies configuration and number for proteins.
-- `TubuleInitial.dat` specifies initial configuration of MTs.
+- `TubuleInitial.dat` specifies initial configuration of rods.
 - `ProteinInitial.dat` specifies initial configuration of proteins.
 
 You can go to the folder `Examples/MixMotorSliding` to see examples of these files.
@@ -45,28 +51,28 @@ You can go to the folder `Examples/MixMotorSliding` to see examples of these fil
 The two `Config.yaml` files are necessary, but the two `Initial.dat` files are optional.  
 There are three cases:
 
-- Case 1. No `dat` file exists. In this case MTs and proteins will be generated according to the settings in `RunConfig.yaml` and `ProteinConfig.yaml`
-- Case 2. `TubuleInitial.dat` file exists, but `ProteinInitial.dat` does not. 
-  In this case MTs will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored.
+- Case 1. No `.dat` file exists. In this case rods and proteins will be generated according to the settings in `RunConfig.yaml` and `ProteinConfig.yaml`
+- Case 2. `TubuleInitial.dat` file exists, but `ProteinInitial.dat` does not.
+  In this case rods will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored.
   Proteins will be generated according to the settings in `ProteinConfig.yaml`.
-- Case 3. Both `TubuleInitial.dat` and `ProteinInitial.dat` files exits. 
-  In this case MTs will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored. 
-  Proteins will be read from the file `ProteinInitial.dat`. `aLENS` will try to reconstruct the initial binding status according to `ProteinInitial.dat`. 
+- Case 3. Both `TubuleInitial.dat` and `ProteinInitial.dat` files exits.
+  In this case rods will be read from the `TubuleInitial.dat`, and the MT number & length settings in `RunConfig.yaml` will be ignored.
+  Proteins will be read from the file `ProteinInitial.dat`. `aLENS` will try to reconstruct the initial binding status according to `ProteinInitial.dat`.
   If reconstruction fails for a certain protein, for example, if a protein is specified to bind some MT but the MT does not appear at the correct location, an error message will be printed out and this end (that an error appears) of this protein will be set to unbound and the program **continues**.
 
 In general, Case 1 is good for initiating a simulation and Case 3 is good for continuing a simulation with saved data files. Case 2 is useful for some cases where the effect of protein on a given MT configuration is of interest.
 
-# The installation folder structure
+## The run folder structure
 
-Once 'make install' finishes, you will get a folder structure like the following. 
-Assume that your installation folder is located at ~/Run
+The `Run` directory in the aLENS repository contains the executable along with several other useful scripts for managing and analyzing data generated during the simulation.
+
 ```bash
-~/Run/
+~/aLENS/Run/
 ├── aLENS.X              # the executable
 ├── gitversion.txt       # the git hashtag for the executable
 ├── result               # the folder where data is saved
 │   ├── Clean.sh         # the script to remove all data
-│   ├── PNG              
+│   ├── PNG
 │   │   ├── MovieGen.sh  # the script to generate movie using png sequences
 │   │   └── cleanpng.sh
 │   ├── Result2PVD.py    # create meta-file for Paraview to load data
@@ -80,15 +86,15 @@ Assume that your installation folder is located at ~/Run
 3 directories, 11 files
 ```
 
-
-# The minimal set of necessary files
+## The minimal set of necessary files
 
 In the minimal case, you need only three files and a folder to run the executable:
+
 - one executable `aLENS.X`.
 - two input configuration files `RunConfig.yaml` and `ProteinConfig.yaml`.
 - one folder `result` for saved data files.
 
-# Your first run
+## Your first run
 
 Use the provided configuration and initial to run your first simulation.
 
@@ -98,9 +104,9 @@ $ cd ~/Run/
 $ ./aLENS.X > ./log.txt
 ```
 
-# Data organization
+## Data organization
 
-The program `aLENS.X` outputs to the folder `result`. 
+The program `aLENS.X` outputs to the folder `result`.
 `result` is at the same folder as `aLENS.X` itself.
 
 It first writes a file `simBox.vtk`, which shows the simulation box as a simple rectangular box. For example:
@@ -126,12 +132,12 @@ Then the executable writes several different sequences of data files.
 
 Two of them are human readable ascii files:
 
-- `SylinderAscii_*.dat` are human readable data files of MTs (Sylinder = Spherocylinder). These files can be directly used as `TubultInitial.dat` by renaming.
+- `SylinderAscii_*.dat` are human readable data files of rods (Sylinder = Spherocylinder). These files can be directly used as `TubultInitial.dat` by renaming.
 - `ProteinAscii_*.dat` are human readable data files of proteins. These files can be directly used as `ProteinInitial.dat` by renaming.
 
 Four of them are XML vtk format in base64 binary encoding. These are not human readable but can be conveniently loaded into `Paraview` for visualization or read by VTK (either python or cpp) for data processing.
 
-- `Sylinder_*.pvtp` save data for MTs.
+- `Sylinder_*.pvtp` save data for rods.
 - `Protein_*.pvtp` save data for proteins.
 - `ConBlock_*.pvtp` save data for collision and protein constraint blocks.
 
@@ -158,30 +164,11 @@ $ ls ./*.pvd
 ./ConBlockpvtp.pvd  ./Proteinpvtp.pvd  ./Sylinderpvtp.pvd
 ```
 
-# Further documentation of code internals
+# Developer/Advanced user information
 
-You need `doxygen` to generate html documents for the code internals.
-Go to the root folder of `aLENS` and let `doxygen` to generate the documentation, according to the configuration file `Doxyfile`:
-
-```bash
-$ doxygen
-```
-
-Then you can open the file `doc/html/index.html` in your browser to read internal code document.
-For example, if you have firefox installed:
-
-```
-$ firefox doc/html/index.html
-```
-
-# NORMAL USERS PLEASE STOP HERE
-
-Do not read any further if you are a normal user.
-
-# COMPILATION
+## Compiling
 
 For best performance you should utilize `MPI+OpenMP` parallelization in any cases where you need to run the job across multiple `numa` regions.
-If you do not know what `numa` means, stop here and use the docker image instead.
 
 Parallization with MPI requires compilation from source because every MPI library on a cluster must interact closely with the networking hardware and no generic precompiled binary executable file is able to achieve that.
 
@@ -192,7 +179,9 @@ Read this [webpage](https://en.cppreference.com/w/cpp/compiler_support#cpp14) ab
 You also need `cmake >= 3.10` to configure this project.
 If you do not have it, download it from `https://cmake.org/download/`.
 
-## Step 1, compile and install dependencies
+A step-by-step guide for compiling on a fresh **Ubuntu 22.04.1** install can be found [here](https://lamsoa729-alens.readthedocs.io/en/latest/installation.html).
+
+### Step 1: compile and install dependencies
 
 You will have to install the following 4 packages:
 
@@ -216,12 +205,12 @@ $ python3 compile_all.py # compile and install all dependence libraries
 
 Before running `compile_all.py`, modify the `user switches` section of `compile_all.py` to set switches that match your toolchain.
 
-## Step 2, compile and install `aLENS`
+### Step 2: compile and install `aLENS`
 
 Once those dependence libraries have been installed, compile and install `aLENS` use the provided `cmake-example.sh` script.
 Remember to set `SFTPATH` to the location where you installed those dependence libraries.
 
-# `MPI+OpenMP` run
+## `MPI+OpenMP` run
 
 This is the actual running mode for a cluster.
 However, due to the inconsistency of how `Intel mpi`, `openmpi`, and `mpich` handles multithread mapping, you may need different environment variable settings.
@@ -231,9 +220,9 @@ In the folder `Run/scripts` you can find `jobsub_slurm.sh` as an example of how 
 
 If you are not sure how you should setup things, consult your system administrator or play with [AMASK](https://github.com/TACC/amask) to see how different settings affect different threading mapping and binding modes.
 
-## Environment Variable Settings
+### Environment Variable Settings
 
-### OpenMP
+**OpenMP:**
 
 - `OMP_NESTED=FALSE` **REQUIRED** and/or `OMP_MAX_ACTIVE_LEVELS=1` for new compilers.
 - `OMP_NUM_THREADS=N` Change `N` to the number of cores per MPI rank. Hyperthreading may or may not be useful.
@@ -241,16 +230,34 @@ If you are not sure how you should setup things, consult your system administrat
 - `OMP_PROC_BIND=spread` **Recommended by Kokkos**, you should check if it works for you
 - `OMP_PLACES=threads` **Recommended by Kokkos**, you should check if it works for you
 
-### If using Intel MKL:
+**If using Intel MKL:**
 
 - `MKL_THREADING_LAYER=INTEL` or `MKL_THREADING_LAYER=GNU` depending on if the compiler is `icpc` or `g++`
 - `MKL_INTERFACE_LAYER=LP64` **Never** use `ILP64`
 
-### If using Intel MPI (optional):
+**If using Intel MPI (optional):**
 
 - `I_MPI_ADJUST_ALLTOALLV=1`
 - `I_MPI_ADJUST_ALLTOALL=1`
 
-### If using OpenBLAS (optional):
+**If using OpenBLAS (optional):**
 
 - `OPENBLAS_NUM_THREADS=N` Change `N` to thread-parallel tune performance. Read `OpenBLAS` document to get more information about this environment variable.
+
+## Further documentation of code internals
+
+You need `doxygen` to generate html documents for the code internals.
+Go to the root folder of `aLENS` and let `doxygen` to generate the documentation, according to the configuration file `Doxyfile`:
+
+```bash
+$ doxygen
+```
+
+Then you can open the file `doc/html/index.html` in your browser to read internal code document.
+For example, if you have firefox installed:
+
+```
+$ firefox doc/html/index.html
+```
+
+---
