@@ -15,7 +15,7 @@ WARNING: Make sure you have more than 2Gb of RAM and 30Gb of hard drive storage.
 
 - (Optional) If on virtual machine set up port forwarding to ssh into desktop
     
-    [SSH into virtual machine in virtual box](https://www.notion.so/SSH-into-virtual-machine-in-virtual-box-a50f95a71020402ea9b05b65f0fdae45)
+    [SSH into virtual machine in virtual box](https://bobcares.com/blog/virtualbox-ssh-nat/)
     
 - Upgrade to make sure you have latest `apt` version
     
@@ -134,10 +134,6 @@ WARNING: Make sure you have more than 2Gb of RAM and 30Gb of hard drive storage.
 Note: leaving `<number_of_compiling_cores>` blank creates threads equal to the number of cores on your local machine. If you do this with a virtual machine, it will most likely crash during compilation. 
 
 Compiling creates the executable file `aLENS.X` which you can run in any of the example simulations included in the `Examples` directory of aLENS.
-
-## Mac installation guide
-
-TODO… This is a pain
 
 ## Flatiron cluster (2022-05-18)
 
