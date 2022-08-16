@@ -15,7 +15,7 @@ This a _gentle_ introduction to running aLENS on a local computer using docker.
   - Sign up for service [https://www.hdfgroup.org/register/](https://www.hdfgroup.org/register/)
   - Download at [https://www.hdfgroup.org/downloads/hdfview/#download](https://www.hdfgroup.org/downloads/hdfview/#download)
 
-## Creating an aLENS docker image
+## Creating a container
 
 1. Open [docker desktop](https://www.docker.com/blog/getting-started-with-docker-desktop/)
 2. Pull latest docker image
@@ -40,7 +40,7 @@ This a _gentle_ introduction to running aLENS on a local computer using docker.
 You now have access to an environment that can run aLENS but will create data
 files on your local computer.
 
-## Running aLENS inside docker
+## Running aLENS inside docker containter
 
 1.  Open a command line interface (CLI) to your docker image using docker desktop
     and go to the `Run` directory
