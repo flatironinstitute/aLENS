@@ -11,7 +11,7 @@ Contents
 
 .. toctree::
 
-   docker
+   quickstart
    installation
    ..analysis
    ..usage
