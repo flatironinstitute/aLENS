@@ -110,10 +110,15 @@ struct ProteinData {
     double getBindingFactorSD(int e, const double direction[3]) const {
         // If angle between bound and unbound tubule is less than 90 degrees and
         // greater than -90, then use parallel binding affinity
-        double prefact = sgn(dot3(direction, bind.directionBind[1 - e])) > 0
-                             ? property.PtoAPratio
-                             : 1.;
-        assert(prefact >= 0);
+        // Prefact should never exceed 1
+        bool parallel = sgn(dot3(direction, bind.directionBind[1 - e])) > 0;
+        double prefact = 1.;
+        if (parallel && property.PtoAPratio < 1.) {
+            prefact = property.PtoAPratio;
+        } else if (!parallel && property.PtoAPratio > 1.) {
+            prefact /= property.PtoAPratio;
+        }
+        assert(prefact >= 0 && prefact <= 1.);
         return prefact * property.ko_d[e] * property.Ke[e] * property.eps;
     }
 
