@@ -16,7 +16,7 @@ proteins:
     diffBoundD: [0.0, 1e-3] # um^2/s
     # KMC parameters
     useBindVol: false
-    lookupType: 1
+    lookupType: 0
     lookupGrid: 2048
     eps: 400 # um^{-1}
     Ka: [5.0, 5.0] # (uM)^{-1}
