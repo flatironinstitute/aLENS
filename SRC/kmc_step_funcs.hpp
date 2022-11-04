@@ -142,24 +142,16 @@ void KMC_S(const ProteinData &pData, const std::vector<const Tubule *> &ep_j,
     sphPtrArr.reserve(ep_j.size());        //Set memory for speed
     syPtrArr.reserve(ep_j.size());
 
-    int group_bind = pData.property.group_bind;
-    // Split up for loops for performance even if it is ugly
-    if (group_bind < 0) { // Don't check tubule group type
-        for (int i = 0; i < Npj; ++i) {
-            ep_j[i]->isSphere() ? sphPtrArr.push_back(ep_j[i])
-                                : syPtrArr.push_back(ep_j[i]);
+    const int group_bind = pData.property.group_bind;
+    // Loop over spheres and sylinders, adding to particle arrays
+    for (int i = 0; i < Npj; ++i) {
+        ep_j[i]->isSphere() ? sphPtrArr.push_back(ep_j[i])
+                            : syPtrArr.push_back(ep_j[i]);
+        // Specific binding to a group 
+        if (ep_j[i]->group == group_bind || group_bind < 0)
             bindFactors[i] =
                 pData.getBindingFactorSD(1 - bound_end, ep_j[i]->direction);
-        }
-    } else {
-        for (int i = 0; i < Npj; ++i) {
-            if (ep_j[i]->group == group_bind) {
-                ep_j[i]->isSphere() ? sphPtrArr.push_back(ep_j[i])
-                                    : syPtrArr.push_back(ep_j[i]);
-                bindFactors[i] =
-                    pData.getBindingFactorSD(1 - bound_end, ep_j[i]->direction);
-            }
-        }
+        std::cout << "bind factor = "<< bindFactors[i] << ", protein type = " << pType->tag << std::endl;
     }
 
     unsigned int Nsy = syPtrArr.size();
