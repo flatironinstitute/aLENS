@@ -151,7 +151,6 @@ void KMC_S(const ProteinData &pData, const std::vector<const Tubule *> &ep_j,
         if (ep_j[i]->group == group_bind || group_bind < 0)
             bindFactors[i] =
                 pData.getBindingFactorSD(1 - bound_end, ep_j[i]->direction);
-        std::cout << "bind factor = "<< bindFactors[i] << ", protein type = " << pType->tag << std::endl;
     }
 
     unsigned int Nsy = syPtrArr.size();
