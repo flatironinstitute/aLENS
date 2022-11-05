@@ -216,12 +216,11 @@ struct ProteinType {
         double ko_d_max = std::max(ko_d[0], ko_s[1]);
         double Ka_max = std::max(Ka[0], Ka[1]);
         double Ke_max = std::max(Ke[0], Ke[1]);
-        double PPA_ratio = std::max(PtoAPratio, 1.);
 
         // Constant rate factors for (un)binding. Change if bind model changes.
         double u_s_fact = ko_s_max * Ka_max * eps;
         double s_u_fact = ko_s_max;
-        double s_d_fact = PPA_ratio * ko_d_max * Ke_max * eps;
+        double s_d_fact = ko_d_max * Ke_max * eps;
         double d_s_fact = ko_d_max;
 
         if (lambda == 0) {
