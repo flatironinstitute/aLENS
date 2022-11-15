@@ -5,7 +5,7 @@
 ## Overview of aLENS data files
 
 aLENS produces 3 types of data files when run:
-- `<Object>Ascii_<Snapshot#>.dat`: Contains positional, geometric, and state information of all \<Object\>s  at \<Snapshot#\>. These are in the same format as the initial data files like `TubuleInitial.dat` or `ProteinInitial.dat` (see TODO reference initial file configurations).
+- `<Object>Ascii_<Snapshot#>.dat`: Contains positional, geometric, and state information of all \<Object\>s  at \<Snapshot#\>. These are in the same format as the initial data files like `TubuleInitial.dat` or `ProteinInitial.dat` (see [initial file configurations](./quickstart.md#initial-configuration-file-lines-optional)).
 
 - `<Object>_r<Rank#>_<Snapshot#>.vtp`: XML vtk format in base64 binary encoding for all \<Object\> information. `aLENS.X` is written such that each MPI rank writes its own set of data to a unique `vtp` file marked by \<Rank#\>. These are not human readable but can be conveniently loaded into `Paraview` for visualization or read by VTK (either python or cpp) for data processing.
 
@@ -86,4 +86,4 @@ Visualizations are created and interacted with using paraview. Be sure to have t
 
     You should now see a .avi file in your simulation directory.         
 
-## Creating a ParaView state from raw data (coming soon)
+## Creating a your own ParaView state file (coming soon)
