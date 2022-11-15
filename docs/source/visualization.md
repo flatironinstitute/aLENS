@@ -5,7 +5,8 @@
 ## Overview of aLENS data files
 
 aLENS produces 3 types of data files when run:
-- `<Object>Ascii_<Snapshot#>.dat`: Contains positional, geometric, and state information of all \<Object\>s  at \<Snapshot#\>. These are in the same format as the initial data files like `TubuleInitial.dat` or `ProteinInitial.dat` (see [initial file configurations](./quickstart.md#initial-configuration-file-lines-optional)).
+- `<Object>Ascii_<Snapshot#>.dat`: Contains positional, geometric, and state information of all \<Object\>s  at \<Snapshot#\>. These are in the same format as the initial data files like `TubuleInitial.dat` or `ProteinInitial.dat`. (See [initial file configurations](initial_files).)
+<!-- (see [initial file configurations](./quickstart.md#initial-configuration-file-lines-optional)). -->
 
 - `<Object>_r<Rank#>_<Snapshot#>.vtp`: XML vtk format in base64 binary encoding for all \<Object\> information. `aLENS.X` is written such that each MPI rank writes its own set of data to a unique `vtp` file marked by \<Rank#\>. These are not human readable but can be conveniently loaded into `Paraview` for visualization or read by VTK (either python or cpp) for data processing.
 
@@ -23,7 +24,7 @@ The data files are saved in different folders, but for postprocessing and visual
 
 ## First visualization (using pre-made visualization file)
 Visualizations are created and interacted with using paraview. Be sure to have this software installed [https://www.paraview.org/download/](https://www.paraview.org/download/) (This tutorial was made using ParaView-5.9.1). Tutorials for using paraview for general data visualization can be found on their [website](https://docs.paraview.org/en/latest/).
-1. After running your [first simulation](./quickstart.md#), your `results` directory will have multiple result subdirectories inside of it.
+1. After running your [first simulation](quickstart), your `results` directory will have multiple result subdirectories inside of it.
     
     ```bash
     $ cd ~/Run/MixMotorSliding/result

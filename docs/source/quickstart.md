@@ -1,3 +1,5 @@
+
+(quickstart)=
 # aLENS quickstart
 
 This a _gentle_ introduction to running aLENS on a local computer using docker.
@@ -191,6 +193,7 @@ in the `aLENS` gitrepo.
 
 ---
 
+(initial_files)=
 ### Initial configuration file lines (optional)
 
 `TubuleInitial.dat`
