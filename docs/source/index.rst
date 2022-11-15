@@ -13,6 +13,7 @@ Contents
 
    quickstart
    installation
+   visualization
    ..analysis
    ..usage
    ..api

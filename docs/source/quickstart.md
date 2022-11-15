@@ -44,22 +44,24 @@ files on your local computer.
 
 1.  Open a command line interface (CLI) to your docker image using docker desktop
     and go to the `Run` directory
-    `bash bash cd /root/Run `
+    ```bash
+    cd /root/Run 
+    ```
     <!--TODO Get screenshot of doing this -->
 1.  While in the CLI, copy example to data folder
 
     ```bash
-    cp -r ../aLENS/Examples/MixMotorSliding .
+    cp -r ~/aLENS/Examples/MixMotorSliding .
     cd MixMotorSliding
     ```
 
-1.  Copy of the contents of `Run` directory
+1.  Copy of the contents of `Run` template directory from aLENS.
 
     ```bash
     cp -r ~/aLENS/Run/* .
     ```
 
-    You should now see an `aLENS.X` executable in this directory along with `result` and `script` directories
+    You should now see an `aLENS.X` executable in this directory along with `result` and `script` directories containing useful scripts processing, storing, and cleaning up generated files.
 
 1.  Execute run
 
