@@ -1,17 +1,25 @@
-global_parameters: # All filaments will use these unless specified in filament list
-    radius: .01 # 10 nm radius for filament
-    sys_dim: [5,5,5] # Dimensions of systemk
-
+global_parameters:      # All filaments will use these unless specified in filament list
+    radius: .01         # 10 nm radius for filament
+    sys_dim: [.5,.5,.5] # Dimensions of system
+    link_gap: .0002     # Gap between sylinders connected by link (um)
 
 filaments:
-    - type: line
+    - gen_type: line            # Type of generated lines options are:
+                                #     line, hilbert, crowder, and random_walk
+      nsegs: 100                # Number of segments in the line
+      seg_length: .000001       # Length of segments.
+      start_pos: [0., 0.01, 0.] # Starting position of line
+      director: [1.,0.,0.]      # Director of the starting position
+      stat_segs: [0]            # GIDs of segments that will not move
+      # Connect this filament's last segment with the first of the next.
+      join_next: True
+      add_links: [[0,2]]        # List of tuples of extra linked segments
+      group: 0                  # All segments will be given this group id
+    - gen_type: line
       nsegs: 100
-      seg_length: .001
-      start_pos: [1,0,0]
-      director: [1,0,0]
-    - type: line
-      nsegs: 100
-      seg_length: .001
-      start_pos: [1,2,0]
-      director: [1,0,0]
-    
+      seg_length: .000001
+      start_pos: [1.0, -0.01, 0.]
+      director: [-1.,0.,0.]
+      add_links: [[50, 149], [49, 150], [48, 151], [47, 152]]
+      join_next: False
+      group: 0

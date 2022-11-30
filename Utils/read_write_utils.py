@@ -108,8 +108,8 @@ class ProteinAscii(Protein):
         """
         data = line.split()
         Protein.__init__(self, int(data[1]), int(data[2]),
-                         list(map(float, data[3:6])),
-                         list(map(float, data[6:9])),
+                         np.asarray(data[3:6], dtype=np.double),
+                         np.asarray(data[6:9], dtype=np.double),
                          int(data[9]), int(data[10]))
 
 
