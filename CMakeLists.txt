@@ -147,6 +147,10 @@ add_custom_command(
     -Doutput_dir="${CMAKE_BINARY_DIR}" -P
     "${CMAKE_SOURCE_DIR}/cmake/gitversion.cmake")
 
+install(TARGETS aLENS.X DESTINATION ${CMAKE_SOURCE_DIR}/Run)
+install(FILES ${CMAKE_BINARY_DIR}/gitversion.txt
+        DESTINATION ${CMAKE_SOURCE_DIR}/Run)
+
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/Run/result
         DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/Run/scripts
