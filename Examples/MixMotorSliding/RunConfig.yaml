@@ -17,7 +17,7 @@ simBoxPBC:
 - false
 - false
 - false
-sylinderColBuf: 1.0
+sylinderColBuf: 0.025
 sylinderDiameter: 0.025
 sylinderDiameterColRatio: 1.0
 sylinderFixed: false
