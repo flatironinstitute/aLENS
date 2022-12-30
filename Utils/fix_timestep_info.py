@@ -24,7 +24,7 @@ def get_final_syl_file(run_dir):
     if not result_dir.exists():
         return False
 
-    # Find the result#-# directory with the largest #
+    # Find the result#-# directory with the largest second number
     result_dirs = [d for d in result_dir.iterdir() if d.is_dir()]
     large_result_dir = max(
         result_dirs, key=lambda x: int(re.findall(r'[0-9]+', x.name)[-1]))
