@@ -39,6 +39,7 @@ class Sylinder():
         self.start_pos = dat[1:4]
         self.end_pos = dat[4:7]
         self.grp_id = data[-1]
+        self.fil_id = None
 
         self.vec = self.end_pos - self.start_pos
 
@@ -48,6 +49,19 @@ class Sylinder():
             self.start_pos[0], self.start_pos[1], self.start_pos[2],
             self.end_pos[0], self.end_pos[1], self.end_pos[2],
             self.grp_id)
+
+    def get_lammps_str_to_write(self, scale_factor=1):
+        atom_type = 1
+        # TODO Haven't implemented fil_id yet
+        molecule_id = self.fil_id if self.fil_id else 1
+
+        return '{0} {1} {2} {3:0.6f} {4:0.6f} {5:0.6f} {6} {7} {8}\n'.format(
+            int(self.gid) + 1, molecule_id, atom_type,
+            self.start_pos[0] * scale_factor,
+            self.start_pos[1] * scale_factor,
+            self.start_pos[2] * scale_factor,
+            0, 0, 0
+        )
 
     def get_com(self):
         return .5 * (self.end_pos + self.start_pos)
@@ -69,6 +83,31 @@ class Particle(Sylinder):
         self.grp_id = grp_id
         self.gid = gid
         self.type = seg_type
+
+
+class Link():
+
+    """Spring-like link between filament"""
+
+    def __init__(self, line):
+        """Initialize with the ids of the two objects to connect
+
+        @param prev_id First object to connect
+        @param next_id Second object to connect
+
+        """
+        data = line.split()
+
+        self._prev_id = int(data[1])
+        self._next_id = int(data[2])
+
+    def get_str_to_write(self):
+        """Return string that defines link"""
+        return f'L {self._prev_id} {self._next_id}\n'
+
+    def get_lammps_str_to_write(self, id: int, bond_type: int = 1):
+        return '{0} {1} {2} {3} \n'.format(
+            id, bond_type, self._prev_id + 1, self._next_id + 1)
 
 
 class Protein():
@@ -122,27 +161,6 @@ class Force():
         self.radius = data[-1]
 
 
-class Link():
-
-    """Spring-like link between filament"""
-
-    def __init__(self, line):
-        """Initialize with the ids of the two objects to connect
-
-        @param prev_id First object to connect
-        @param next_id Second object to connect
-
-        """
-        data = line.split()
-
-        self._prev_id = int(data[1])
-        self._next_id = int(data[2])
-
-    def get_str_to_write(self):
-        """Return string that defines link"""
-        return f'L {self._prev_id} {self._next_id}\n'
-
-
 def read_sylinder_ascii_file(fpath):
     with fpath.open('r') as file1:
         filecontent = file1.readlines()
@@ -175,7 +193,7 @@ def read_links_ascii_file(fpath):
         filecontent[0:2] = []
         # Create list of links
         links = [Link(line) for line in filecontent if line.split()[0] == 'L']
-    return links
+    return sorted(links, key=lambda x: int(x._prev_id))
 
 
 def read_force_file(fpath):

@@ -52,7 +52,8 @@ def get_last_ascii_files(run_dir):
         last_prot_file = result_path / max(list(filter(prot_reg.search, result_zip.namelist())),
                                            key=get_file_num)
     else:
-        result_dirs = [d for d in result_dir.iterdir() if d.is_dir()]
+        result_dirs = [d for d in result_dir.iterdir() if d.is_dir()
+                       and d.name != 'PNG']
         large_result_dir = max(
             result_dirs, key=lambda x: int(re.findall(r'[0-9]+', x.name)[-1]))
         # Within this folder, find the last SylinderAscii_#.dat
@@ -95,8 +96,8 @@ def modify_run_config(root_dir):
         yaml.dump(params, rcf)
 
 
-def main(args):
-    root_dir = Path.cwd()
+def make_last_step_new_init(args):
+    root_dir = args.root_dir
     last_syl_file, last_prot_file = get_last_ascii_files(root_dir)
     if last_syl_file == False:
         raise FileNotFoundError(
@@ -104,7 +105,7 @@ def main(args):
         return
 
     tsi_file = Path('TimeStepInfo.txt')
-    if tsi_file.exists():
+    if tsi_file.exists() and not args.step_info:
         print('Removing TimeStepInfo.txt')
         tsi_file.unlink()
 
@@ -113,22 +114,31 @@ def main(args):
 
     # Copy over files to initial configurations
     if isinstance(last_syl_file, zipfile.Path):
-        with last_syl_file.open('r') as lsf, (root_dir / 'TubuleInitial.dat').open('w') as tid:
+        with last_syl_file.open('r') as lsf, (root_dir / f'TubuleInitial{args.string_append}.dat').open('w') as tid:
             for line in lsf:
                 tid.write(str(line, 'utf-8'))
 
-        with last_prot_file.open('r') as lpf, (root_dir / 'ProteinInitial.dat').open('w') as pid:
+        with last_prot_file.open('r') as lpf, (root_dir / f'ProteinInitial{args.string_append}.dat').open('w') as pid:
             for line in lpf:
                 pid.write(str(line, 'utf-8'))
     else:
-        copy(last_syl_file, root_dir / 'TubuleInitial.dat')
-        copy(last_prot_file, root_dir / 'ProteinInitial.dat')
+        copy(last_syl_file, root_dir / 'TubuleInitialNew.dat')
+        copy(last_prot_file, root_dir / 'ProteinInitialNew.dat')
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-tt', '--time_test', action='store_true',
+                        help='Modify RunConfig.yaml to only run for 100 steps without snapshots for quick timing testing.')
+    parser.add_argument('-si', '--step_info', action='store_true',
+                        help='Keep TimeStepInfo.txt file.')
+    parser.add_argument('--string_append', type=str, default='',
+                        help='Keep TimeStepInfo.txt file.')
+    return parser.parse_args()
 
 
 ##########################################
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-tt', '--time_test', action='store_true',
-                        help='Modify RunConfig.yaml to only run for 100 steps without snapshots for quick timing testing.')
-    args = parser.parse_args()
-    main(args)
+    args = get_args()
+    args.root_dir = Path.cwd()
+    make_last_step_new_init(args)
