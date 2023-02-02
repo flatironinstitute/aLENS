@@ -159,6 +159,44 @@ def saw_initial(start_pos: Sequence[float], end_pos: Sequence[float], length: fl
 
     # return end_pos
 
+def sine_initial(start_pos: Sequence[float], 
+                direction: Sequence[float],
+                end_pos: Sequence[float], 
+                length: float,
+                bead_diam: float, 
+                n_periods: Optional[int] = None,
+                max_curve: Optional[int] = None) -> Sequence[Any]:
+    """ Generate a flexible filament starting and ending at two points of a
+     certain length.
+
+
+    Parameters
+    ----------
+    start_pos : Sequence[float]
+        _description_
+    end_pos : Sequence[float]
+        _description_
+    length : float
+        _description_
+    bead_diam : float
+        _description_
+    n_periods : Optional[int], optional
+        _description_, by default None
+    max_curve : Optional[int], optional
+        _description_, by default None
+
+    Returns
+    -------
+    Sequence[Any]
+        _description_
+    """
+
+    pass
+    # Get length between points
+    # What is going on
+
+    # return end_pos
+
 
 class FilSegment():
 
