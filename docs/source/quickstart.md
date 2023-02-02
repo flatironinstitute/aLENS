@@ -43,8 +43,7 @@ This a _gentle_ introduction to running aLENS on a local computer using docker.
     * `--name`: Gives the container a name to easily identify what the container is for and access its command line later interface (CLI) later. 
     * `-dit`:  Combined shorthand options of `--detach`, `--interactive`, and `--tty`. This essentially runs the container perpetually in the background until you manually stop it. While it is running, you can interact with it through a terminal -- originally called a TeleTYpe (TTY) for historical reasons.
 
-You now have access to an environment that can run aLENS but will create data
-files on your local computer.
+You now have access to an environment that can run aLENS but will create data files on your local computer.
 
 ## Running aLENS inside docker containter
 
@@ -87,7 +86,7 @@ files on your local computer.
     ```bash
     ./aLENS.X
     # or to control the number of cores used
-    OMP_NUM_THREADS=<number_of_cores> ./aLENS.X
+    OMP_NUM_THREADS=<number_of_cores> ./aLENS.
     ```
 
 8.  Stop the run by pressing `[ctrl+c]`
