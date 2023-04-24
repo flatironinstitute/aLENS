@@ -23,12 +23,22 @@ def main():
     args.step_info = True
     args.string_append = 'New'
 
+    # Try to find the correct result paths
+    result_paths = list(root_dir.glob(r'**/result.zip'))
+    if len(result_paths) == 0:
+        result_paths = list(root_dir.glob(r'**/result/'))
+    if len(result_paths) == 0:
+        raise FileNotFoundError(
+            'No result files/folders were found. May need to switch from "result.zip" to "result" to find the correct files.')
+        return
+
     # Create new init files from the last configuration
-    for result_path in root_dir.glob('**/result(|.zip)'):
+    for result_path in result_paths:
         sd_dir = result_path.parent
-        print(sd_dir)
+        print(result_path)
         args.root_dir = sd_dir
         make_last_step_new_init(args)
+        found_result_files = True
 
     try:
         # Copy over run folder  (skipping result.zip and result directories)
@@ -36,10 +46,13 @@ def main():
                          "-avz",
                          "--exclude=*.log*",
                          "--exclude=*result*",
+                         "--exclude=*analysis*",
                          "--exclude=*.out*",
+                         "--exclude=*.err*",
                          "--exclude=*.h5*",
                          "--exclude=*TimeStepInfo.txt*",
                          "--exclude=*disbatch_files*",
+                         "--exclude=*TubuleInitial.dat*",
                          str(root_dir) + '/',
                          str(targ_dir)])
 
