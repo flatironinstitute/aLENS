@@ -23,9 +23,9 @@ sylinderNumber: 9700
 sylinderLength: 0.25 # um
 sylinderLengthSigma: 0 # logNormal distribution
 sylinderDiameter: 0.025 # um
-sylinderColBuf: 1.0 #
-sylinderDiameterColRatio: 1.0
-sylinderLengthColRatio: 1.0
+sylinderColBuf: .025 # um Same as sylinderDiameter
+sylinderDiameterColRatio: 1.0 #
+sylinderLengthColRatio: 1.0 #
 # timestepping
 dt: 0.00001 # s
 timeTotal: 50.0 # s
