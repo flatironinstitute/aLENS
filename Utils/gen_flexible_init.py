@@ -12,7 +12,7 @@ import argparse
 from pathlib import Path
 import numpy as np
 from copy import deepcopy
-from read_write_utils import gen_id
+from read_write_utils import gen_id, read_sylinder_ascii_file, read_protein_ascii_file, read_links_ascii_file
 from typing import Sequence, Any, Optional
 
 
@@ -159,13 +159,14 @@ def saw_initial(start_pos: Sequence[float], end_pos: Sequence[float], length: fl
 
     # return end_pos
 
-def sine_initial(start_pos: Sequence[float], 
-                direction: Sequence[float],
-                end_pos: Sequence[float], 
-                length: float,
-                bead_diam: float, 
-                n_periods: Optional[int] = None,
-                max_curve: Optional[int] = None) -> Sequence[Any]:
+
+def sine_initial(start_pos: Sequence[float],
+                 direction: Sequence[float],
+                 end_pos: Sequence[float],
+                 length: float,
+                 bead_diam: float,
+                 n_periods: Optional[int] = None,
+                 max_curve: Optional[int] = None) -> Sequence[Any]:
     """ Generate a flexible filament starting and ending at two points of a
      certain length.
 
@@ -423,12 +424,26 @@ def main(opts):
     fname = "TubuleInitial.dat"
     # Initialize keys of global parameters
     set_default_parameters(opts.params['global_parameters'], GLOBAL_PARAM_KEYS)
-    gen_gid = gen_id()
 
     with open(fname, 'w') as f:
         f.write('# Initial configuration of rods\n#\n')
         seg_str = ""
         link_str = ""
+
+        # Check for old data file to copy over
+        if "data_file" in opts.params:
+            data_path = Path(opts.params['data_file'])
+            segments = read_sylinder_ascii_file(data_path)
+            links = read_links_ascii_file(data_path)
+            max_segment = max([int(seg.gid) for seg in segments])
+            # Write segments to data file
+            for seg in segments:
+                seg_str += seg.get_str_to_write()
+            for link in links:
+                link_str += link.get_str_to_write()
+            gen_gid = gen_id(int(max_segment)+1)
+        else:
+            gen_gid = gen_id()
         start_pos = None
         for i, fil_params in enumerate(opts.params['filaments']):
             if (start_pos is not None and
@@ -437,13 +452,6 @@ def main(opts):
             set_default_parameters(fil_params,
                                    opts.params['global_parameters'],
                                    check_for_none=True)
-            # fil = FlexFilament(fil_params['start_pos'],
-            #                    fil_params['director'],
-            #                    fil_params['radius'],
-            #                    fil_params['seg_length'],
-            #                    fil_params['nsegs'],
-            #                    int(fil_params.get('group', 0)),
-            #                    fil_params['type'])
 
             print(f'### Making filament {i}')
             fil = FlexFilament(**fil_params)

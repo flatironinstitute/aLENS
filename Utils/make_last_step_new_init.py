@@ -133,7 +133,7 @@ def get_args():
     parser.add_argument('-si', '--step_info', action='store_true',
                         help='Keep TimeStepInfo.txt file.')
     parser.add_argument('--string_append', type=str, default='',
-                        help='Keep TimeStepInfo.txt file.')
+                        help='String to append to the end of new file.')
     return parser.parse_args()
 
 
