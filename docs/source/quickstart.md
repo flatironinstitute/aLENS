@@ -19,53 +19,69 @@ This a _gentle_ introduction to running aLENS on a local computer using docker.
 
 ## Creating a container
 
-1. Open [docker desktop](https://www.docker.com/blog/getting-started-with-docker-desktop/)
-2. Pull latest docker image
+<!-- 1. Open [docker desktop](https://www.docker.com/blog/getting-started-with-docker-desktop/) -->
+
+<!-- TODO Make overview for dockerhub image -->
+1. Pull latest docker image from [dockerhub](https://hub.docker.com/r/lamsoa729/alens)
 
    ```bash
    docker pull lamsoa729/alens:latest
    ```
 
-3. Make a folder to put your simulation data in on your local
+1. Make a folder to access your simulation data stored generated in docker container
 
    ```bash
    mkdir my_alens_data; cd my_alens_data
    ```
 
-4. In docker desktop, create a new container and link the containter to the recently created data folder
-   - Container name: alens
-   - Host path: `<path/to/my_alens_data>`
-   - Container path: `/root/Run`
+1. Create and run a docker container from the image pulled from dockerhub
+   ```bash
+   docker run --volume=<path/to/my_alens_data>:/root/Run --name alens -dit lamsoa729/alens:latest
+   ```
+    replacing `<path/to/my_alens_data>` with the path to the directory made in the previous step. For completeness, here are the descriptions of the used options:
+    * `--volume`: option mounts the containers `/root/Run` directory to your local machines `<path/to/my_alens_data>` folder so you can interact with data from your local machine. This is useful for playing with visualizations and post-processing of data without increasing the size or memory usage of the container. 
+    * `--name`: Gives the container a name to easily identify what the container is for and access its command line later interface (CLI) later. 
+    * `-dit`:  Combined shorthand options of `--detach`, `--interactive`, and `--tty`. This essentially runs the container perpetually in the background until you manually stop it. While it is running, you can interact with it through a terminal -- originally called a TeleTYpe (TTY) for historical reasons.
 
-<!--TODO Get screenshot of doing this -->
-
-You now have access to an environment that can run aLENS but will create data
-files on your local computer.
+You now have access to an environment that can run aLENS but will create data files on your local computer.
 
 ## Running aLENS inside docker containter
 
-1.  Open a command line interface (CLI) to your docker image using docker desktop
-    and go to the `Run` directory
+1.  To open a CLI with your docker container, you can either use your native terminal or docker desktop's GUI. 
+ 
+    * For native terminal
+  
+      ```bash
+      docker exec -it alens /bin/bash
+      ```
+    * For docker desktop, click the running `alens` container while in the containers section
+      ![Screen Shot 2022-11-14 at 5.08.59 PM.png](images/Screenshot_2023-02-02_at_1.58.11_PM.png)
+      then click the `terminal` tab in the upper middle of the window 
+      ![Screen Shot 2022-11-14 at 5.08.59 PM.png](images/Screenshot_2023-02-02_at_1.59.13_PM.png)
+    
+    You may treat this CLI just like any terminal that is connected to a remote server. 
+
+4.  From this CLI, navigate to the `Run` directory
     ```bash
     cd /root/Run 
     ```
-    <!--TODO Get screenshot of doing this -->
-1.  While in the CLI, copy example to data folder
+
+5.  While still in the CLI, copy the example configuration to the data folder
 
     ```bash
     cp -r ~/aLENS/Examples/MixMotorSliding .
     cd MixMotorSliding
     ```
 
-1.  Copy of the contents of `Run` template directory from aLENS.
+6.  Copy the contents of the `Run` template directory from aLENS to the data folder as well
 
     ```bash
     cp -r ~/aLENS/Run/* .
     ```
 
-    You should now see an `aLENS.X` executable in this directory along with `result` and `script` directories containing useful scripts processing, storing, and cleaning up generated files.
+    You should now see an `aLENS.X` executable in this directory along with `result` and `script` directories containing useful scripts for processing, storing, and cleaning up generated files.
 
-1.  Execute run
+7.  Run _aLENS_
 
     ```bash
     ./aLENS.X
@@ -73,12 +89,12 @@ files on your local computer.
     OMP_NUM_THREADS=<number_of_cores> ./aLENS.
     ```
 
-1.  Stop run by pressing `[ctrl+c]`
-1.  Execute run again as we did in step 4. Notice that the aLENS simulation continues from the last snapshot. This is a very useful restart feature for longer runs.
+8.  Stop the run by pressing `[ctrl+c]`
+9.  Execute run again as we did in step 4. Notice that the aLENS simulation continues from the last snapshot. This is a very useful restart feature for longer runs.
 
 ## Parameter and initial configuration files
 
-The executable aLENS.X reads 2 input files (4 if specifying starting object configurations):
+The executable `aLENS.X` reads 2 input files (4 if specifying starting object configurations):
 
 - `RunConfig.yaml` specifies simulation parameters for the system and rod-like objects (sylinders).
 - `ProteinConfig.yaml` specifies types and parameter of crosslinking and motor objects (proteins).
