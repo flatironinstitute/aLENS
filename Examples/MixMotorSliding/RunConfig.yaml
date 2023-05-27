@@ -17,7 +17,7 @@ simBoxPBC:
 - false
 - false
 - false
-sylinderColBuf: 1.0
+sylinderColBuf: 0.025
 sylinderDiameter: 0.025
 sylinderDiameterColRatio: 1.0
 sylinderFixed: false
@@ -26,7 +26,7 @@ sylinderLengthColRatio: 1.0
 sylinderLengthSigma: 0
 sylinderNumber: 4000
 dt: 1.0e-05
-timeSnap: 0.01
-timeTotal: 10.0
+timeSnap: 0.001
+timeTotal: 1.0
 timerLevel: 3
 viscosity: 1.0

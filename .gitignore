@@ -23,9 +23,10 @@ Treedump*
 # postprocessing files
 **.mtx
 **.png
+!docs/source/images/*.png
 **.log
 **.mp4
-**.pvsm
+# **.pvsm
 **.csv
 **temp**.txt
 **record**.txt
@@ -52,4 +53,5 @@ doc/
 **.**vd
 **SylinderAscii*
 **ProteinAscii*
+**test_lmps/
 
