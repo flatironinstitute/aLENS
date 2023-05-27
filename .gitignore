@@ -36,6 +36,7 @@ cmake-release.sh
 cmake-debug.sh
 
 # other files
+**.DS_Store
 **core.*
 doc/
 **.pdf
