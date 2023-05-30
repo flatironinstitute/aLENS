@@ -38,11 +38,3 @@ conMaxIte: 100000
 conSolverChoice: 0
 # confinement
 boundaries:
-  #- type: "sphere"
-    #center: [100, 100, 100]
-    #radius: 5.102
-    #inside: true
-  #- type: "sphere"
-    #center: [100, 100, 100]
-    #radius: 5.0
-    #inside: false

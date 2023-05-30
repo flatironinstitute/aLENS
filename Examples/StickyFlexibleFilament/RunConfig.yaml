@@ -25,11 +25,11 @@ sylinderLengthColRatio: 1.0 # Set to zero to turn of collisions
 sylinderLengthSigma: 0 # logNormal distribution
 sylinderDiameter: 0.02 # um (Between 10-30 nm)
 sylinderDiameterColRatio: 1.0
-sylinderColBuf: 1.0 #
+sylinderColBuf: 0.02 # um Same as sylinderDiameter
 sylinderFixed: false
 # timestepping
 dt: .0001 # s
-timeTotal: 1. # s 
+timeTotal: 1. # s
 timeSnap: .001 # s
 # Constraint Solver
 conResTol: 1e-5
