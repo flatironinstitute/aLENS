@@ -15,11 +15,11 @@ Installation of aLENS_analysis
     conda create env -f environment.yml
     #or
     conda create env -n alens 
-    conda install numpy h5py scipy matplotlib vtk pyyaml numba
+    conda install pytorch nomkl scikit-learn numpy h5py scipy matplotlib vtk pyyaml numba tqdm toml jupyterlab
     #or
-    python3 -m venv /path/to/new/virtual/environment
-    source my_venv/bin/activate
-    pip install numpy h5py scipy matplotlib vtk pyyaml numba
+    python3 -m venv </path/to/new/virtual/environment>
+    source </path/to/new/virtual/environment>/bin/activate
+    pip install pytorch nomkl scikit-learn numpy h5py scipy matplotlib vtk pyyaml numba tqdm toml jupyterlab
 #. Then install the alens_analysis::
 
     pip install -e .

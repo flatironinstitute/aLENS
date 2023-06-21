@@ -9,8 +9,8 @@ monolayer: false
 # initialization box
 initBoxLow: [0.0, 0.0, 0.0]
 initBoxHigh: [3.0, 1.0, 1.0]
-# components < -1  or > 1 will be randomly set
-initOrient: [2, 0, 0]
+initCircularX: false
+initPreSteps: 0 # Number of steps to run before the first snapshot
 # physical settings
 viscosity: 1.0 #pN/(um^2.s)
 KBT: -0.00411 #pN.um, 300K
@@ -24,6 +24,7 @@ sylinderDiameter: 0.025 # um
 sylinderColBuf: 0.025 # um Same as sylinderDiameter
 sylinderDiameterColRatio: 1.0
 sylinderLengthColRatio: 1.0
+initOrient: [2, 0, 0] # components < -1  or > 1 are randomly assigned
 # timestepping
 dt: 0.0001 # s
 timeTotal: 30.0 # s
@@ -38,5 +39,3 @@ boundaries:
     radius: 0.5
     axis: [1, 0, 0]
     inside: true
-
-
