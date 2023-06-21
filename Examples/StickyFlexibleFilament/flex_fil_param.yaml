@@ -1,14 +1,16 @@
 global_parameters: # All filaments will use these unless specified in filament list
-    radius: .01 # 10 nm radius for filament
-    sys_dim: [.5,.5,.5] # Dimensions of system
-
+  radius: .01 # 10 nm radius for filament
+  sys_dim: [.5, .5, .5] # Dimensions of system
+  link_gap: .0002 # Gap between sylinders connected by link (um)
 
 filaments:
-    - gen_type: line
-      nsegs: 200
-      seg_length: .000001
-      start_pos: [-2.0, 0.01, 0.]
-      director: [1.,0.,0.]
-      #stat_segs: []
-      join_next: False
-      group: 0
+  - gen_type:
+      line # Type of generated lines options are:
+      #     line, hilbert, crowder, and random_walk
+    nsegs: 100 # Number of segments in the line
+    seg_length: .000001 # Length of segments. Smaller than 2x radius = sphere
+    start_pos: [0., 0.01, 0.] # Starting position of line
+    director: [1., 0., 0.] # Director of the starting position
+    stat_segs: [0] # GIDs of segments that will not move
+    join_next: False # If true, the next filament will be joined to this one
+    group: 0 # All segments will be given this group id

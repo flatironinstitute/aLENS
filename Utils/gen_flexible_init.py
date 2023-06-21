@@ -126,38 +126,6 @@ def hilbert_3d(s, i, pos_arr, cur_pos, dr1, dr2, dr3):
     return i
 
 
-def saw_initial(start_pos: Sequence[float], end_pos: Sequence[float], length: float,
-                bead_diam: float, n_periods: Optional[int] = None,
-                max_curve: Optional[int] = None) -> Sequence[Any]:
-    """ Generate a flexible filament starting and ending at two points of a
-     certain length.
-
-
-    Parameters
-    ----------
-    start_pos : Sequence[float]
-        _description_
-    end_pos : Sequence[float]
-        _description_
-    length : float
-        _description_
-    bead_diam : float
-        _description_
-    n_periods : Optional[int], optional
-        _description_, by default None
-    max_curve : Optional[int], optional
-        _description_, by default None
-
-    Returns
-    -------
-    Sequence[Any]
-        _description_
-    """
-    pass
-    # Get length between points
-    # What is going on
-
-    # return end_pos
 
 
 def sine_initial(start_pos: Sequence[float],
@@ -197,6 +165,36 @@ def sine_initial(start_pos: Sequence[float],
     # What is going on
 
     # return end_pos
+
+
+def spiral_initial(start_pos: Sequence[float], 
+                   direction: Sequence[float],
+                   seg_length: float,
+                   n_segments: int, 
+                   end_sep: float=5,  # Separation between start and end points
+                   n_periods: int=1,
+                   **kwargs):
+    """ Generate a flexible filament starting and ending at two points creating a spiral in between.
+    """
+    chain_length = seg_length * n_segments
+    freq = np.pi * 2 * n_periods / (n_segments-1)
+    amp = np.sqrt((chain_length**2) - (end_sep**2)) / (2 * np.pi * n_periods)
+
+    get_pos = lambda x: start_pos + np.array([amp*np.cos(freq*x), -amp*np.sin(freq*x), float(end_sep*x/n_segments)])
+
+    pos_arr = []
+    direct_arr = []
+    for i in range(n_segments):
+        pos_arr += [get_pos(i)]
+        # direct_arr += [get_direct(i)]
+    
+    pos_arr = np.array(pos_arr)
+    # Make direction array
+    direct_arr = np.diff(pos_arr, axis=0)
+    direct_arr /= np.linalg.norm(direct_arr, axis=1)[:,None]    
+    direct_arr = np.concatenate([direct_arr, [direct_arr[-1]]], axis=0)
+
+    return pos_arr, direct_arr
 
 
 class FilSegment():
@@ -252,7 +250,6 @@ class FlexFilament():
         self.director = normalize(director)
         self.seg_length = seg_length
         self.radius = radius
-        # self.epsilon = 2. * self.radius * .01
         self.epsilon = 2. * self.radius + link_gap
         self.nsegs = nsegs
         self.grp_id = group  # defined outisde the classv
@@ -267,6 +264,7 @@ class FlexFilament():
         self.segs = []
         self.links = []
 
+
     def make_flex_fil(self, id_gen):
         """Create a string of sylinder strings to write to file
 
@@ -277,9 +275,12 @@ class FlexFilament():
         if self.type == 'crowder':
             self.make_crowders(id_gen)
             return
-
-        if self.type == "hilbert":
+        elif self.type == "hilbert":
             direct_arr = self.get_hilbert_arr()
+        elif self.type == "spiral":
+            pos_arr, director_arr = spiral_initial(self.start_pos, self.director,
+                                                    self.seg_length + self.epsilon,
+                                                    self.nsegs, **self.kwargs)
 
         for i in range(self.nsegs):
             gid = next(id_gen)
@@ -287,11 +288,15 @@ class FlexFilament():
 
             # Cases for different types of filament generation schemes
             if self.type == "random_walk":
-                self.director = self.get_random_vec()
+                director = self.get_random_vec()
             elif self.type == "hilbert" and i < self.nsegs - 1:
-                self.director = direct_arr[i, :]
+                director = direct_arr[i, :]
+            elif self.type == "spiral":
+                end_pos = pos_arr[i]
+                director = director_arr[i]
 
-            self.segs += [FilSegment(self.end_pos, self.director,
+            # Create new segment using the director and end position
+            self.segs += [FilSegment(end_pos, director,
                                      self.seg_length, self.radius,
                                      self.grp_id, gid, seg_type)]
 
@@ -301,8 +306,8 @@ class FlexFilament():
 
             prev_id = gid
 
-            # Add small separation from last segment.
-            self.end_pos += (self.seg_length + self.epsilon) * self.director
+            # Add small separation from last segment. This will get overwritten by spiral
+            self.end_pos += (self.seg_length + self.epsilon) * director
 
         # Additional links
         for link in self.extra_links:
@@ -312,9 +317,11 @@ class FlexFilament():
         # next filament
         if self.kwargs.get('join_next', False):
             self.links += [Links(prev_id, prev_id + 1)]
+
         print(f'Start position: {self.start_pos}')
+        self.end_pos = list(self.segs[-1].end_pos)
         print(
-            f'End position: {list(self.segs[-1].end_pos)}')
+            f'End position: {self.end_pos}')
 
     def make_crowders(self, id_gen):
         """Make crowding particles inside of sphere
@@ -326,10 +333,10 @@ class FlexFilament():
         for i in range(self.nsegs):
             gid = next(id_gen)
             seg_type = 'S' if gid in self.stat_segs else 'C'
-            self.director = self.get_random_vec()  # Put on surface of sphere to start
-            self.end_pos = sys_rad * self.get_random_vec()
+            director = self.get_random_vec()  # Put on surface of sphere to start
+            start_pos = sys_rad * self.get_random_vec()
 
-            self.segs += [FilSegment(self.end_pos, self.director,
+            self.segs += [FilSegment(start_pos, director,
                                      self.seg_length, self.radius,
                                      self.grp_id, gid, seg_type)]
 
