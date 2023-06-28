@@ -100,7 +100,7 @@ def hilbert_3d(s, i, pos_arr, cur_pos, dr1, dr2, dr3):
         return i + 1
 
     s = np.floor(s / 2)
-    assert(s >= 1)
+    assert (s >= 1)
 
     cur_pos_ = np.copy(cur_pos)
     dr1_ = np.copy(dr1)
@@ -124,8 +124,6 @@ def hilbert_3d(s, i, pos_arr, cur_pos, dr1, dr2, dr3):
     i = hilbert_3d(s, i, pos_arr, cur_pos_ + s * dr3_,
                    dr2_, -dr3_, -dr1_)
     return i
-
-
 
 
 def sine_initial(start_pos: Sequence[float],
@@ -167,12 +165,12 @@ def sine_initial(start_pos: Sequence[float],
     # return end_pos
 
 
-def spiral_initial(start_pos: Sequence[float], 
+def spiral_initial(start_pos: Sequence[float],
                    direction: Sequence[float],
                    seg_length: float,
-                   n_segments: int, 
-                   end_sep: float=5,  # Separation between start and end points
-                   n_periods: int=1,
+                   n_segments: int,
+                   end_sep: float = 5,  # Separation between start and end points
+                   n_periods: int = 1,
                    **kwargs):
     """ Generate a flexible filament starting and ending at two points creating a spiral in between.
     """
@@ -180,18 +178,21 @@ def spiral_initial(start_pos: Sequence[float],
     freq = np.pi * 2 * n_periods / (n_segments-1)
     amp = np.sqrt((chain_length**2) - (end_sep**2)) / (2 * np.pi * n_periods)
 
-    get_pos = lambda x: start_pos + np.array([amp*np.cos(freq*x), -amp*np.sin(freq*x), float(end_sep*x/n_segments)])
+    def get_pos(x): return start_pos + \
+        np.array([float(end_sep*x/n_segments),
+                  amp * np.cos(freq*x),
+                  -amp*np.sin(freq*x)])
 
     pos_arr = []
     direct_arr = []
     for i in range(n_segments):
         pos_arr += [get_pos(i)]
         # direct_arr += [get_direct(i)]
-    
+
     pos_arr = np.array(pos_arr)
     # Make direction array
     direct_arr = np.diff(pos_arr, axis=0)
-    direct_arr /= np.linalg.norm(direct_arr, axis=1)[:,None]    
+    direct_arr /= np.linalg.norm(direct_arr, axis=1)[:, None]
     direct_arr = np.concatenate([direct_arr, [direct_arr[-1]]], axis=0)
 
     return pos_arr, direct_arr
@@ -278,8 +279,8 @@ class FlexFilament():
             direct_arr = self.get_hilbert_arr()
         elif self.type == "spiral":
             pos_arr, director_arr = spiral_initial(self.start_pos, self.director,
-                                                    self.seg_length + self.epsilon,
-                                                    self.nsegs, **self.kwargs)
+                                                   self.seg_length + self.epsilon,
+                                                   self.nsegs, **self.kwargs)
 
         for i in range(self.nsegs):
             gid = next(id_gen)
