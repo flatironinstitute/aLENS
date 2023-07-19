@@ -1,0 +1,35 @@
+# Program settings
+rngSeed: 1234
+logLevel: 3
+timerLevel: 3
+# Time stepping
+dt: 1.0e-05
+timeSnap: 0.001
+timeTotal: 1.0
+# Simulation box
+simBoxHigh: [20.0, 1.0, 1.0]
+simBoxLow: [0.0, 0.0, 0.0]
+simBoxPBC: [false, false, false] # Periodic boundary condition
+monolayer: false # Hold in a plane
+# Initialization box
+initBoxHigh: [20.0, 1.0, 1.0]
+initBoxLow: [0.0, 0.0, 0.0]
+initPreSteps: 0 # Number of steps to run before the first snapshot
+# Physical settings
+viscosity: 1.0
+KBT: -0.00411 #pN.um, any negative value means no thermal noise
+# Collision resolver (LCP) settings
+conMaxIte: 10000
+conResTol: 1e-5
+conSolverChoice: 0
+# Sylinder settings
+sylinderColBuf: 0.025 # um Same as sylinderDiameter
+sylinderDiameterColRatio: 1.0 # Unitless
+sylinderLengthColRatio: 1.0 # Unitless
+## Overwritten if TubuleInitial.dat is specified
+sylinderLength: 0.5 # um
+sylinderLengthSigma: 0 # logNormal distribution
+sylinderFixed: false # Hold sylinders in place
+sylinderDiameter: 0.025 # um
+sylinderNumber: 4000
+initOrient: [2, 0, 0] # components < -1  or > 1 are randomly assigned
