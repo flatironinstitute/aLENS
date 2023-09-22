@@ -819,7 +819,7 @@ void TubuleSystem::setProteinConstraints() {
                 posI.data(),
                 posJ.data(), // location relative to particle center
                 Ploc.data(), Qloc.data(), // location in lab frame
-                false, true, pr.property.kappa, 0.0);
+                false, true, pr.property.kappa);
             Emat3 stressIJ;
             CalcSylinderNearForce::collideStress(
                 directionI, directionJ, centerI, centerJ, //
