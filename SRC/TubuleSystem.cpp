@@ -194,8 +194,8 @@ void TubuleSystem::thermEquilStep(double t) {
         }
 
         // step 2
-        // MTs have moved at the end of the last timestep
-        // MT info should be updated and protein move according to this updated MT
+        // Rods have moved at the end of the last timestep
+        // Rods info should be updated and protein move according to this updated MT
         // configuration
         {
             TimeMonitor mon(*updateProteinMotionTimer);
