@@ -15,11 +15,12 @@ initCircularX: true
 initOrient: [2, 0, 0]
 # physical settings
 viscosity: 1 # pN.s/(um^2)
-KBT: -0.00411 # controls Brownian motion of MT
-extendLinkKappa: 3650 # pN/um (34 bp linker stretched 1.7x to produce 70pN)
-extendLinkGap: .0002 # um .01 diameter
+KBT: 0.00411 # controls Brownian motion of MT
+# extendLinkKappa: 3650 # pN/um (34 bp linker stretched 1.7x to produce 70pN)
+extendLinkKappa: 30 # pN/um 
+extendLinkGap: .0002 # um .02 diameter
 bendLinkKappa: [300, 300, 300] # pN/rad
-tribendLinkKappa: [300, 300, 300] # pN/rad
+tribendLinkKappa: [3, 3, 3] # pN/rad
 preferredCurvature: [0, 0, 0] # 1/um
 # tubule
 sylinderNumber: 1000 # Not used because of filament initialization
@@ -31,16 +32,16 @@ sylinderDiameterColRatio: 0.0 # Set to zero to turn of collisions
 sylinderColBuf: 0.02 # Same as bead diameter
 sylinderFixed: false
 # timestepping
-dt: .0001 # s
-timeTotal: .01 # s
-timeSnap: .0001 # s
+dt: .00001 # s
+timeTotal: 1. # s
+timeSnap: .001 # s
 thermEquilTime: 0
-initPreSteps: 10
+initPreSteps: 0
 # Constraint Solver
 conResTol: 1e-5
 conMaxIte: 1000000
 conSolverChoice: 0
-logLevel: 1
+logLevel: 3
 timerLevel: 3
 boundaries:
   #- type: "sphere"
