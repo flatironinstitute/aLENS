@@ -1,0 +1,48 @@
+# program settings
+rngSeed: 1234
+#rngSeed: ChiParam(format_str = "s{:d}", paramtype=int, values=[1,2,3,4,5,6,7,8])
+# simulation box
+simBoxLow: [-1.0, -1.0, -1.0]
+simBoxHigh: [120.0, 120.0, 120.0]
+simBoxPBC: [false, false, false]
+monolayer: false
+# initialization box
+initBoxLow: [-5.0, -5.0, -5.0]
+initBoxHigh: [5.0, 5.0, 5.0]
+# initialization inside a circle along X direction
+initCircularX: true
+# components < -1  or > 1 will be randomly set
+initOrient: [2, 0, 0]
+# physical settings
+viscosity: 1 # pN.s/(um^2)
+KBT: 0.00411 # controls Brownian motion of MT
+linkKappa: 3650 # pN/um (34 bp linker stretched 1.7x to produce 70pN)
+linkGap: .0002 # um .01 diameter
+# tubule
+sylinderNumber: 1000 # Not used because of filament initialization
+sylinderLength: 0.0 # um Sphere has no length
+sylinderLengthColRatio: 1.0 # Set to zero to turn of collisions
+sylinderLengthSigma: 0 # logNormal distribution
+sylinderDiameter: 0.02 # um (Between 10-30 nm)
+sylinderDiameterColRatio: 1.0
+sylinderColBuf: 1.0 #
+sylinderFixed: false
+# equilibration step
+thermEquilTime: 0.0
+# thermEquilTime: 0.01
+# timestepping
+dt: .0001 # s
+timeTotal: 1. # s
+timeSnap: .001 # s
+# Constraint Solver
+conResTol: 1e-5
+conMaxIte: 1000000
+conSolverChoice: 0
+logLevel: 3
+timerLevel: 3
+boundaries:
+  #- type: "sphere"
+  #  center: [0., 0., 0.]
+  #  radius: .5
+  #  #radius: ChiParam(format_str = "cR{:.2g}", paramtype=float, values=[.25, .5, 1., 2., 4.])
+  #  inside: true
