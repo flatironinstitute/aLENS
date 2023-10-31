@@ -98,7 +98,7 @@ struct ProteinType {
         readConfig(p, VARNAME(eps), eps, "");
 
         // array[2]
-        readConfig(p, VARNAME(vmax), vmax, 2, "");
+        readVariableConfig(p, VARNAME(vmax), vmax, 2, "");
         // vmaxAP is optional
         // if not exist in yaml file, vmaxAP=vmax
         vmaxAP[0] = vmax[0];
@@ -108,13 +108,13 @@ struct ProteinType {
         // if not exist in yaml file, set to false
         vdrag[0] = false;
         vdrag[1] = false;
-        readConfig(p, VARNAME(vdrag), vdrag, 2, "", true); // optional
-        readConfig(p, VARNAME(diffBoundS), diffBoundS, 2, "");
-        readConfig(p, VARNAME(diffBoundD), diffBoundD, 2, "");
-        readConfig(p, VARNAME(Ka), Ka, 2, "");
-        readConfig(p, VARNAME(Ke), Ke, 2, "");
-        readConfig(p, VARNAME(ko_s), ko_s, 2, "");
-        readConfig(p, VARNAME(ko_d), ko_d, 2, "");
+        readVariableConfig(p, VARNAME(vdrag), vdrag, 2, "", true); // optional
+        readVariableConfig(p, VARNAME(diffBoundS), diffBoundS, 2, "");
+        readVariableConfig(p, VARNAME(diffBoundD), diffBoundD, 2, "");
+        readVariableConfig(p, VARNAME(Ka), Ka, 2, "");
+        readVariableConfig(p, VARNAME(Ke), Ke, 2, "");
+        readVariableConfig(p, VARNAME(ko_s), ko_s, 2, "");
+        readVariableConfig(p, VARNAME(ko_d), ko_d, 2, "");
         // Convert from inverse molarity to inverse number density (um^3)
         Ka[0] /= 602;
         Ka[1] /= 602;

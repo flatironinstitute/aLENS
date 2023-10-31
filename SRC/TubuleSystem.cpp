@@ -194,8 +194,8 @@ void TubuleSystem::thermEquilStep(double t) {
         }
 
         // step 2
-        // MTs have moved at the end of the last timestep
-        // MT info should be updated and protein move according to this updated MT
+        // Rods have moved at the end of the last timestep
+        // Rods info should be updated and protein move according to this updated MT
         // configuration
         {
             TimeMonitor mon(*updateProteinMotionTimer);
@@ -819,7 +819,7 @@ void TubuleSystem::setProteinConstraints() {
                 posI.data(),
                 posJ.data(), // location relative to particle center
                 Ploc.data(), Qloc.data(), // location in lab frame
-                false, true, pr.property.kappa, 0.0);
+                false, true, pr.property.kappa);
             Emat3 stressIJ;
             CalcSylinderNearForce::collideStress(
                 directionI, directionJ, centerI, centerJ, //

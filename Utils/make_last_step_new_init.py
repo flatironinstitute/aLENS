@@ -18,7 +18,7 @@ import re
 from glob import glob
 
 
-def get_file_num(f):
+def get_file_number(f):
     if isinstance(f, str):
         return int(re.findall(r'\d+', f)[-1])
 
@@ -46,11 +46,11 @@ def get_last_ascii_files(run_dir):
     if is_zip:
         sy_reg = re.compile(r'.*SylinderAscii.*.dat')
         last_syl_file = result_path / max(list(filter(sy_reg.search, result_zip.namelist())),
-                                          key=get_file_num)
+                                          key=get_file_number)
 
         prot_reg = re.compile(r'.*ProteinAscii.*.dat')
         last_prot_file = result_path / max(list(filter(prot_reg.search, result_zip.namelist())),
-                                           key=get_file_num)
+                                           key=get_file_number)
     else:
         result_dirs = [d for d in result_dir.iterdir() if d.is_dir()
                        and d.name != 'PNG']
@@ -58,13 +58,13 @@ def get_last_ascii_files(run_dir):
             result_dirs, key=lambda x: int(re.findall(r'[0-9]+', x.name)[-1]))
         # Within this folder, find the last SylinderAscii_#.dat
         last_syl_file = max(large_result_dir.glob('SylinderAscii_*.dat'),
-                            key=get_file_num)
+                            key=get_file_number)
 
         last_prot_file = max(large_result_dir.glob('ProteinAscii_*.dat'),
-                             key=get_file_num)
+                             key=get_file_number)
 
-    syl_snap_num = get_file_num(last_syl_file)
-    prot_snap_num = get_file_num(last_prot_file)
+    syl_snap_num = get_file_number(last_syl_file)
+    prot_snap_num = get_file_number(last_prot_file)
     if syl_snap_num != prot_snap_num:
         raise AssertionError(
             'Snapshot numbers of sylinder and protein files do not match.')

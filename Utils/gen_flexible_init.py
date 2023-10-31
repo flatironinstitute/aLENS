@@ -242,7 +242,7 @@ class Links():
 
     def get_str_to_write(self):
         """Return string that defines link"""
-        return f'L {self._prev_id} {self._next_id}\n'
+        return f'E {self._prev_id} {self._next_id}\n'
 
 
 class FlexFilament():
