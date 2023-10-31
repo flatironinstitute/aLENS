@@ -74,6 +74,9 @@ filaments:
                                      )
     parser.add_argument("input",
                         help="Initial condition parameter yaml file.")
+    parser.add_argument("-d", "--directory", type=Path, default=Path.cwd(),
+                        help="Directory to add initial file to. "
+                        "Default is current working directory")
     opts = parser.parse_args()
 
     param_path = Path(opts.input)
@@ -175,13 +178,13 @@ def spiral_initial(start_pos: Sequence[float],
     """ Generate a flexible filament starting and ending at two points creating a spiral in between.
     """
     chain_length = seg_length * n_segments
-    freq = np.pi * 2 * n_periods / (n_segments-1)
+    freq = np.pi * 2 * n_periods / (n_segments - 1)
     amp = np.sqrt((chain_length**2) - (end_sep**2)) / (2 * np.pi * n_periods)
 
     def get_pos(x): return start_pos + \
-        np.array([float(end_sep*x/n_segments),
-                  amp * np.cos(freq*x),
-                  -amp*np.sin(freq*x)])
+        np.array([float(end_sep * x / n_segments),
+                  amp * np.cos(freq * x),
+                  -amp * np.sin(freq * x)])
 
     pos_arr = []
     direct_arr = []
@@ -306,7 +309,8 @@ class FlexFilament():
 
             prev_id = gid
 
-            # Add small separation from last segment. This will get overwritten by spiral
+            # Add small separation from last segment. This will get overwritten
+            # by spiral
             self.end_pos += (self.seg_length + self.epsilon) * director
 
         # Additional links
@@ -423,16 +427,16 @@ def set_default_parameters(params, default_params, check_for_none=False):
                 f"Parameter '{key}' not initialized globally or locally.")
 
 
-def main(opts):
+def gen_flexible_init(opts):
     """Main loop for generating flexible filaments
     @return: TODO
 
     """
-    fname = "TubuleInitial.dat"
+    fname = opts.directory / "TubuleInitial.dat"
     # Initialize keys of global parameters
     set_default_parameters(opts.params['global_parameters'], GLOBAL_PARAM_KEYS)
 
-    with open(fname, 'w') as f:
+    with fname.open('w') as f:
         f.write('# Initial configuration of rods\n#\n')
         seg_str = ""
         link_str = ""
@@ -448,7 +452,7 @@ def main(opts):
                 seg_str += seg.get_str_to_write()
             for link in links:
                 link_str += link.get_str_to_write()
-            gen_gid = gen_id(int(max_segment)+1)
+            gen_gid = gen_id(int(max_segment) + 1)
         else:
             gen_gid = gen_id()
         start_pos = None
@@ -482,4 +486,4 @@ def main(opts):
 ##########################################
 if __name__ == "__main__":
     opts = parse_args()
-    main(opts)
+    gen_flexible_init(opts)
