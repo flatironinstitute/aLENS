@@ -1,6 +1,5 @@
 # program settings
 rngSeed: 1234
-#rngSeed: ChiParam(format_str = "s{:d}", paramtype=int, values=[1,2,3,4,5,6,7,8])
 # simulation box
 simBoxLow: [-1.0, -1.0, -1.0]
 simBoxHigh: [120.0, 120.0, 120.0]
