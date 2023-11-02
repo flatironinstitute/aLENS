@@ -8,6 +8,9 @@ from copy import deepcopy
 import numpy as np
 
 
+LINK_TYPES = ['E', 'B', 'P', 'L']
+
+
 def get_file_number(path):
     name = path.stem
     num = name.split("_")[-1]
@@ -87,7 +90,7 @@ class Particle(Sylinder):
 
 class Link():
 
-    """Spring-like link between filament"""
+    """Spring-like or hinge-like link between filaments/beads"""
 
     def __init__(self, line):
         """Initialize with the ids of the two objects to connect
@@ -98,16 +101,38 @@ class Link():
         """
         data = line.split()
 
+        self._link_type = data[0]
+
         self._prev_id = int(data[1])
         self._next_id = int(data[2])
 
     def get_str_to_write(self):
         """Return string that defines link"""
-        return f'L {self._prev_id} {self._next_id}\n'
+        return f'{self._link_type} {self._prev_id} {self._next_id}\n'
 
     def get_lammps_str_to_write(self, id: int, bond_type: int = 1):
         return '{0} {1} {2} {3} \n'.format(
             id, bond_type, self._prev_id + 1, self._next_id + 1)
+
+
+class TriBendLink(Link):
+
+    def __init__(self, line: str):
+        """Initialize with the ids of the two objects to connect
+
+        @param prev_id First object to connect
+        @param next_id Second object to connect
+
+        """
+        data = line.split()
+
+        self._center_id = int(data[1])
+        self._prev_id = int(data[2])
+        self._next_id = int(data[3])
+
+    def get_str_to_write(self):
+        """Return string that defines link"""
+        return f'T {self._center_id} {self._prev_id} {self._next_id}\n'
 
 
 class Protein():
@@ -192,7 +217,10 @@ def read_links_ascii_file(fpath):
         # Delete the first two lines because they dont have any data
         filecontent[0:2] = []
         # Create list of links
-        links = [Link(line) for line in filecontent if line.split()[0] == 'L']
+        links = [Link(line) for line in filecontent
+                 if line.split()[0] in LINK_TYPES]
+        links += [TriBendLink(line) for line in filecontent
+                  if line.split()[0] == 'T']
     return sorted(links, key=lambda x: int(x._prev_id))
 
 

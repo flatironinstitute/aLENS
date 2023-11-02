@@ -1,4 +1,4 @@
-KBT: 0.00411
+KBT: -0.00411
 conMaxIte: 1000000
 conResTol: 1e-5
 conSolverChoice: 0
@@ -43,7 +43,6 @@ sylinderLengthColRatio: 1.0
 sylinderLengthSigma: 0
 sylinderNumber: 1000
 timeSnap: 0.1
-timeTotal: 1000.0
+timeTotal: 1.0
 timerLevel: 3
 viscosity: 1
-initPreSteps: 0

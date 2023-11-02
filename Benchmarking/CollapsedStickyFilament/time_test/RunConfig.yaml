@@ -1,4 +1,4 @@
-KBT: 0.00411
+KBT: -0.00411
 conMaxIte: 1000000
 conResTol: 1e-5
 conSolverChoice: 0
@@ -16,7 +16,6 @@ initOrient:
 - 2
 - 0
 - 0
-initPreSteps: 0
 linkGap: 0.0002
 linkKappa: 3650
 logLevel: 3
@@ -42,7 +41,7 @@ sylinderLength: 0.0
 sylinderLengthColRatio: 1.0
 sylinderLengthSigma: 0
 sylinderNumber: 1000
-timeSnap: 0.005
-timeTotal: 0.0005
+timeSnap: 0.05
+timeTotal: 0.005
 timerLevel: 3
 viscosity: 1

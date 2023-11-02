@@ -5,7 +5,7 @@ proteins:
     PtoAPratio: 1.
     fixedEnd0: true
     #properties:
-    freeLength: 0.055 # um
+    freeLength: 0.03 # um
     rc: 0.039 # um, (D/2 + \ell_0)/2
     kappa: 50.0 # pN/um
     fstall: 5.0 # pN
@@ -17,13 +17,13 @@ proteins:
     diffBoundS: [0., 0.] # um^2/s
     diffBoundD: [0., 0.] # um^2/s
     # KMC parameters
-    useBindVol: false
+    useBindVol: true
     eps: 1. # binding site per segment
     Ka: [3.22, 3.22] # (uM/L)^{-1}, used in U<->S
-    ko_s: [.0, .0] # 1/s, off-rate
+    ko_s: [0., 0.] # 1/s, off-rate
     Ke: 
-      - 0.662 # dimensionless, used in S<->D
-      - 33.1
+      - 0.0 # dimensionless, used in S<->D
+      - 30
     ko_d: # 1/s, off-rate
       - 0 
       - 30
@@ -31,58 +31,3 @@ proteins:
     freeNumber: 0 
     fixedLocationPerMT: [0] # given in [-1,1]. otherwise random
 
-  #- tag: 0 # Type 0, LEF model
-  #  walkOff: false
-  #  PtoAPratio: 1.
-  #  fixedEnd0: false
-  #  #properties:
-  #  freeLength: 0.02 # um
-  #  rc: 0.039 # um, (D/2 + \ell_0)/2
-  #  kappa: 500.0 # pN/um
-  #  fstall: 5.0 # pN
-  #  lambda: 0.0 # dimensionless
-  #  diffUnbound: 0.01 # um^2/s
-  #  #  diffUnbound: ChiParam(format_str = "diffU{:.2g}", paramtype=float, values=[.005, .01, .05, .1, .5, 1., 5.0, 10.])
-  #  vmax: [-0.5, 0.5] # um/s, positive towards plus end
-  #  vdrag: [false, false] # um/s, (N/A)
-  #  diffBoundS: [0, 0] # um^2/s
-  #  diffBoundD: [0, 0] # um^2/s
-  #  # KMC parameters
-  #  useBindVol: false
-  #  eps: 27 # um^{-1} 13 protofilaments at 8nm per block
-  #  Ka: [90.9, 90.9] # (uM/L)^{-1}, used in U<->S
-  #  ko_s: [.00000000000001, .0000000000000001] # 1/s, off-rate
-  #  Ke: [90.9, 90.9] # dimensionless, used in S<->D
-  #  #  ko_d: [.00000000000001, .0000000000000001] # 1/s, off-rate
-  #  ko_d: [.0, .0] # 1/s, off-rate
-  #  # numbers:
-  #  freeNumber: 0 
-  #  fixedLocationPerMT: # given in [-1,1]. otherwise random
-
-  # - tag: 0 # Type 0, rigid filament protein
-  #   walkOff: false
-  #   PtoAPratio: 1.
-  #   fixedEnd0: false
-  #   #properties:
-  #   freeLength: 0.02 # um
-  #   rc: 0.039 # um, (D/2 + \ell_0)/2
-  #   kappa: 500.0 # pN/um
-  #   fstall: 5.0 # pN
-  #   lambda: 0.0 # dimensionless
-  #   diffUnbound: 0.01 # um^2/s
-  #   #  diffUnbound: ChiParam(format_str = "diffU{:.2g}", paramtype=float, values=[.005, .01, .05, .1, .5, 1., 5.0, 10.])
-  #   vmax: [0, 0] # um/s, positive towards plus end
-  #   vdrag: [false, false] # um/s, (N/A)
-  #   diffBoundS: [0, 0] # um^2/s
-  #   diffBoundD: [0, 0] # um^2/s
-  #   # KMC parameters
-  #   useBindVol: false
-  #   eps: 27 # um^{-1} 13 protofilaments at 8nm per block
-  #   Ka: [90.9, 90.9] # (uM/L)^{-1}, used in U<->S
-  #   ko_s: [.00000000000001, .0000000000000001] # 1/s, off-rate
-  #   Ke: [90.9, 90.9] # dimensionless, used in S<->D
-  #   #  ko_d: [.00000000000001, .0000000000000001] # 1/s, off-rate
-  #   ko_d: [.0, .0] # 1/s, off-rate
-  #   # numbers:
-  #   freeNumber: 0 
-  #   fixedLocationPerMT: # given in [-1,1]. otherwise random
