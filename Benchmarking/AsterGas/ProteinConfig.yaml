@@ -1,56 +1,27 @@
 KBT: 0.00411
 proteins:
-  - tag: 0 # Type 0, permanent bond
+  - tag: 0 # Type 0, Kinesin-5, Blackwell SA2017
     walkOff: false
     PtoAPratio: 1.
     fixedEnd0: false
     #properties:
-    freeLength: 0.02 # um
+    freeLength: 0.053 # um
     rc: 0.039 # um, (D/2 + \ell_0)/2
-    kappa: 500.0 # pN/um
+    kappa: 300.0 # pN/um
     fstall: 5.0 # pN
-    lambda: 0.0 # dimensionless
-    diffUnbound: 0.01 # um^2/s
-    #  diffUnbound: ChiParam(format_str = "diffU{:.2g}", paramtype=float, values=[.005, .01, .05, .1, .5, 1., 5.0, 10.])
-    vmax: [0, 0] # um/s, positive towards plus end
-    vdrag: [false, false] # um/s, (N/A)
+    lambda: 0.25822 # dimensionless
+    diffUnbound: 1.0 # um^2/s
+    vmax: [0.1, 0.1] # um/s, positive towards plus end
     diffBoundS: [0, 0] # um^2/s
     diffBoundD: [0, 0] # um^2/s
     # KMC parameters
     useBindVol: false
-    eps: 27 # um^{-1} 13 protofilaments at 8nm per block
+    lookupType: 0
+    eps: 125 # um^{-1} 13 protofilaments at 8nm per block
     Ka: [90.9, 90.9] # (uM/L)^{-1}, used in U<->S
-    ko_s: [.0, .0] # 1/s, off-rate
+    ko_s: [0.11, 0.11] # 1/s, off-rate
     Ke: [90.9, 90.9] # dimensionless, used in S<->D
-    #  ko_d: [.00000000000001, .0000000000000001] # 1/s, off-rate
-    ko_d: [.0, 3.] # 1/s, off-rate
+    ko_d: [0.11, 0.11] # 1/s, off-rate
     # numbers:
-    freeNumber: 0 
-    fixedLocationPerMT: [0.] # given in [-1,1]. otherwise random
-  # - tag: 0 # Type 0, Kinesin-5, Blackwell SA2017
-  #  walkOff: false
-  #  PtoAPratio: 1.
-  #  fixedEnd0: false
-  #  #properties:
-  #  freeLength: 0.05 # um
-  #  rc: 0.039 # um, (D/2 + \ell_0)/2
-  #  kappa: 50.0 # pN/um
-  #  fstall: 5.0 # pN
-  #  lambda: 0.25822 # dimensionless
-  #  #diffUnbound: 0.01 # um^2/s
-  #  diffUnbound: ChiParam(format_str = "diffU{:.2g}", paramtype=float, values=[.005, .01, .05, .1, .5, 1., 5.0, 10.])
-  #  vmax: [0, 0] # um/s, positive towards plus end
-  #  vdrag: [false, false] # um/s, (N/A)
-  #  diffBoundS: [0, 0] # um^2/s
-  #  diffBoundD: [0, 0] # um^2/s
-  #  # KMC parameters
-  #  useBindVol: false
-  #  #eps: 1625 # um^{-1} 13 protofilaments at 8nm per block
-  #  eps: 27 # um^{-1} 13 protofilaments at 8nm per block
-  #  Ka: [90.9, 90.9] # (uM/L)^{-1}, used in U<->S
-  #  ko_s: [5, 5] # 1/s, off-rate
-  #  Ke: [90.9, 90.9] # dimensionless, used in S<->D
-  #  ko_d: [5, 5] # 1/s, off-rate
-  #  # numbers:
-  #  freeNumber: 4000 
-  #  fixedLocationPerMT: # given in [-1,1]. otherwise random
+    freeNumber: 80000
+    fixedLocationPerMT: # given in [-1,1]. otherwise random

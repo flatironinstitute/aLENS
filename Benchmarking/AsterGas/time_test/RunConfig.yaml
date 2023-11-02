@@ -1,0 +1,48 @@
+KBT: 0.00411
+conMaxIte: 1000000
+conResTol: 1e-5
+conSolverChoice: 0
+dt: 0.0001
+initBoxHigh:
+- 5.0
+- 5.0
+- 5.0
+initBoxLow:
+- -5.0
+- -5.0
+- -5.0
+initCircularX: false
+initOrient:
+- 2
+- 2
+- 2
+initPreSteps: 0
+linkKappa: 1000.0
+logLevel: 3
+monolayer: false
+rngSeed: 1234
+simBoxHigh:
+- 5.0
+- 5.0
+- 5.0
+simBoxLow:
+- -5.0
+- -5.0
+- -5.0
+simBoxPBC:
+- true
+- true
+- true
+sylinderColBuf: 0.025
+sylinderDiameter: 0.025
+sylinderDiameterColRatio: 1.0
+sylinderFixed: false
+sylinderLength: 0.5
+sylinderLengthColRatio: 1.0
+sylinderLengthSigma: 0
+sylinderNumber: 40000
+thermEquilTime: 0
+timeSnap: 0.05
+timeTotal: 0.005
+timerLevel: 3
+viscosity: 0.01

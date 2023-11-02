@@ -1,0 +1,23 @@
+#run:
+#    - ./aLENS.X
+    
+#collect:
+#    - analens
+#    - -A 
+#    - collect
+
+#cluster:
+#    - analens
+#    - -A 
+#    - cluster
+#    - -f
+
+#stress:
+#    - analens
+#    - -A 
+#    - stress
+
+connect:
+    - analens
+    - -A 
+    - connect

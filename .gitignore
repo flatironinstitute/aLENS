@@ -54,4 +54,6 @@ doc/
 **SylinderAscii*
 **ProteinAscii*
 **test_lmps/
+**time_testing**
+**timing.toml
 
