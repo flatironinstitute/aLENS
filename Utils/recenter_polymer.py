@@ -77,9 +77,9 @@ def main(opts):
     with open("TubuleInitial.dat", 'w') as f:
         f.write('# Initial configuration of tubules\n#\n')
         for seg in segments:
-            f.write(seg.get_str_to_write())
+            f.write(seg.to_string())
         for link in links:
-            f.write(link.get_str_to_write())
+            f.write(link.to_string())
 
     # Update proteins if protein file was given
     if opts.protein:
@@ -89,7 +89,7 @@ def main(opts):
             for prot in proteins:
                 prot.end0_pos -= fil_com
                 prot.end1_pos -= fil_com
-                f.write(prot.get_str_to_write())
+                f.write(prot.to_string())
 
 
 ##########################################

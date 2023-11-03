@@ -23,12 +23,14 @@ GLOBAL_PARAM_KEYS = {
     "sys_length": 1.0,
 }
 
+
 def normalize(vl):
     v = np.array(vl)
     norm = np.linalg.norm(v)
     if norm == 0:
         return v
     return v / norm
+
 
 def set_default_parameters(params, default_params, check_for_none=False):
     """Function to set global parameters in
@@ -63,9 +65,9 @@ def parse_args():
 
     with param_path.open('r') as pf:
         opts.params = yaml.safe_load(pf)
-    
 
     return opts
+
 
 def main(opts):
     """Main loop for generating flexible filaments
@@ -89,28 +91,27 @@ def main(opts):
 
         # Write out sylinders to file
         for syl in sylinders:
-            syl.grp_id = 0 # Re-write the group for all sylinders
-            tif.write(syl.get_str_to_write())
+            syl.grp_id = 0  # Re-write the group for all sylinders
+            tif.write(syl.to_string())
 
         # Write out proteins (combination of spheres and crosslinkers)
         radius = 0.025
-        length = 1e-6 # Just want this really small
-        direction = [1,0,0] # doesn't matter
-        grp_id = 1 #
+        length = 1e-6  # Just want this really small
+        direction = [1, 0, 0]  # doesn't matter
+        grp_id = 1
         for i in range(opts.params['num_proteins']):
             # Generate the body (sphere) of the protein randomly in the system
             # make a random numpy 3d vector
             pos = (np.random.rand(3)) * opts.params['sys_length']
-            sphere = Particle(pos, direction, length, radius, grp_id, next(syl_gen_id))
-            tif.write(sphere.get_str_to_write())
-            prot = Protein(next(prot_gen_id), 0, 
-                           sphere.start_pos, sphere.start_pos, 
+            sphere = Particle(pos, direction, length, radius,
+                              grp_id, next(syl_gen_id))
+            tif.write(sphere.to_string())
+            prot = Protein(next(prot_gen_id), 0,
+                           sphere.start_pos, sphere.start_pos,
                            sphere.gid, -1)
-            pif.write(prot.get_str_to_write())
+            pif.write(prot.to_string())
             prot.gid = next(prot_gen_id)
-            pif.write(prot.get_str_to_write())
-
-
+            pif.write(prot.to_string())
 
 
 ##########################################

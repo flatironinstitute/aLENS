@@ -33,4 +33,4 @@ particle_str = ""
 with open('TubuleInitial.dat', 'w') as tf:
     tf.write("# Initial configuration of particles\n#\n")
     for p in particles:
-        tf.write(p.get_str_to_write())
+        tf.write(p.to_string())

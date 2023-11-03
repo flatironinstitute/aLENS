@@ -92,7 +92,7 @@ Masses
         # Write particle section
         f.write("Atoms\n\n")
         for seg in segments:
-            f.write(seg.get_lammps_str_to_write(scale_factor=scale_factor))
+            f.write(seg.to_lammps_string(scale_factor=scale_factor))
         f.write("\n")
 
         # Write velocities
@@ -107,7 +107,7 @@ Masses
         f.write("Bonds\n\n")
         bond_id_gen = gen_id(1)
         for link in links:
-            f.write(link.get_lammps_str_to_write(next(bond_id_gen)))
+            f.write(link.to_lammps_string(next(bond_id_gen)))
 
 
 ##########################################

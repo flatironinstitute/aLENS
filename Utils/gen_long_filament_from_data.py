@@ -77,11 +77,11 @@ def main(opts):
             fil.gid = next(gen_gid)
             fil.type = 'S' if fil.gid == 0 or fil.gid == final_gid else 'C'
 
-            seg_str += fil.get_str_to_write()
+            seg_str += fil.to_string()
         # Connect all the filament segments together
         links = [Links(i, i+1) for i in range(0, final_filament[-1].gid)]
         for link in links:
-            link_str += link.get_str_to_write()
+            link_str += link.to_string()
         f.write(seg_str)
         f.write(link_str)
 

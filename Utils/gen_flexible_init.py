@@ -217,7 +217,7 @@ class FilSegment():
         self.gid = gid
         self.type = seg_type
 
-    def get_str_to_write(self):
+    def to_string(self):
         return '{0} {1} {2} {3:0.6f} {4:0.6f} {5:0.6f} {6:0.6f} {7:0.6f} {8:0.6f} {9}\n'.format(
             self.type, self.gid, self.radius,
             self.start_pos[0], self.start_pos[1], self.start_pos[2],
@@ -240,7 +240,7 @@ class Links():
         self._prev_id = prev_id
         self._next_id = next_id
 
-    def get_str_to_write(self):
+    def to_string(self):
         """Return string that defines link"""
         return f'E {self._prev_id} {self._next_id}\n'
 
@@ -351,7 +351,7 @@ class FlexFilament():
         """
         seg_str = ""
         for seg in self.segs:
-            seg_str += seg.get_str_to_write()
+            seg_str += seg.to_string()
         return seg_str
 
     def get_fil_link_str(self):
@@ -361,7 +361,7 @@ class FlexFilament():
         """
         link_str = ""
         for link in self.links:
-            link_str += link.get_str_to_write()
+            link_str += link.to_string()
         return link_str
 
     def get_hilbert_arr(self):
@@ -449,9 +449,9 @@ def gen_flexible_init(opts):
             max_segment = max([int(seg.gid) for seg in segments])
             # Write segments to data file
             for seg in segments:
-                seg_str += seg.get_str_to_write()
+                seg_str += seg.to_string()
             for link in links:
-                link_str += link.get_str_to_write()
+                link_str += link.to_string()
             gen_gid = gen_id(int(max_segment) + 1)
         else:
             gen_gid = gen_id()

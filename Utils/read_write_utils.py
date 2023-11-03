@@ -5,6 +5,7 @@ Email: alamson@flatironinstitute.org
 Description: Commonly used functions to read in and out aLENS files
 """
 from copy import deepcopy
+from pathlib import Path
 import numpy as np
 
 
@@ -46,14 +47,14 @@ class Sylinder():
 
         self.vec = self.end_pos - self.start_pos
 
-    def get_str_to_write(self):
+    def to_string(self):
         return '{0} {1} {2} {3:0.6f} {4:0.6f} {5:0.6f} {6:0.6f} {7:0.6f} {8:0.6f} {9}\n'.format(
             self.type, self.gid, self.radius,
             self.start_pos[0], self.start_pos[1], self.start_pos[2],
             self.end_pos[0], self.end_pos[1], self.end_pos[2],
             self.grp_id)
 
-    def get_lammps_str_to_write(self, scale_factor=1):
+    def to_lammps_string(self, scale_factor=1):
         atom_type = 1
         # TODO Haven't implemented fil_id yet
         molecule_id = self.fil_id if self.fil_id else 1
@@ -106,11 +107,11 @@ class Link():
         self._prev_id = int(data[1])
         self._next_id = int(data[2])
 
-    def get_str_to_write(self):
+    def to_string(self):
         """Return string that defines link"""
         return f'{self._link_type} {self._prev_id} {self._next_id}\n'
 
-    def get_lammps_str_to_write(self, id: int, bond_type: int = 1):
+    def to_lammps_string(self, id: int, bond_type: int = 1):
         return '{0} {1} {2} {3} \n'.format(
             id, bond_type, self._prev_id + 1, self._next_id + 1)
 
@@ -130,7 +131,7 @@ class TriBendLink(Link):
         self._prev_id = int(data[2])
         self._next_id = int(data[3])
 
-    def get_str_to_write(self):
+    def to_string(self):
         """Return string that defines link"""
         return f'T {self._center_id} {self._prev_id} {self._next_id}\n'
 
@@ -152,7 +153,7 @@ class Protein():
         self.end0_gid = end0_gid
         self.end1_gid = end1_gid
 
-    def get_str_to_write(self):
+    def to_string(self):
         return 'P {0} {1} {2:0.6f} {3:0.6f} {4:0.6f} {5:0.6f} {6:0.6f} {7:0.6f} {8} {9}\n'.format(
             self.gid, self.ptype,
             self.end0_pos[0], self.end0_pos[1], self.end0_pos[2],
@@ -199,7 +200,7 @@ def read_sylinder_ascii_file(fpath):
     return particles
 
 
-def read_protein_ascii_file(fpath):
+def read_protein_ascii_file(fpath: Path):
     with fpath.open('r') as file1:
         filecontent = file1.readlines()
         # Delete the first two lines because they dont have any data
@@ -211,7 +212,7 @@ def read_protein_ascii_file(fpath):
     return particles
 
 
-def read_links_ascii_file(fpath):
+def read_links_ascii_file(fpath: Path):
     with fpath.open('r') as file1:
         filecontent = file1.readlines()
         # Delete the first two lines because they dont have any data

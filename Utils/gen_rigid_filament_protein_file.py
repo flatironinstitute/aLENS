@@ -73,7 +73,7 @@ def main(opts):
     with open(fname, 'w') as f:
         f.write('# Initial configuration of proteins\n#\n')
         for prot in proteins:
-            f.write(prot.get_str_to_write())
+            f.write(prot.to_string())
 
 
 ##########################################
