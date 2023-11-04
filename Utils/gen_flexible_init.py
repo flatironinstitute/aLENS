@@ -25,6 +25,7 @@ GLOBAL_PARAM_KEYS = {
     'start_pos': None,
     'director': None,
     'link_gap': None,
+    'link_type': None
 }
 
 
@@ -129,45 +130,6 @@ def hilbert_3d(s, i, pos_arr, cur_pos, dr1, dr2, dr3):
     return i
 
 
-def sine_initial(start_pos: Sequence[float],
-                 direction: Sequence[float],
-                 end_pos: Sequence[float],
-                 length: float,
-                 bead_diam: float,
-                 n_periods: Optional[int] = None,
-                 max_curve: Optional[int] = None) -> Sequence[Any]:
-    """ Generate a flexible filament starting and ending at two points of a
-     certain length.
-
-
-    Parameters
-    ----------
-    start_pos : Sequence[float]
-        _description_
-    end_pos : Sequence[float]
-        _description_
-    length : float
-        _description_
-    bead_diam : float
-        _description_
-    n_periods : Optional[int], optional
-        _description_, by default None
-    max_curve : Optional[int], optional
-        _description_, by default None
-
-    Returns
-    -------
-    Sequence[Any]
-        _description_
-    """
-
-    pass
-    # Get length between points
-    # What is going on
-
-    # return end_pos
-
-
 def spiral_initial(start_pos: Sequence[float],
                    direction: Sequence[float],
                    seg_length: float,
@@ -229,7 +191,7 @@ class Links():
 
     """Spring-like links between filament"""
 
-    def __init__(self, prev_id, next_id):
+    def __init__(self, prev_id, next_id, link_type='E'):
         """Initialize with the ids of the two objects to connect
 
         @param prev_id First object to connect
@@ -239,10 +201,11 @@ class Links():
 
         self._prev_id = prev_id
         self._next_id = next_id
+        self._link_type = link_type
 
     def to_string(self):
         """Return string that defines link"""
-        return f'E {self._prev_id} {self._next_id}\n'
+        return f'{self._link_type} {self._prev_id} {self._next_id}\n'
 
 
 class FlexFilament():
@@ -268,6 +231,18 @@ class FlexFilament():
         self.segs = []
         self.links = []
 
+    def get_director_for_fil_type(self, i, director_arr=None):
+        if self.type == "line":
+            return self.director
+        if self.type == "random_walk":
+            return self.get_random_vec()
+        if self.type == "hilbert" and i < self.nsegs - 1:
+            return director_arr[i, :]
+        if self.type == "spiral":
+            return director_arr[i]
+        else:
+            raise RuntimeError("Unknown filament type")
+
     def make_flex_fil(self, id_gen):
         """Create a string of sylinder strings to write to file
 
@@ -275,11 +250,14 @@ class FlexFilament():
 
         """
         prev_id = -1  # start without connection
+
+        # Preallocate arrays
+        director_arr = None
         if self.type == 'crowder':
             self.make_crowders(id_gen)
             return
         elif self.type == "hilbert":
-            direct_arr = self.get_hilbert_arr()
+            director_arr = self.get_hilbert_arr()
         elif self.type == "spiral":
             pos_arr, director_arr = spiral_initial(self.start_pos, self.director,
                                                    self.seg_length + self.epsilon,
@@ -290,28 +268,23 @@ class FlexFilament():
             seg_type = 'S' if gid in self.stat_segs else 'C'
 
             # Cases for different types of filament generation schemes
-            if self.type == "random_walk":
-                director = self.get_random_vec()
-            elif self.type == "hilbert" and i < self.nsegs - 1:
-                director = direct_arr[i, :]
-            elif self.type == "spiral":
-                end_pos = pos_arr[i]
-                director = director_arr[i]
+            director = self.get_director_for_fil_type(i, director_arr)
 
             # Create new segment using the director and end position
-            self.segs += [FilSegment(end_pos, director,
+            self.segs += [FilSegment(self.end_pos, director,
                                      self.seg_length, self.radius,
                                      self.grp_id, gid, seg_type)]
+
+            if self.type == "spiral":
+                self.end_pos = pos_arr[i]
+            else:
+                self.end_pos += (self.seg_length + self.epsilon) * director
 
             # Add links to list only if they are not the first or last object
             if prev_id >= 0 and i < self.nsegs:
                 self.links += [Links(prev_id, gid)]
 
             prev_id = gid
-
-            # Add small separation from last segment. This will get overwritten
-            # by spiral
-            self.end_pos += (self.seg_length + self.epsilon) * director
 
         # Additional links
         for link in self.extra_links:
@@ -326,6 +299,33 @@ class FlexFilament():
         self.end_pos = list(self.segs[-1].end_pos)
         print(
             f'End position: {self.end_pos}')
+
+    def make_semiflexible_fil(self, id_gen):
+        """Create a string of sylinder strings to write to file
+
+        @param id_gen ID generator
+
+        """
+        prev_id = -1
+
+        for i in range(self.nsegs):
+            gid = next(id_gen)
+            seg_type = 'S' if gid in self.stat_segs else 'C'
+
+            # Cases for different types of filament generation schemes
+            if self.type == "random_walk":
+                director = self.get_random_vec()
+
+            # Create new segment using the director and end position
+            self.segs += [FilSegment(end_pos, director,
+                                     self.seg_length, self.radius,
+                                     self.grp_id, gid, seg_type)]
+
+            # Add links to list only if they are not the first or last object
+            if prev_id >= 0 and i < self.nsegs:
+                self.links += [Links(prev_id, gid, self.kwargs['link_type'])]
+            if prev_id >= 0 and i < self.nsegs:
+                self.links += [Links(prev_id, gid, B)]
 
     def make_crowders(self, id_gen):
         """Make crowding particles inside of sphere
@@ -455,6 +455,7 @@ def gen_flexible_init(opts):
             gen_gid = gen_id(int(max_segment) + 1)
         else:
             gen_gid = gen_id()
+
         start_pos = None
         for i, fil_params in enumerate(opts.params['filaments']):
             if (start_pos is not None and

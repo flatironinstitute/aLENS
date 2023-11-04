@@ -30,10 +30,15 @@ Example parameter file with comments:
                                      )
 
     parser.add_argument("input",
-                        help="SylinderAscii file to recenter an make a new TubuleInitial.dat.")
+                        help="SylinderAscii file to recenter and make a new TubuleInitial.dat.")
     parser.add_argument("-p", "--protein", default=None,
                         help="A ProteinAscii data file. This option will keep"
                         "all protein positions and states in this file.")
+    parser.add_argument("-s", "--shift", default=None,
+                        help="Define a vector to shift all the particles by. "
+                        "Given as a comma separated list of floats."
+                        "Example: -s '0.0,0.0,10.0'"
+                        "If wanting to give negative number first, add a space after first quote.")
     opts = parser.parse_args()
 
     opts.input = Path(opts.input)
@@ -56,23 +61,22 @@ def main(opts):
     # Read in all the data
     segments = read_sylinder_ascii_file(opts.input)
     links = read_links_ascii_file(opts.input)
-    # Get the center of mass of all segments
-    fil_com = np.array([seg.get_com() for seg in segments]).mean(axis=0)
-    # Subtract COM from all segments to have system centered at (0,0,0)
+    if opts.shift:
+        shift_vec = np.array([float(x) for x in opts.shift.split(',')])
+    else:
+        # Get the center of mass of all segments
+        shift_vec = -np.array([seg.get_com() for seg in segments]).mean(axis=0)
+
     max_rad = 0.
-    tot_seg_vol = 0.
     for seg in segments:
-        seg.start_pos -= fil_com
-        seg.end_pos -= fil_com
+        seg.start_pos += shift_vec
+        seg.end_pos += shift_vec
         # Find minimum radius sphere that contains all segments
         max_rad = max([np.linalg.norm(seg.start_pos),
                        np.linalg.norm(seg.end_pos),
                        max_rad])
-        tot_seg_vol += (4./3.) * np.pi * (seg.radius**3)
 
     print(f"Min radius containing sphere: {max_rad}")
-    bound_sphere_vol = (4./3.) * np.pi * max_rad**3
-    print(f"Packing fraction: {tot_seg_vol/bound_sphere_vol}")
 
     with open("TubuleInitial.dat", 'w') as f:
         f.write('# Initial configuration of tubules\n#\n')
@@ -87,8 +91,8 @@ def main(opts):
         with open("ProteinInitial.dat", 'w') as f:
             f.write('# Initial configuration of proteins\n#\n')
             for prot in proteins:
-                prot.end0_pos -= fil_com
-                prot.end1_pos -= fil_com
+                prot.end0_pos += shift_vec
+                prot.end1_pos += shift_vec
                 f.write(prot.to_string())
 
 

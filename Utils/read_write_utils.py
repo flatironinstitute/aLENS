@@ -10,6 +10,7 @@ import numpy as np
 
 
 LINK_TYPES = ['E', 'B', 'P', 'L']
+SYLINDER_TYPES = ['C', 'S']
 
 
 def get_file_number(path):
@@ -195,7 +196,7 @@ def read_sylinder_ascii_file(fpath):
         # Create list of particles
         particles = sorted([Sylinder(line)
                             for line in filecontent
-                            if line.split()[0] != 'L'],
+                            if line.split()[0] in SYLINDER_TYPES],
                            key=lambda x: int(x.gid))
     return particles
 

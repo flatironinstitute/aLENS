@@ -1,0 +1,43 @@
+# program settings
+rngSeed: 1234
+# simulation box
+simBoxLow: [-8, -8, -8]
+simBoxHigh: [8, 8, 8]
+simBoxPBC: [false, false, false]
+monolayer: false
+# initialization box
+initBoxLow: [0, 0, 0]
+initBoxHigh: [10, 10, 10]
+initCircularX: false
+# components outside [-1,1] will be randomly set
+initOrient: [2, 2, 2]
+# physical settings
+viscosity: 0.1 #pN/(um^2.s)
+KBT: 0.00411 #pN.um, 300K
+extendLinkKappa: 500.0 # pN/um spring constant for sylinder links.
+extendLinkGap: 0 # um separation for sylinder links.
+bendLinkKappa: 10.39242857 # pN.um spring constant for sylinder links.
+# Sylinder
+sylinderFixed: false
+sylinderNumber: 1
+sylinderLength: 0.193
+sylinderLengthColRatio: 1.0
+sylinderLengthSigma: -1.0 # <0 means no randomness
+sylinderDiameter: 0.007
+sylinderDiameterColRatio: 1.0
+sylinderColBuf: 0.012
+# time-stepping
+dt: 0.00002 # s
+timeTotal: 1.500 # s
+timeSnap: .0001 # s
+# ConstraintSolver
+conResTol: 1e-4 # residual
+conMaxIte: 100000 # max iteration
+conSolverChoice: 0 # 0 for BBPGD, 1 for APGD, etc
+logLevel: 3
+timerLevel: 3
+boundaries:
+  - type: "sphere"
+    center: [0, 0, 0]
+    radius: 6
+    inside: true
