@@ -2,11 +2,11 @@ KBT: 0.00411
 proteins:
   - tag: 0 # Type 0, alpha-actinin
     walkOff: true
-    # group_bind: 0
+    group_bind: 0
     PtoAPratio: 1.
     fixedEnd0: false
     #properties:
-    freeLength: 0.035 # um
+    freeLength: 0.035 # um 
     rc: 0.01925 # um, (D/2 + \ell_0)/2
     kappa: 100.0 # pN/um
     fstall: 5.0 # pN
@@ -20,98 +20,95 @@ proteins:
     # KMC parameters
     useBindVol: false
     eps: 370 # actin monomers per um , um^{-1}
-    Ka: 0.2 # (uM)^{-1}, used in U<->S
-    ko_s: 2 # 1/s, off-rate
-    Ke: 0.2 # (uM)^{-1}, used in S<->D
-    ko_d: 2 # 1/s, off-rate
-    # numbers:
+    Ka: [0.2, 0.2] # (uM)^{-1}, used in U<->S
+    ko_s: [2, 2] # 1/s, off-rate
+    Ke: [0.2, 0.2] # (uM)^{-1}, used in S<->D
+    ko_d: [2, 2] # 1/s, off-rate
+    # numbers: 
+    freeNumber: 1250
+    fixedLocationPerMT: # given in [-1,1]. otherwise random
+    lookupType: 0
+  - tag: 1 # Type 1, myosin motor heads
+    walkOff: true
+    group_bind: 0
+    PtoAPratio: 1.
+    fixedEnd0: false
+    #properties:
+    freeLength: 0.01 # um 
+    rc: 0.0085 # um, (D/2 + \ell_0)/2
+    kappa: 100.0 # pN/um
+    fstall: 5.7 # pN
+    #lambda: 0.25822 # dimensionless
+    lambda: 0.0 # dimensionless
+    diffUnbound: 1.0 # um^2/s
+    vmax: [0, 0.3] # um/s, positive towards plus end
+    vdrag: [false, false]
+    diffBoundS: [0.0, 0.0] # um^2/s
+    diffBoundD: [0.0, 0.0] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    eps: 370 # actin monomers per um , um^{-1}
+    Ka: [1, 100] # (uM)^{-1}, used in U<->S
+    ko_s: [0, 1] # 1/s, off-rate
+    Ke: [1, 100] # (uM)^{-1}, used in S<->D
+    ko_d: [0, 1] # 1/s, off-rate
+    # numbers: 
     freeNumber: 0
     fixedLocationPerMT: # given in [-1,1]. otherwise random
     lookupType: 0
-
-  # - tag: 1 # Type 1, myosin motor heads
-  #   walkOff: true
-  #   group_bind: 0
-  #   PtoAPratio: 1.
-  #   fixedEnd0: false
-  #   #properties:
-  #   freeLength: 0.01 # um
-  #   rc: 0.0085 # um, (D/2 + \ell_0)/2
-  #   kappa: 100.0 # pN/um
-  #   fstall: 5.7 # pN
-  #   #lambda: 0.25822 # dimensionless
-  #   lambda: 0.0 # dimensionless
-  #   diffUnbound: 1.0 # um^2/s
-  #   vmax: [0, 0.3] # um/s, positive towards plus end
-  #   vdrag: [false, false]
-  #   diffBoundS: [0.0, 0.0] # um^2/s
-  #   diffBoundD: [0.0, 0.0] # um^2/s
-  #   # KMC parameters
-  #   useBindVol: false
-  #   eps: 370 # actin monomers per um , um^{-1}
-  #   Ka: [1, 100] # (uM)^{-1}, used in U<->S
-  #   ko_s: [0, 1] # 1/s, off-rate
-  #   Ke: [1, 100] # (uM)^{-1}, used in S<->D
-  #   ko_d: [0, 1] # 1/s, off-rate
-  #   # numbers:
-  #   freeNumber: 0
-  #   fixedLocationPerMT: # given in [-1,1]. otherwise random
-  #   lookupType: 0
-
-  # - tag: 2 # Type 2, surface linkers
-  #   walkOff: true
-  #   group_bind: 0
-  #   PtoAPratio: 1.
-  #   fixedEnd0: false
-  #   #properties:
-  #   freeLength: 0.035 # um
-  #   rc: 0.017 # um, (D/2 + \ell_0)/2
-  #   kappa: 100.0 # pN/um
-  #   fstall: 5.0 # pN
-  #   #lambda: 0.25822 # dimensionless
-  #   lambda: 0.0 # dimensionless
-  #   diffUnbound: 1.0 # um^2/s
-  #   vmax: [0, 0] # um/s, positive towards plus end
-  #   vdrag: [false, false]
-  #   diffBoundS: [0.0, 0.0] # um^2/s
-  #   diffBoundD: [0.0, 0.0] # um^2/s
-  #   # KMC parameters
-  #   useBindVol: false
-  #   eps: 370 # actin monomers per um , um^{-1}
-  #   Ka: [1, 10] # (uM)^{-1}, used in U<->S
-  #   ko_s: [0, 1] # 1/s, off-rate
-  #   Ke: [1, 10] # (uM)^{-1}, used in S<->D
-  #   ko_d: [0, 1] # 1/s, off-rate
-  #   # numbers:
-  #   freeNumber: 0
-  #   fixedLocationPerMT: # given in [-1,1]. otherwise random
-  #   lookupType: 0
-
-  # - tag: 3 # Type 0, fascin
-  #   walkOff: true
-  #   group_bind: 0
-  #   PtoAPratio: 10000.
-  #   fixedEnd0: false
-  #   #properties:
-  #   freeLength: 0.005 # um
-  #   rc: 0.006 # um
-  #   kappa: 100.0 # pN/um
-  #   fstall: 5.0 # pN
-  #   #lambda: 0.25822 # dimensionless
-  #   lambda: 0.0 # dimensionless
-  #   diffUnbound: 1.0 # um^2/s
-  #   vmax: [0, 0] # um/s, positive towards plus end
-  #   vdrag: [false, false]
-  #   diffBoundS: [0.0, 0.0] # um^2/s
-  #   diffBoundD: [0.0, 0.0] # um^2/s
-  #   # KMC parameters
-  #   useBindVol: false
-  #   eps: 370 # actin monomers per um , um^{-1}
-  #   Ka: [0.5, 0.5] # (uM)^{-1}, used in U<->S
-  #   ko_s: [5, 5] # 1/s, off-rate
-  #   Ke: [0.5, 0.5] # (uM)^{-1}, used in S<->D
-  #   ko_d: [5, 5] # 1/s, off-rate
-  #   # numbers:
-  #   freeNumber: 0
-  #   fixedLocationPerMT: # given in [-1,1]. otherwise random
-  #   lookupType: 0
+  - tag: 2 # Type 2, surface linkers
+    walkOff: true
+    group_bind: 0
+    PtoAPratio: 1.
+    fixedEnd0: false
+    #properties:
+    freeLength: 0.035 # um 
+    rc: 0.017 # um, (D/2 + \ell_0)/2
+    kappa: 100.0 # pN/um
+    fstall: 5.0 # pN
+    #lambda: 0.25822 # dimensionless
+    lambda: 0.0 # dimensionless
+    diffUnbound: 1.0 # um^2/s
+    vmax: [0, 0] # um/s, positive towards plus end
+    vdrag: [false, false]
+    diffBoundS: [0.0, 0.0] # um^2/s
+    diffBoundD: [0.0, 0.0] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    eps: 370 # actin monomers per um , um^{-1}
+    Ka: [1, 10] # (uM)^{-1}, used in U<->S
+    ko_s: [0, 1] # 1/s, off-rate
+    Ke: [1, 10] # (uM)^{-1}, used in S<->D
+    ko_d: [0, 1] # 1/s, off-rate
+    # numbers: 
+    freeNumber: 0
+    fixedLocationPerMT: # given in [-1,1]. otherwise random
+    lookupType: 0
+  - tag: 3 # Type 0, fascin
+    walkOff: true
+    group_bind: 0
+    PtoAPratio: 10000.
+    fixedEnd0: false
+    #properties:
+    freeLength: 0.005 # um 
+    rc: 0.006 # um 
+    kappa: 100.0 # pN/um
+    fstall: 5.0 # pN
+    #lambda: 0.25822 # dimensionless
+    lambda: 0.0 # dimensionless
+    diffUnbound: 1.0 # um^2/s
+    vmax: [0, 0] # um/s, positive towards plus end
+    vdrag: [false, false]
+    diffBoundS: [0.0, 0.0] # um^2/s
+    diffBoundD: [0.0, 0.0] # um^2/s
+    # KMC parameters
+    useBindVol: false
+    eps: 370 # actin monomers per um , um^{-1}
+    Ka: [0.5, 0.5] # (uM)^{-1}, used in U<->S
+    ko_s: [5, 5] # 1/s, off-rate
+    Ke: [0.5, 0.5] # (uM)^{-1}, used in S<->D
+    ko_d: [5, 5] # 1/s, off-rate
+    # numbers: 
+    freeNumber: 0
+    fixedLocationPerMT: # given in [-1,1]. otherwise random
+    lookupType: 0
