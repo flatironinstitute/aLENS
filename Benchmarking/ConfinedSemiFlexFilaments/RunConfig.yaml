@@ -14,8 +14,9 @@ initOrient: [2, 2, 2]
 # physical settings
 viscosity: 0.01 #pN/(um^2.s)
 KBT: 0.00411 #pN.um, 300K
-linkKappa: 500.0 # pN/um spring constant for sylinder links.
-linkGap: 0 # um separation for sylinder links.
+extendLinkKappa: 500.0 # pN/um spring constant for sylinder links.
+extendLinkGap: 0 # um separation for sylinder links.
+bendLinkKappa: 10.39242857 # pN.um spring constant for sylinder links.
 # Sylinder
 sylinderFixed: false
 sylinderNumber: 1
@@ -27,8 +28,10 @@ sylinderDiameterColRatio: 1.0
 sylinderColBuf: 0.012
 # time-stepping
 dt: 0.00001 # s
-timeTotal: 500 # s
-timeSnap: 1 # s
+timeTotal: 1 # s
+timeSnap: .0001 # s
+initPreSteps: 0
+thermEquilSteps: 0
 # ConstraintSolver
 conResTol: 1e-4 # residual
 conMaxIte: 100000 # max iteration

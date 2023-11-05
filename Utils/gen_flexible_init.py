@@ -325,7 +325,7 @@ class FlexFilament():
             if prev_id >= 0 and i < self.nsegs:
                 self.links += [Links(prev_id, gid, self.kwargs['link_type'])]
             if prev_id >= 0 and i < self.nsegs:
-                self.links += [Links(prev_id, gid, B)]
+                self.links += [Links(prev_id, gid, 'B')]
 
     def make_crowders(self, id_gen):
         """Make crowding particles inside of sphere
