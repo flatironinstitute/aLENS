@@ -25,6 +25,12 @@ Benchmarking takes place with systems large enough that you see speed up scaling
 
 ## Running Benchmarks
 
+A script is included to easily run and record benchmarking data. Follow the instructions below to conduct general benchmarking
+
+1. Copy aLENS executable and gitversion.txt to the `Benchmarking` directory
+2. Run `python benchmark_general.py`
+3. Compare with previous benchmarking data in directories
+
 # General Benchmarks
 
 ## Benchmark 1 (Rod-Crosslinker Aster Gas)
