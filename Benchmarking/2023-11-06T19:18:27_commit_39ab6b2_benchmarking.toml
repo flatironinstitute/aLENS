@@ -1,0 +1,20 @@
+[AsterGas]
+"timing_OMP1_Nsteps20.toml" = 1.3063157894736843
+"timing_OMP2_Nsteps20.toml" = 0.7533157894736844
+"timing_OMP4_Nsteps20.toml" = 0.47736842105263166
+"timing_OMP8_Nsteps20.toml" = 0.309
+"timing_OMP16_Nsteps20.toml" = 0.2493684210526316
+
+[CollapsedStickyFilament]
+"timing_OMP1_Nsteps20.toml" = 18.296263157894735
+"timing_OMP2_Nsteps20.toml" = 10.566052631578946
+"timing_OMP4_Nsteps20.toml" = 5.460684210526315
+"timing_OMP8_Nsteps20.toml" = 3.596
+"timing_OMP16_Nsteps20.toml" = 2.343157894736842
+
+[ConfinedSemiFlexFilaments]
+"timing_OMP1_Nsteps20.toml" = 0.7358947368421053
+"timing_OMP2_Nsteps20.toml" = 0.42299999999999993
+"timing_OMP4_Nsteps20.toml" = 0.4052631578947369
+"timing_OMP8_Nsteps20.toml" = 0.5085263157894736
+"timing_OMP16_Nsteps20.toml" = 0.8951052631578946
