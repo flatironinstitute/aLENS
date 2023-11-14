@@ -103,14 +103,16 @@ class Link():
         """
         data = line.split()
 
-        self._link_type = data[0]
+        self._link_type = 'E' if data[0] == 'L' else data[0]
 
         self._prev_id = int(data[1])
         self._next_id = int(data[2])
 
     def to_string(self):
         """Return string that defines link"""
-        return f'{self._link_type} {self._prev_id} {self._next_id}\n'
+        if self._link_type == 'E':
+            return f'{self._link_type} {self._prev_id} {self._next_id} 0 \n'
+        return f'{self._link_type} {self._prev_id} {self._next_id} 0 0 0\n'
 
     def to_lammps_string(self, id: int, bond_type: int = 1):
         return '{0} {1} {2} {3} \n'.format(
@@ -134,7 +136,7 @@ class TriBendLink(Link):
 
     def to_string(self):
         """Return string that defines link"""
-        return f'T {self._center_id} {self._prev_id} {self._next_id}\n'
+        return f'T {self._center_id} {self._prev_id} {self._next_id} 0 0 0\n'
 
 
 class Protein():
