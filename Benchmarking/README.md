@@ -29,7 +29,8 @@ A script is included to easily run and record benchmarking data. Follow the inst
 
 1. Copy aLENS executable and gitversion.txt to the `Benchmarking` directory
 2. Run `python benchmark_general.py`
-3. Compare with previous benchmarking data in directories
+3. Use the `benchmark_analysis.ipynb` to find scaling speed up
+4. If suitable, create a benchmark summary file using the same notebook.
 
 # General Benchmarks
 
