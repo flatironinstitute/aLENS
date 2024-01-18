@@ -7,6 +7,10 @@
 
 #include <mpi.h>
 
+#include <boost/program_options.hpp>
+namespace po = boost::program_options;
+
+
 /*! \brief Main function
  *
  * \param argc number of input arguments
@@ -14,6 +18,23 @@
  * \return int 0=success, 1=error
  */
 int main(int argc, char **argv) {
+    // parse command line options
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help", "Produce help message")
+        ("run_params", "Print available parameters set in the RunConfig.yaml file.")
+    ;
+
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);    
+
+    if (vm.count("help")) {
+        std::cout << desc << "\n";
+        return 1;
+    }
+    // end command line options
+
     Eigen::initParallel();
     Eigen::setNbThreads(1); // disable threading in eigen
 

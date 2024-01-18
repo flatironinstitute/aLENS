@@ -35,7 +35,7 @@ option(ENABLE_TEST "enable tests")
 find_package(Eigen3 REQUIRED HINTS ${SFTPATH}/share/eigen3/cmake
              $ENV{EIGEN_BASE} $ENV{EIGEN_ROOT})
 find_package(Boost REQUIRED HINTS ${SFTPATH}/lib/cmake $ENV{BOOST_BASE}
-             $ENV{BOOST_ROOT})
+             $ENV{BOOST_ROOT} COMPONENTS program_options)
 
 # external libraries, static link
 find_package(VTK REQUIRED COMPONENTS IOXML HINTS ${SFTPATH}/lib/cmake
@@ -134,6 +134,7 @@ target_link_libraries(
           yaml-cpp
           VTK::IOXML
           Boost::boost
+          Boost::program_options
           Eigen3::Eigen
           OpenMP::OpenMP_CXX
           MPI::MPI_CXX)

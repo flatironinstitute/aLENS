@@ -14,9 +14,9 @@ from gen_flexible_init import FilSegment, Links
 
 params = {
     'radius': .0035,
-    'nsegs': 10,
-    'seg_length': .35,
-    'start_pos': np.array([0., 0., 0.]),
+    'nsegs': 110,
+    'seg_length': .035,
+    'start_pos': np.array([0., 0., -1.93]),
     'director': np.array([0, 0, 1]),
     'grp_id': 0
 }
