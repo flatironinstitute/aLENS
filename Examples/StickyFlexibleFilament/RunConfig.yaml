@@ -1,42 +1,54 @@
 # program settings
 rngSeed: 1234
 #rngSeed: ChiParam(format_str = "s{:d}", paramtype=int, values=[1,2,3,4,5,6,7,8])
+
 # simulation box
 simBoxLow: [-5.0, -5.0, -5.0]
 simBoxHigh: [5.0, 5.0, 5.0]
-simBoxPBC: [false, false, false]
+simBoxPBC: [true, true, true]
 monolayer: false
+
 # initialization box
 initBoxLow: [-5.0, -5.0, -5.0]
 initBoxHigh: [5.0, 5.0, 5.0]
+
 # initialization inside a circle along X direction
-initCircularX: true
+initCircularX: false
+
 # components < -1  or > 1 will be randomly set
 initOrient: [2, 0, 0]
+
 # physical settings
 viscosity: 1 # pN.s/(um^2)
-KBT: 0.00411 # controls Brownian motion of MT
+KBT: -0.00411 # controls Brownian motion of MT
 linkKappa: 3650 # pN/um (34 bp linker stretched 1.7x to produce 70pN)
 linkGap: .0002 # um .01 diameter
+
 # tubule
 sylinderNumber: 1000 # Not used because of filament initialization
 sylinderLength: 0.0 # um Sphere has no length
 sylinderLengthColRatio: 1.0 # Set to zero to turn of collisions
 sylinderLengthSigma: 0 # logNormal distribution
-sylinderDiameter: 0.02 # um (Between 10-30 nm)
+sylinderDiameter: 0.2 # um (Between 10-30 nm)
 sylinderDiameterColRatio: 1.0
-sylinderColBuf: 0.02 # um Same as sylinderDiameter
+sylinderColBuf: 0.2 # um Same as sylinderDiameter
 sylinderFixed: false
+
 # timestepping
 dt: .0001 # s
 timeTotal: 1. # s
-timeSnap: .001 # s
+timeSnap: .0001 # s
+
+# mobility settings
+mobilityTypeString: "SphereMobility"
+
 # Constraint Solver
 conResTol: 1e-5
-conMaxIte: 1000000
-conSolverChoice: 0
-logLevel: 3
+conMaxIte: 100
+conSolverChoice: 1
+logLevel: 1
 timerLevel: 3
+initPreSteps: 0
 boundaries:
   #- type: "sphere"
   #  center: [0., 0., 0.]

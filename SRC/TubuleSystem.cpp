@@ -114,10 +114,10 @@ bool TubuleSystem::end() {
     return dt * rodSystem.getStepCount() > timeTotal;
 }
 
-void TubuleSystem::prepareStep() {
+void TubuleSystem::prepareStep(const std::string &mobilityTypeString) {
     // step 1 prepare rodSystem
     // repartitioned if necessary
-    rodSystem.prepareStep();
+    rodSystem.prepareStep(mobilityTypeString);
     auto &dinfo = rodSystem.getDomainInfo();
 
     // protein partition follow tubule partition
@@ -172,7 +172,7 @@ void TubuleSystem::step() {
         // nothing moves
         {
             TimeMonitor mon(*prepareStepTimer);
-            prepareStep();
+            prepareStep(rodSystem.runConfig.mobilityTypeString);
             rodSystem.calcOrderParameter();
             spdlog::debug("prepareStep");
         }

@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.10) # same requirement as trilinos
+cmake_minimum_required(VERSION 3.17) # same requirement as trilinos
 project(aLENS)
 
 # global settings
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
@@ -95,6 +95,8 @@ set(PROTEIN ${CMAKE_SOURCE_DIR}/Protein)
 set(SIMTOOLBOX ${CMAKE_SOURCE_DIR}/SimToolbox)
 set(SRC ${CMAKE_SOURCE_DIR}/SRC)
 
+add_subdirectory(${SIMTOOLBOX}/STKFMM)
+
 #[[
 #################################################
     main executable aLENS.X
@@ -112,6 +114,7 @@ add_executable(
   ${SIMTOOLBOX}/Constraint/ConstraintSolver.cpp
   ${SIMTOOLBOX}/Sylinder/Sylinder.cpp
   ${SIMTOOLBOX}/Sylinder/SylinderConfig.cpp
+  ${SIMTOOLBOX}/Sylinder/HydroTable.cpp
   ${SIMTOOLBOX}/Sylinder/SylinderSystem.cpp
   ${SIMTOOLBOX}/Trilinos/TpetraUtil.cpp
   ${SIMTOOLBOX}/Util/Base64.cpp)
@@ -128,7 +131,8 @@ target_include_directories(
 
 target_link_libraries(
   aLENS.X
-  PRIVATE trng4
+  PRIVATE STKFMM_STATIC
+          trng4
           ${Trilinos_LIBRARIES}
           ${Trilinos_TPL_LIBRARIES}
           yaml-cpp

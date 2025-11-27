@@ -7,9 +7,9 @@ cmake \
   -D CMAKE_CXX_COMPILER=mpicxx \
   -D CMAKE_C_COMPILER=mpicc \
   -D CMAKE_BUILD_TYPE=Release \
-  -D CMAKE_CXX_FLAGS="-O3 -march=native -DNDEBUG" \
-  -D CMAKE_INSTALL_PREFIX="/your/installation/location" \
-  -D SFTPATH="/your/dependency/library/location" \
+  -D CMAKE_CXX_FLAGS="-O3 -march=broadwell" \
+  -D CMAKE_INSTALL_PREFIX=""${HOME}/envs/stb_intel_13_rocky8/ \
+  -D SFTPATH="${HOME}/ceph/envs/stb_intel_13_rocky8" \
 ../
 
 ## Debug

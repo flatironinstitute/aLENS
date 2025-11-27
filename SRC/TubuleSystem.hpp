@@ -114,7 +114,7 @@ class TubuleSystem {
      * @brief prepare necessary data structures for a step
      *
      */
-    void prepareStep();
+    void prepareStep(const std::string &mobilityTypeString = "DryMobility");
 
     /**
      * @brief Set the configuration for sylinder system
